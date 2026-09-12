@@ -10,7 +10,7 @@ namespace HrmsCoreMvc.Models.Leave
 
         [ForeignKey("DepartmentId")]
         public int DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Departments Department { get; set; }
 
         [ForeignKey("LeaveTypeId")]
         public int LeaveTypeId { get; set; }
