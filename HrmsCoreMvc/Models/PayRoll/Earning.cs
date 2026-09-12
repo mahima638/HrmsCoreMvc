@@ -23,7 +23,7 @@ namespace HrmsCoreMvc.Models.PayRoll
         
         [ForeignKey("DesignationId")]
         public int DesignationId { get; set; }
-        public Designations Designation { get; set; }
+        public Designation Designation { get; set; }
 
         public string? CreatedBy { get; set; }
         public DateTime? CreatedAt { get; set; } 
