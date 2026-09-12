@@ -1,6 +1,8 @@
-﻿namespace HrmsCoreMvc.Models.Attendance
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HrmsCoreMvc.Models.Attendance
 {
     public class Attendance
     {
