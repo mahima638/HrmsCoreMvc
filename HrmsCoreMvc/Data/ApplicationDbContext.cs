@@ -23,11 +23,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<Task> tasks { get; set; }
         public DbSet<TaskMembers> taskmembers { get; set; }
         public DbSet<TaskBoard> taskboards { get; set; }
-        public DbSet<LeaveBalance> leavebalances { get; set; }
-
-        public DbSet<Attendance> attendances { get; set; }
-
-        public DbSet<LeaveRequest> leaverequests { get; set; }
+       
 
     }
 }
