@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HrmsCoreMvc.Models
 {
     public class Designation
     {
+
+        [Key]
         public int DesignationId { get; set; }
 
        
