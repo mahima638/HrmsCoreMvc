@@ -4,6 +4,7 @@ using HrmsCoreMvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260913133304_departmentCreated")]
+    partial class departmentCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,71 +299,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("taskmembers");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
-                {
-                    b.Property<int>("PId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PId"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DesignationFrom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DesignationTo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("promotion");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
-                {
-                    b.Property<int>("RId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RId"));
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("NoticeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ResignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("resignations");
-                });
-
-=======
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -396,41 +334,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("role");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
-                {
-                    b.Property<int>("TId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TId"));
-
-                    b.Property<DateTime>("NoticeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ResignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TerminationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("terminations");
-                });
-
-=======
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -527,71 +430,12 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("designation")
                         .HasForeignKey("DepartmentId")
-<<<<<<< HEAD
-                        .OnDelete(DeleteBehavior.Cascade)
-=======
                         .OnDelete(DeleteBehavior.Restrict)
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
                         .IsRequired();
 
                     b.Navigation("departments");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Departments");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-=======
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
@@ -604,7 +448,6 @@ namespace HrmsCoreMvc.Migrations
                         .WithMany("user")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Restrict)
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
                         .IsRequired();
 
                     b.Navigation("departments");
@@ -615,8 +458,6 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Navigation("designation");
-<<<<<<< HEAD
-=======
 
                     b.Navigation("user");
                 });
@@ -624,7 +465,6 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
                 {
                     b.Navigation("user");
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
                 });
 #pragma warning restore 612, 618
         }

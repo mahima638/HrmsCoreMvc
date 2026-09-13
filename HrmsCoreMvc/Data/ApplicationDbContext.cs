@@ -6,6 +6,9 @@ using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
 using Microsoft.EntityFrameworkCore;
 using Task = HrmsCoreMvc.Models.Projects.Task;
+using HrmsCoreMvc.Models.PayRoll;
+using HrmsCoreMvc.Models.Attendance;
+using HrmsCoreMvc.Models.Leave;
 
 namespace HrmsCoreMvc.Data
 {
@@ -15,6 +18,12 @@ namespace HrmsCoreMvc.Data
         {
         }
         public DbSet<Role> role { get; set; }
+        public DbSet<Attendance> Attendance { get; set; }
+        public DbSet<DepartmentLeaves> DepartmentLeaves { get; set; }
+        public DbSet<LeaveBalance> LeaveBalances { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<MasterLeaveType> MasterLeaveTypes { get; set; }
+
         public DbSet<Departments> department { get; set; }
         public DbSet<Designation> designation { get; set; }
         public DbSet<User> user { get; set; }
@@ -24,10 +33,40 @@ namespace HrmsCoreMvc.Data
         public DbSet<Task> tasks { get; set; }
         public DbSet<TaskMembers> taskmembers { get; set; }
         public DbSet<TaskBoard> taskboards { get; set; }
+
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
         public DbSet<Resignation> resignations { get; set; }        
 
-    }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.departments)
+                 .WithMany(x => x.user)
+                 .HasForeignKey(x => x.DepartmentId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+
+                u.HasOne(x => x.designation)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+            builder.Entity<Designation>(d =>
+            {
+                d.HasOne(x => x.departments)
+                .WithMany(x => x.designation)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+          }
+      
+
+
+}
+
 }
 
