@@ -15,7 +15,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<int> fetchTotalLeavesTaken()
         {
-            var data = await db.leavebalances.SumAsync(lb => lb.TotalLeaves);
+            var data = await db.LeaveBalances.SumAsync(lb => lb.TotalLeaves);
             return data;
         }
 
@@ -27,7 +27,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<AttendanceReportViewModel>> getAttendancesAsync()
         {
-            return await db.attendances.Include(a => a.User).Select(a => new AttendanceReportViewModel
+            return await db.Attendance.Include(a => a.User).Select(a => new AttendanceReportViewModel
             {
                 AttendanceId = a.AttendanceId,
                 AttendanceName = a.User.FirstName + " " + a.User.LastName,
@@ -47,7 +47,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<AttendanceReportViewModel>> sortAttendances(string? datefilter, string? statusfilter, string? sortType)
         {
-            var query = db.attendances.Include(a => a.User).AsQueryable();
+            var query = db.Attendance.Include(a => a.User).AsQueryable();
 
             if (!string.IsNullOrEmpty(statusfilter))
             {
@@ -104,7 +104,7 @@ namespace HrmsCoreMvc.Services.Reports
                 AttendanceName = av.User.FirstName + " " + av.User.LastName,
                 Date = av.Date,
                 CheckIn = av.CheckIn,
-                CheckOut = a.CheckOut,
+                CheckOut = av.CheckOut,
                 Late = av.Late,
                 LunchIn = av.LunchIn,
                 LunchOut = av.LunchOut,

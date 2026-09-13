@@ -22,6 +22,11 @@ namespace HrmsCoreMvc.Models
 
         public DateTime ModifiedAt { get; set; }
 
-        public List<Designation >designation { get; set; }
+
+        public List<Designation> designation { get; set; }
+
+        public List<User> user { get; set; }
+
+
     }
 }

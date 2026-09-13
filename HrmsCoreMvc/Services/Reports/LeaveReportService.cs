@@ -18,13 +18,13 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<int> fetchApprovedLeaves()
         {
-            var data = await db.leaverequests.Where(lr => lr.Status == "Approved").SumAsync(lr => lr.NumberOfDays);
+            var data = await db.LeaveRequests.Where(lr => lr.Status == "Approved").SumAsync(lr => lr.NumberOfDays);
             return data;
         }
 
         public async Task<IEnumerable<LeavesReportViewModel>> fetchLeaves()
         {
-            return await db.leaverequests.Include(lr => lr.MasterLeaveType).Include(lr => lr.User).Select(lr => new LeavesReportViewModel
+            return await db.LeaveRequests.Include(lr => lr.MasterLeaveType).Include(lr => lr.User).Select(lr => new LeavesReportViewModel
             {
                 attendanceId = lr.LeaveRequestId,
                 userName = lr.User.FirstName + " " + lr.User.LastName,
@@ -42,25 +42,25 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<int> fetchPendingLeaves()
         {
-            var data = await db.leaverequests.Where(lr => lr.Status == "Pending").SumAsync(lr => lr.NumberOfDays);
+            var data = await db.LeaveRequests.Where(lr => lr.Status == "Pending").SumAsync(lr => lr.NumberOfDays);
             return data;
         }
 
         public async Task<int> fetchRejectedLeaves()
         {
-            var data = await db.leaverequests.Where(lr => lr.Status == "Rejected").SumAsync(lr => lr.NumberOfDays);
+            var data = await db.LeaveRequests.Where(lr => lr.Status == "Rejected").SumAsync(lr => lr.NumberOfDays);
             return data;
         }
         public async Task<int> fetchTotalLeaves()
         {
-            var data = await db.leavebalances.SumAsync(lb=> lb.TotalLeaves);
+            var data = await db.LeaveBalances.SumAsync(lb=> lb.TotalLeaves);
             return data;
 
         }
 
         public async Task<IEnumerable<LeavesReportViewModel>> sortLeaves(string? datefilter, string? statusfilter, string? sortType)
         {
-            var query = db.leaverequests.Include(lr => lr.User).Include(lr => lr.MasterLeaveType).AsQueryable();
+            var query = db.LeaveRequests.Include(lr => lr.User).Include(lr => lr.MasterLeaveType).AsQueryable();
 
             if (!string.IsNullOrEmpty(statusfilter))
             {
