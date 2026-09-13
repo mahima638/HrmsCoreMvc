@@ -3,9 +3,9 @@
 namespace HrmsCoreMvc.Models
 {
     public class Departments
-    {
-     
 
+    {
+        [Key]
         public int DepartmentId { get; set; }
 
         public string Name { get; set; }
