@@ -1,5 +1,5 @@
 ﻿using HrmsCoreMvc.Models;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace HrmsCoreMvc.Data
 {
@@ -10,6 +10,8 @@ namespace HrmsCoreMvc.Data
         {
         }
         public DbSet<Role> role { get; set; }
+
+  
 
 
     }
