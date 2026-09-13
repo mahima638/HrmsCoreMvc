@@ -17,7 +17,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<User> user { get; set; }
         public DbSet<EventType> eventtypes { get; set; }
         public DbSet<Event> events { get; set; }
-        public DbSet<Project> projects { get; set; }
+        public DbSet<AllProjects> AllProjects { get; set; }
         public DbSet<Task> tasks { get; set; }
         public DbSet<TaskMembers> taskmembers { get; set; }
         public DbSet<TaskBoard> taskboards { get; set; }
