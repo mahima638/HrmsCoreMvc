@@ -23,7 +23,33 @@ namespace HrmsCoreMvc.Data
         public DbSet<TaskBoard> taskboards { get; set; }
 
 
-        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.departments)
+                 .WithMany(x => x.user)
+                 .HasForeignKey(x => x.DepartmentId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
-    }
+
+                u.HasOne(x => x.designation)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+            builder.Entity<Designation>(d =>
+            {
+                d.HasOne(x => x.departments)
+                .WithMany(x => x.designation)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+          }
+      
+
+
+}
+
 }
