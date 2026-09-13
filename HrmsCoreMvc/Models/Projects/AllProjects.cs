@@ -2,7 +2,7 @@
 
 namespace HrmsCoreMvc.Models.Projects
 {
-    public class Project
+    public class AllProjects
     {
         [Key]
         public int ProjectId { get; set; }
