@@ -29,7 +29,8 @@ namespace HrmsCoreMvc.Models
 
         [ForeignKey("DepartmentId")]
         public Departments departments { get; set; }
+        public List<User> user { get; set; }
 
-   
+
     }
 }
