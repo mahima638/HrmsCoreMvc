@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace HrmsCoreMvc.Models.PayRoll
 {
     public class Timesheet
