@@ -17,12 +17,11 @@ namespace HrmsCoreMvc.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.Property<int>("AttendanceId")
@@ -75,8 +74,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Attendance");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -209,7 +206,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("eventtypes");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.Property<int>("DepartmentLeavesId")
@@ -551,8 +547,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Timesheets");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -695,7 +689,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("taskmembers");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
                 {
                     b.Property<int>("PId")
@@ -758,8 +751,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("resignations");
                 });
 
-=======
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -795,7 +786,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("role");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
                 {
                     b.Property<int>("TId")
@@ -828,8 +818,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("terminations");
                 });
 
-=======
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -921,7 +909,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("user");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
@@ -933,55 +920,25 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("designation")
                         .HasForeignKey("DepartmentId")
-<<<<<<< HEAD
-                        .OnDelete(DeleteBehavior.Cascade)
-=======
                         .OnDelete(DeleteBehavior.Restrict)
-<<<<<<< HEAD
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                         .IsRequired();
 
                     b.Navigation("departments");
                 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
-=======
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-<<<<<<< HEAD
-=======
                     b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
                         .WithMany("DepartmentLeaves")
                         .HasForeignKey("MasterLeaveTypeLeaveTypeId")
@@ -1011,27 +968,19 @@ namespace HrmsCoreMvc.Migrations
                         .WithMany("LeaveBalances")
                         .HasForeignKey("MasterLeaveTypeLeaveTypeId");
 
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-<<<<<<< HEAD
-                    b.Navigation("Departments");
-=======
                     b.Navigation("DepartmentLeaves");
 
                     b.Navigation("MasterLeaveType");
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
 
                     b.Navigation("User");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
-=======
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.LeaveRequest", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
@@ -1106,7 +1055,6 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Payslips", b =>
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                 {
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
@@ -1117,8 +1065,6 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Timesheet", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
@@ -1138,28 +1084,47 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
+            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
                 {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("DepartmentId")
-<<<<<<< HEAD
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-=======
-                        .OnDelete(DeleteBehavior.NoAction)
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
                         .WithMany()
-                        .HasForeignKey("DesignationId")
-<<<<<<< HEAD
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
-=======
-                        .OnDelete(DeleteBehavior.NoAction)
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
-=======
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Departments");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
@@ -1172,11 +1137,6 @@ namespace HrmsCoreMvc.Migrations
                         .WithMany("user")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Restrict)
-<<<<<<< HEAD
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                         .IsRequired();
 
                     b.Navigation("departments");
@@ -1187,9 +1147,13 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Navigation("designation");
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
+                {
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.MasterLeaveType", b =>
@@ -1209,20 +1173,6 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
                 {
                     b.Navigation("Earnings");
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
-=======
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
-                {
-                    b.Navigation("user");
-<<<<<<< HEAD
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
->>>>>>> 685454d901c798b1b0f2508aeb305f356963ccb3
                 });
 #pragma warning restore 612, 618
         }

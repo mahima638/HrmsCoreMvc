@@ -1,11 +1,9 @@
 ﻿using HrmsCoreMvc.Models.Projects;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-<<<<<<< HEAD
-=======
+
 using HrmsCoreMvc.Models.Projects;
 
->>>>>>> fc8d6a8c9f72b1892fe50555ef4dff355e78e539
 namespace HrmsCoreMvc.Models.PayRoll
 {
     public class Timesheet
