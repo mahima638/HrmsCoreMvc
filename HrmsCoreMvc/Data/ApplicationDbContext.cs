@@ -5,6 +5,8 @@ using HrmsCoreMvc.Models.Projects;
 using Microsoft.EntityFrameworkCore;
 using Task = HrmsCoreMvc.Models.Projects.Task;
 using HrmsCoreMvc.Models.PayRoll;
+using HrmsCoreMvc.Models.Leave;
+using HrmsCoreMvc.Models.Attendance;
 
 namespace HrmsCoreMvc.Data
 {
@@ -29,6 +31,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<Task> tasks { get; set; }
         public DbSet<TaskMembers> taskmembers { get; set; }
         public DbSet<TaskBoard> taskboards { get; set; }
+
 
 
 
@@ -92,6 +95,29 @@ namespace HrmsCoreMvc.Data
                 .WithMany()
                 .HasForeignKey(x => x.LeaveTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.departments)
+                 .WithMany(x => x.user)
+                 .HasForeignKey(x => x.DepartmentId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+
+                u.HasOne(x => x.designation)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+            modelBuilder.Entity<Designation>(d =>
+            {
+                d.HasOne(x => x.departments)
+                .WithMany(x => x.designation)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

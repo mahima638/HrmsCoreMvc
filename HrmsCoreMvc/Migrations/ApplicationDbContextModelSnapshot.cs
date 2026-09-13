@@ -22,6 +22,7 @@ namespace HrmsCoreMvc.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.Property<int>("AttendanceId")
@@ -74,6 +75,8 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Attendance");
                 });
 
+=======
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -206,6 +209,7 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("eventtypes");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.Property<int>("DepartmentLeavesId")
@@ -547,6 +551,8 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Timesheets");
                 });
 
+=======
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -815,6 +821,7 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("user");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
@@ -826,17 +833,24 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
+=======
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("designation")
                         .HasForeignKey("DepartmentId")
+<<<<<<< HEAD
                         .OnDelete(DeleteBehavior.Cascade)
+=======
+                        .OnDelete(DeleteBehavior.Restrict)
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                         .IsRequired();
 
                     b.Navigation("departments");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
@@ -1002,6 +1016,20 @@ namespace HrmsCoreMvc.Migrations
                         .WithMany()
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.NoAction)
+=======
+            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
+                        .WithMany("user")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
+                        .WithMany("user")
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                         .IsRequired();
 
                     b.Navigation("departments");
@@ -1012,6 +1040,7 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Navigation("designation");
+<<<<<<< HEAD
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.MasterLeaveType", b =>
@@ -1031,6 +1060,15 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
                 {
                     b.Navigation("Earnings");
+=======
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
+                {
+                    b.Navigation("user");
+>>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                 });
 #pragma warning restore 612, 618
         }
