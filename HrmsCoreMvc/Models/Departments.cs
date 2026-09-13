@@ -1,7 +1,10 @@
-﻿namespace HrmsCoreMvc.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HrmsCoreMvc.Models
 {
     public class Departments
     {
+     
 
         public int DepartmentId { get; set; }
 
@@ -19,6 +22,6 @@
 
         public DateTime ModifiedAt { get; set; }
 
-        public List<Designation >designation { get; set; }
+        public List<Designation>designation { get; set; }
     }
 }
