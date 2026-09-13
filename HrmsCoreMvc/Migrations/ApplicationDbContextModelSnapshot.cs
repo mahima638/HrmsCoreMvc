@@ -17,12 +17,11 @@ namespace HrmsCoreMvc.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.Property<int>("AttendanceId")
@@ -75,8 +74,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Attendance");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -209,7 +206,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("eventtypes");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.Property<int>("DepartmentLeavesId")
@@ -551,8 +547,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("Timesheets");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -695,6 +689,68 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("taskmembers");
                 });
 
+            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
+                {
+                    b.Property<int>("PId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PId"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DesignationFrom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DesignationTo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("promotion");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
+                {
+                    b.Property<int>("RId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RId"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NoticeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("resignations");
+                });
+
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -728,6 +784,38 @@ namespace HrmsCoreMvc.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("role");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
+                {
+                    b.Property<int>("TId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TId"));
+
+                    b.Property<DateTime>("NoticeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TerminationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("terminations");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -821,7 +909,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("user");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
@@ -833,24 +920,17 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
-=======
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
             modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("designation")
                         .HasForeignKey("DepartmentId")
-<<<<<<< HEAD
-                        .OnDelete(DeleteBehavior.Cascade)
-=======
                         .OnDelete(DeleteBehavior.Restrict)
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                         .IsRequired();
 
                     b.Navigation("departments");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
@@ -1004,19 +1084,47 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
+            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
                 {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
                         .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-=======
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Departments");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
@@ -1029,7 +1137,6 @@ namespace HrmsCoreMvc.Migrations
                         .WithMany("user")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Restrict)
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                         .IsRequired();
 
                     b.Navigation("departments");
@@ -1040,7 +1147,13 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
                 {
                     b.Navigation("designation");
-<<<<<<< HEAD
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
+                {
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.MasterLeaveType", b =>
@@ -1060,15 +1173,6 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
                 {
                     b.Navigation("Earnings");
-=======
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
-                {
-                    b.Navigation("user");
->>>>>>> b406d3b482d626b5d6d5d772e6d097301a9f55cb
                 });
 #pragma warning restore 612, 618
         }

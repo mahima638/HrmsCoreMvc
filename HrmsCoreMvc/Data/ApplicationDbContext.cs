@@ -1,7 +1,9 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Models.Projects;
-
+using HrmsCoreMvc.Models.Promotion;
+using HrmsCoreMvc.Models.Resignation;
+using HrmsCoreMvc.Models.Termination;
 using Microsoft.EntityFrameworkCore;
 using Task = HrmsCoreMvc.Models.Projects.Task;
 using HrmsCoreMvc.Models.PayRoll;
@@ -32,6 +34,9 @@ namespace HrmsCoreMvc.Data
         public DbSet<TaskMembers> taskmembers { get; set; }
         public DbSet<TaskBoard> taskboards { get; set; }
 
+        public DbSet<Promotion> promotion { get; set; }
+        public DbSet<Termination> terminations { get; set; }
+        public DbSet<Resignation> resignations { get; set; }        
 
 
 
@@ -121,3 +126,4 @@ namespace HrmsCoreMvc.Data
         }
     }
 }
+
