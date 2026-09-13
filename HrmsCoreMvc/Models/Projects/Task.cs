@@ -20,6 +20,6 @@ namespace HrmsCoreMvc.Models.Projects
         public string? Priority { get; set; }
         [Required(ErrorMessage = "File Path is required.")]
         public string? FilePath { get; set; }
-
+        public DateTime? DeadLine { get; set; }
     }
 }

@@ -1,8 +1,11 @@
-﻿namespace HrmsCoreMvc.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HrmsCoreMvc.Models
 {
     public class Departments
-    {
 
+    {
+        [Key]
         public int DepartmentId { get; set; }
 
         public string Name { get; set; }
