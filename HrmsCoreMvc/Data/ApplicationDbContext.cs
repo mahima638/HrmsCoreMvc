@@ -46,5 +46,57 @@ namespace HrmsCoreMvc.Data
         public DbSet<Timesheet> Timesheets { get; set; }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            
+            modelBuilder.Entity<Deduction>()
+                .HasOne(x => x.Designation)
+                .WithMany()
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+            modelBuilder.Entity<Deduction>()
+                .HasOne(x => x.Department)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Earning>()
+               .HasOne(x => x.Designation)
+               .WithMany()
+               .HasForeignKey(x => x.DesignationId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            
+            modelBuilder.Entity<Earning>()
+                .HasOne(x => x.Department)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+           
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.designation)
+                .WithMany()
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+            modelBuilder.Entity<LeaveBalance>()
+                .HasOne(x => x.MasterLeaveType)
+                .WithMany()
+                .HasForeignKey(x => x.LeaveTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }
