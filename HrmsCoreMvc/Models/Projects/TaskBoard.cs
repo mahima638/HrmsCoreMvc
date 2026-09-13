@@ -12,7 +12,7 @@ namespace HrmsCoreMvc.Models.Projects
         [ForeignKey("Project")]
         public int ProjectId { get; set; }
         [Required(ErrorMessage = "Task Name is required.")]
-        public AllProjects Project { get; set; }
+        public AllProjects? Project { get; set; }
         public string? TaskName { get; set; }
         public decimal Percentage { get; set; }
         [Required(ErrorMessage = "Due Date is required.")]
