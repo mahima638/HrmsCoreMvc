@@ -42,6 +42,9 @@ namespace HrmsCoreMvc.Models.Projects
 
         [Required(ErrorMessage = "File Path is required.")]
         public string? FilePath { get; set; }
-        
+        public List<Task>? Tasks { get; set; }
+        public List<User>? Users { get; set; }
+
+
     }
 }

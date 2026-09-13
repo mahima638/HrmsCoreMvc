@@ -10,6 +10,7 @@ namespace HrmsCoreMvc.Models.Projects
         [ForeignKey("Project")]
         public int ProjectId { get; set; }
         [Required(ErrorMessage = "Task Title is required.")]
+        public AllProjects? Project { get; set; }
         public string? Title { get; set; }
         [Required(ErrorMessage = "Task Description is required.")]
         public string? Description { get; set; }
