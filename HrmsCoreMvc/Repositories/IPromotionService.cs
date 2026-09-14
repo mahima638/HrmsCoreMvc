@@ -1,6 +1,6 @@
 ﻿namespace HrmsCoreMvc.Repositories
 {
-    public class IPromotion
+    public class IPromotionService
     {
     }
 }
