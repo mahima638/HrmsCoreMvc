@@ -8,9 +8,7 @@ namespace HrmsCoreMvc.Controllers
 {
     public class ProjectController : Controller
     {
-
         private readonly IProjectService cs;            
-
         public ProjectController(IProjectService ps)
         {
             cs = ps;
@@ -60,7 +58,6 @@ namespace HrmsCoreMvc.Controllers
             var projects = cs.SearchProjects(searchproject);
             return View("GetAllProjects", projects);
         }
-
 
         public IActionResult Index()
         {
