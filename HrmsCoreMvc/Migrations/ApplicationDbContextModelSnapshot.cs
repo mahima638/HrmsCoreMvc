@@ -17,7 +17,7 @@ namespace HrmsCoreMvc.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -253,7 +253,7 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MasterLeaveTypeLeaveTypeId")
+                    b.Property<int?>("MasterLeaveTypeLeaveTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalLeaves")
@@ -268,6 +268,8 @@ namespace HrmsCoreMvc.Migrations
                     b.HasKey("LeaveBalanceId");
 
                     b.HasIndex("DepartmentLeavesId");
+
+                    b.HasIndex("LeaveTypeId");
 
                     b.HasIndex("MasterLeaveTypeLeaveTypeId");
 
@@ -342,6 +344,207 @@ namespace HrmsCoreMvc.Migrations
                     b.HasKey("LeaveTypeId");
 
                     b.ToTable("MasterLeaveTypes");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Deduction", b =>
+                {
+                    b.Property<int>("DeductionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeductionId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("DeductionPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("DeductionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DesignationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DeductionId");
+
+                    b.HasIndex("DeductionTypeId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DesignationId");
+
+                    b.ToTable("Deduction");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.DeductionType", b =>
+                {
+                    b.Property<int>("DeductionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeductionTypeId"));
+
+                    b.Property<string>("DeductionsName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DeductionTypeId");
+
+                    b.ToTable("DeductionType");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Earning", b =>
+                {
+                    b.Property<int>("EarningsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EarningsId"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DesignationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EarningTypeEarntypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("EarningsPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EarntypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EarningsId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DesignationId");
+
+                    b.HasIndex("EarningTypeEarntypeId");
+
+                    b.ToTable("Earning");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
+                {
+                    b.Property<int>("EarntypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EarntypeId"));
+
+                    b.Property<string>("EarningName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EarntypeId");
+
+                    b.ToTable("EarningType");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Payslips", b =>
+                {
+                    b.Property<int>("PayslipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PayslipId"));
+
+                    b.Property<DateTime>("GeneratedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Month")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PayslipPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("PayslipId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payslips");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Timesheet", b =>
+                {
+                    b.Property<int>("TimesheetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimesheetId"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("TimesheetId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Timesheets");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
@@ -486,6 +689,68 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("taskmembers");
                 });
 
+            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
+                {
+                    b.Property<int>("PId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PId"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DesignationFrom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DesignationTo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("promotion");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
+                {
+                    b.Property<int>("RId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RId"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NoticeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("resignations");
+                });
+
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -519,6 +784,38 @@ namespace HrmsCoreMvc.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("role");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
+                {
+                    b.Property<int>("TId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TId"));
+
+                    b.Property<DateTime>("NoticeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TerminationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("terminations");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -662,10 +959,14 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired();
 
                     b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
-                        .WithMany("LeaveBalances")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", null)
+                        .WithMany("LeaveBalances")
+                        .HasForeignKey("MasterLeaveTypeLeaveTypeId");
 
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
@@ -695,6 +996,131 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired();
 
                     b.Navigation("MasterLeaveType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Deduction", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.PayRoll.DeductionType", "DeductionType")
+                        .WithMany("Deductions")
+                        .HasForeignKey("DeductionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.Designation", "Designation")
+                        .WithMany()
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DeductionType");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Designation");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Earning", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.Designation", "Designation")
+                        .WithMany()
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.PayRoll.EarningType", "EarningType")
+                        .WithMany("Earnings")
+                        .HasForeignKey("EarningTypeEarntypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Designation");
+
+                    b.Navigation("EarningType");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Payslips", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Timesheet", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Departments");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -737,6 +1163,16 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("LeaveBalances");
 
                     b.Navigation("LeaveRequests");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.DeductionType", b =>
+                {
+                    b.Navigation("Deductions");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
+                {
+                    b.Navigation("Earnings");
                 });
 #pragma warning restore 612, 618
         }
