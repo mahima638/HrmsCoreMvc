@@ -1,4 +1,6 @@
 using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Repositories;
+using HrmsCoreMvc.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
+
+builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
