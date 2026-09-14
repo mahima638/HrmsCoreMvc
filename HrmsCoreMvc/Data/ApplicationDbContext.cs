@@ -37,9 +37,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
         public DbSet<Resignation> resignations { get; set; }        
-
-
-
         
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
@@ -115,6 +112,10 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+                u.HasOne(x => x.projectsUser)
+                .WithMany(x => x.projectusers)
+                .OnDelete(DeleteBehavior.Restrict);
+
             });
             modelBuilder.Entity<Designation>(d =>
             {
@@ -123,6 +124,9 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+          
+
         }
     }
 }
