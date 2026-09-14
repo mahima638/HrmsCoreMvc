@@ -121,6 +121,26 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
+            {
+                pu.ProjectsProjectId, pu.UsersUserId
+            });
+
+            modelBuilder.Entity<ProjectsUser>(pu =>
+            {
+                pu.HasOne(x => x.AllProjects)
+                .WithMany(x => x.projectusers)
+                .HasForeignKey(x => x.ProjectsProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                pu.HasOne(x => x.user)
+                .WithMany(x => x.projectsUser)
+                .HasForeignKey(x => x.UsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+
 
           
 

@@ -5,12 +5,14 @@ namespace HrmsCoreMvc.Models.Projects
 {
     public class ProjectsUser
     {
-        [Key]
+        [ForeignKey("ProjectsProjectId")]
         public int ProjectsProjectId { get; set; }
+
+        public AllProjects AllProjects { get; set; }
 
         [ForeignKey("UsersUserId")]
         public int UsersUserId { get; set; }
 
-        public List<User> users { get; set; }
+        public User user { get; set; }
     }
 }
