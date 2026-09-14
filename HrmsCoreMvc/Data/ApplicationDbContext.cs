@@ -36,11 +36,16 @@ namespace HrmsCoreMvc.Data
 
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
-        public DbSet<Resignation> resignations { get; set; }        
+        public DbSet<Resignation> resignations { get; set; }
+        public DbSet<Deduction> Deduction { get; set; }
+        public DbSet<DeductionType> DeductionType { get; set; }
+        public DbSet<Earning> Earning { get; set; }
+        public DbSet<EarningType> EarningType { get; set; }
+        public DbSet<Payslips> Payslips { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
 
 
 
-<<<<<<< HEAD
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -50,7 +55,7 @@ namespace HrmsCoreMvc.Data
                 .WithMany(p => p.Tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
             modelBuilder.Entity<TaskMembers>()
                 .HasOne(tm => tm.Task)
                 .WithMany(t => t.TaskMembers)
@@ -81,28 +86,13 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(e => e.EventTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-=======
-        
-        public DbSet<Deduction> Deduction { get; set; }
-        public DbSet<DeductionType> DeductionType { get; set; }
-        public DbSet<Earning> Earning { get; set; }
-        public DbSet<EarningType> EarningType { get; set; }
-        public DbSet<Payslips> Payslips { get; set; }
-        public DbSet<Timesheet> Timesheets { get; set; }
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            
             modelBuilder.Entity<Deduction>()
                 .HasOne(x => x.Designation)
                 .WithMany()
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<Deduction>()
                 .HasOne(x => x.Department)
                 .WithMany()
@@ -115,28 +105,28 @@ namespace HrmsCoreMvc.Data
                .HasForeignKey(x => x.DesignationId)
                .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<Earning>()
                 .HasOne(x => x.Department)
                 .WithMany()
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-           
+
             modelBuilder.Entity<User>()
                 .HasOne(x => x.designation)
                 .WithMany()
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<User>()
                 .HasOne(x => x.departments)
                 .WithMany()
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<LeaveBalance>()
                 .HasOne(x => x.MasterLeaveType)
                 .WithMany()
@@ -165,8 +155,13 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
->>>>>>> 3c203e0de6894c77f4acbf45bac6a6252b770094
         }
+        
+        
+
+
+        
     }
 }
+
 
