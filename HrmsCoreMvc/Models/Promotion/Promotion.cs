@@ -14,17 +14,17 @@ namespace HrmsCoreMvc.Models.Promotion
         [Required]
         [Display(Name = "Employee Name")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
 
         [Display(Name = "Designation From")]     
         [Required]
-        public string DesignationFrom{ get; set; }
+        public string? DesignationFrom{ get; set; }
 
 
         [Display(Name = "Designation To")]
         [Required]
-        public string DesignationTo { get; set; }
+        public string? DesignationTo { get; set; }
 
 
 
