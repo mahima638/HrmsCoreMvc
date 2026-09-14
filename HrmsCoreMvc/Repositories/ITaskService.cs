@@ -1,4 +1,6 @@
-﻿namespace HrmsCoreMvc.Repositories
+﻿using Task = HrmsCoreMvc.Models.Projects.Task;
+
+namespace HrmsCoreMvc.Repositories
 {
     public interface ITaskService
     {

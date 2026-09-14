@@ -45,7 +45,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<Timesheet> Timesheets { get; set; }
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
