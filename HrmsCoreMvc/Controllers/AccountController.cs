@@ -1,25 +1,28 @@
-﻿using HrmsCoreMvc.Models;
+﻿using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrmsCoreMvc.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext db;
+        public AccountController(ApplicationDbContext db)
+        {
+            this.db = db;
+        }
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
+       
 
         public IActionResult Login()
         {
             return View();
         }
-
+      
         [HttpPost]
         public IActionResult Login(Login lg) { 
         
@@ -34,17 +37,9 @@ namespace HrmsCoreMvc.Controllers
             
             }
 
-            var user = new Login
-            {
-                Email = lg.Email,
-                Password = lg.Password
-            };
+           
 
-            if (user == null) { 
-            
-                TempData["Error"] = "Invalid Email or Password";
-
-            }
+           
             return RedirectToAction("Dashboard", "User");
 
         }

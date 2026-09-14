@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260913150855_Promotion")]
-    partial class Promotion
+    [Migration("20260913165143_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

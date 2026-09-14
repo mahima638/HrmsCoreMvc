@@ -1,6 +1,7 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Models.Projects;
+
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
