@@ -9,8 +9,6 @@ namespace HrmsCoreMvc.Models
         [Key]
         public int DesignationId { get; set; }
 
-       
-
         public string Name { get; set; }
 
         public  int NoOfEmployee { get; set; }

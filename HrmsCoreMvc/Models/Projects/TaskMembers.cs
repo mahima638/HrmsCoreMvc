@@ -9,7 +9,9 @@ namespace HrmsCoreMvc.Models.Projects
         public int TaskMembersId { get; set; }
         [ForeignKey("Task")]
         public int TaskId { get; set; }
+        public Task? Task { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
+        public User? User { get; set; }
     }
 }
