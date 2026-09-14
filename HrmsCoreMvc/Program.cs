@@ -12,7 +12,7 @@ builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 

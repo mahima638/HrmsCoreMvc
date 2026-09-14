@@ -1,6 +1,7 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Models.Projects;
+
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
@@ -36,7 +37,8 @@ namespace HrmsCoreMvc.Data
 
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
-        public DbSet<Resignation> resignations { get; set; }
+        public DbSet<Resignation> resignations { get; set; }        
+        
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
         public DbSet<Earning> Earning { get; set; }
@@ -154,6 +156,42 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
+            {
+                pu.ProjectsProjectId, pu.UsersUserId
+            });
+
+            modelBuilder.Entity<ProjectsUser>(pu =>
+            {
+                pu.HasOne(x => x.AllProjects)
+                .WithMany(x => x.projectusers)
+                .HasForeignKey(x => x.ProjectsProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                pu.HasOne(x => x.user)
+                .WithMany(x => x.projectsUser)
+                .HasForeignKey(x => x.UsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            modelBuilder.Entity<Task>(t =>
+            {
+                t.HasOne(x => x.projects)
+                .WithMany(x => x.tasks)
+                .HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<TaskBoard>(tb =>
+            {
+                tb.HasOne(x => x.tasks)
+                .WithMany()
+                .HasForeignKey(x => x.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
         }
         
         

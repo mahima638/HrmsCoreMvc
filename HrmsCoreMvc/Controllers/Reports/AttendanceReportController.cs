@@ -19,7 +19,7 @@ namespace HrmsCoreMvc.Controllers.Reports
             var fetchTotalHolidays = await a.fetchTotalHolidaysTaken();
             var fetchattendances = await a.getAttendancesAsync();
 
-            if(!string.IsNullOrEmpty(datefilter) && !string.IsNullOrEmpty(statusfilter) && !string.IsNullOrEmpty(sortType))
+            if(!string.IsNullOrEmpty(datefilter) || !string.IsNullOrEmpty(statusfilter) || !string.IsNullOrEmpty(sortType))
             {
                 fetchattendances = await a.sortAttendances(datefilter, statusfilter, sortType);
             }
