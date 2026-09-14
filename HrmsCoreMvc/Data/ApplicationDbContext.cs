@@ -112,10 +112,6 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-                u.HasOne(x => x.projectsUser)
-                .WithMany(x => x.projectusers)
-                .OnDelete(DeleteBehavior.Restrict);
-
             });
             modelBuilder.Entity<Designation>(d =>
             {
@@ -124,6 +120,7 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
 
           
 

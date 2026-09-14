@@ -66,7 +66,7 @@ namespace HrmsCoreMvc.Models
         [ForeignKey("DesignationId")]
         public Designation designation { get; set; }
 
-        public ProjectsUser projectsUser { get; set; }
+        public List<ProjectsUser> projectsUser { get; set; }
 
 
 
