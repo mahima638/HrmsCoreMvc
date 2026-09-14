@@ -8,7 +8,7 @@
 
         public string Leader { get; set; }
 
-        public string Members { get; set; }
+        public List<string> Members { get; set; }
 
         public DateTime Deadline { get; set; }
 

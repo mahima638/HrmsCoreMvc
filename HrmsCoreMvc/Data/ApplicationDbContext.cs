@@ -140,9 +140,21 @@ namespace HrmsCoreMvc.Data
 
             });
 
+            modelBuilder.Entity<Task>(t =>
+            {
+                t.HasOne(x => x.projects)
+                .WithMany(x => x.tasks)
+                .HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
 
-
-          
+            modelBuilder.Entity<TaskBoard>(tb =>
+            {
+                tb.HasOne(x => x.tasks)
+                .WithMany()
+                .HasForeignKey(x => x.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
 
         }
     }

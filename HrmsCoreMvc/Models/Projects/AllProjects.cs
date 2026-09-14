@@ -44,6 +44,8 @@ namespace HrmsCoreMvc.Models.Projects
         public string? FilePath { get; set; }
 
         public List<ProjectsUser> projectusers { get; set; }
+
+        public List<Task> tasks { get; set; }
         
     }
 }
