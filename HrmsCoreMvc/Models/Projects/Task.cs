@@ -10,6 +10,7 @@ namespace HrmsCoreMvc.Models.Projects
         [ForeignKey("Project")]
         public int ProjectId { get; set; }
         [Required(ErrorMessage = "Task Title is required.")]
+        public AllProjects? Project { get; set; }
         public string? Title { get; set; }
         [Required(ErrorMessage = "Task Description is required.")]
         public string? Description { get; set; }
@@ -19,6 +20,10 @@ namespace HrmsCoreMvc.Models.Projects
         public string? Priority { get; set; }
         [Required(ErrorMessage = "File Path is required.")]
         public string? FilePath { get; set; }
+
+        public AllProjects projects { get; set; }
+
+        public TaskBoard taskboard { get; set; }
 
     }
 }

@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace HrmsCoreMvc.Models.PayRoll
@@ -12,5 +13,6 @@ namespace HrmsCoreMvc.Models.PayRoll
 
         
         public List<Deduction> Deductions { get; set; }
+
     }
 }

@@ -3,6 +3,7 @@ using HrmsCoreMvc.Models.Attendance;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using HrmsCoreMvc.Models.Projects;
 
 
 namespace HrmsCoreMvc.Models
@@ -65,6 +66,7 @@ namespace HrmsCoreMvc.Models
         [ForeignKey("DesignationId")]
         public Designation designation { get; set; }
 
+        public List<ProjectsUser> projectsUser { get; set; }
 
 
 
