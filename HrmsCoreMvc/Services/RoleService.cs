@@ -17,6 +17,7 @@ namespace HrmsCoreMvc.Services
             db.SaveChanges();
         }
 
+
         public void DeleteRole(int id)
         {
             var role = db.role.Find(id);
@@ -39,9 +40,11 @@ namespace HrmsCoreMvc.Services
             return db.role.ToList();
         }
 
+
         public Role GetRoleById(int id)
         {
           return db.role.Find(id);
         }
+
     }
 }

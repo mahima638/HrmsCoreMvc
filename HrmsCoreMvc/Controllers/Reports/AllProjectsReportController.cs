@@ -11,7 +11,7 @@ namespace HrmsCoreMvc.Controllers.Reports
         {
             this.ap = ap;
         }
-
+        [HttpGet]
         public async Task<IActionResult> GetAllProjecrsReports(string? priorityType, string? statusType, string? sortType)
         {
             var allprojects = await ap.fetchAllProjects();
