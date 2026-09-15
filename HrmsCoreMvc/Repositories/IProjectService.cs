@@ -3,10 +3,10 @@ namespace HrmsCoreMvc.Repositories
 {
     public interface IProjectService
     {
-        public List<AllProjects> GetAllProjects();
-        public string AddProject(AllProjects project);
-        public string UpdateProject(AllProjects project);
-        public string DeleteProject(int projectId);
-        public List<AllProjects> SearchProjects(string searchproject);
+        public Task<List<AllProjects>> GetAllProjects();
+        public Task<string> AddProject(AllProjects project);
+        public Task<string> UpdateProject(AllProjects project);
+        public Task<string> DeleteProject(int projectId);
+        public Task<List<AllProjects>> SearchProjects(string searchproject);
     }
 }

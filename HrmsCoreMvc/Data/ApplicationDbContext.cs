@@ -24,7 +24,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<MasterLeaveType> MasterLeaveTypes { get; set; }
-
         public DbSet<Departments> department { get; set; }
         public DbSet<Designation> designation { get; set; }
         public DbSet<User> user { get; set; }
@@ -53,14 +52,14 @@ namespace HrmsCoreMvc.Data
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.Tasks)
+                .WithMany(p => p.tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<TaskMembers>()
-                .HasOne(tm => tm.Task)
-                .WithMany(t => t.TaskMembers)
-                .HasForeignKey(tm => tm.TaskId)
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskBoard)
+                .WithMany(tb => tb.Tasks)
+                .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TaskMembers>()
@@ -69,16 +68,10 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(tm => tm.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<TaskBoard>()
-                .HasOne(tb => tb.Task)
-                .WithMany(t => t.TaskBoards)
-                .HasForeignKey(tb => tb.TaskId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<TaskBoard>()
-                .HasOne(tb => tb.Project)
-                .WithMany(p => p.TaskBoards)
-                .HasForeignKey(tb => tb.ProjectId)
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskBoard)
+                .WithMany(tb => tb.Tasks)
+                .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Event>()
@@ -176,21 +169,17 @@ namespace HrmsCoreMvc.Data
 
             });
 
-            modelBuilder.Entity<Task>(t =>
-            {
-                t.HasOne(x => x.projects)
-                .WithMany(x => x.tasks)
-                .HasForeignKey(x => x.ProjectId)
+            modelBuilder.Entity<TaskMembers>()
+                .HasOne(tm => tm.Task)
+                .WithMany(t => t.TaskMembers)
+                .HasForeignKey(tm => tm.TaskId)
                 .OnDelete(DeleteBehavior.Restrict);
-            });
 
-            modelBuilder.Entity<TaskBoard>(tb =>
-            {
-                tb.HasOne(x => x.tasks)
-                .WithMany()
-                .HasForeignKey(x => x.TaskId)
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.tasks)
+                .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
-            });
 
         }
         
