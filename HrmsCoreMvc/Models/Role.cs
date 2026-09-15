@@ -8,6 +8,10 @@
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
+
+        public List<User> users { get; set; }
+
         public DateTime ModifiedAt { get; set; } = DateTime.Now;
+
     }
 }
