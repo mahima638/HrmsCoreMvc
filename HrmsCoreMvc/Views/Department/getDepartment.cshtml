@@ -1,0 +1,38 @@
+﻿@model List<HrmsCoreMvc.Models.Departments>
+
+<h2>All Departments</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Department Id</th>
+            <th>Department Name</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Created By</th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.DepartmentId</td>
+                <td>@role.Name</td>
+                <td>@role.Status</td>
+                <td>@role.CreatedAt</td>
+                <td>@role.CreatedBy</td>
+
+
+                <td>
+                    <a asp-action="EditDepartment" asp-route-id="@role.DepartmentId" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteDepartment" asp-route-id="@role.DepartmentId" class="btn btn-danger">Delete</a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

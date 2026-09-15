@@ -6,12 +6,10 @@
         public string RoleName { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string CreatedBy { get; set; }
-        public string ModifiedBy { get; set; }
+        public string CreatedBy { get; set; } = "Admin";
+        public string ? ModifiedBy { get; set; }
+        public DateTime ? ModifiedAt { get; set; } 
 
-        public List<User> users { get; set; }
-
-        public DateTime ModifiedAt { get; set; } = DateTime.Now;
-
+        public List<User> user { get; set; }
     }
 }

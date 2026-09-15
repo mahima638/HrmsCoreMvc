@@ -1,6 +1,7 @@
 using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Repositories.Reports;
+using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,10 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRoleService, RoleService>();
+
+
+builder.Services.AddScoped<IDepartmentService, Departmentservice>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 

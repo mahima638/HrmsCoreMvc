@@ -15,13 +15,13 @@ namespace HrmsCoreMvc.Models
 
         public string status { get; set; }
 
-        public DateTime CreatedAt  { get; set; }
+        public DateTime CreatedAt  { get; set; } = DateTime.Now;
 
-        public string  CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = "Admin";
 
-        public string ModifiedBy { get; set; }
+        public string ?  ModifiedBy { get; set; }
 
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ?  ModifiedAt { get; set; }
 
         public int DepartmentId { get; set; }
 

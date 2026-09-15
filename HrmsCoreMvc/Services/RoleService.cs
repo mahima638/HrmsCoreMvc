@@ -17,9 +17,34 @@ namespace HrmsCoreMvc.Services
             db.SaveChanges();
         }
 
+
+        public void DeleteRole(int id)
+        {
+            var role = db.role.Find(id);
+            if (role != null) { 
+            
+              db.Remove(role);
+                db.SaveChanges();
+
+            }
+        }
+
+        public void EditRole(Role role)
+        {
+            db.Update(role);
+            db.SaveChanges();
+        }
+
         public List<Role> GetAllRole()
         {
             return db.role.ToList();
         }
+
+
+        public Role GetRoleById(int id)
+        {
+          return db.role.Find(id);
+        }
+
     }
 }
