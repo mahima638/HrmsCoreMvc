@@ -44,7 +44,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<EarningType> EarningType { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
-
+        public object Departments { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
