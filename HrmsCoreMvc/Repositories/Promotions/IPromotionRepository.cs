@@ -6,5 +6,6 @@ namespace HrmsCoreMvc.Repositories.Promotions
     {
         List<Promotion> GetPromotions();
         Promotion GetPromotionById(int promotionId);
+        void Add(Promotion promotions);
     }
 }

@@ -23,5 +23,12 @@ namespace HrmsCoreMvc.Services.Promotions
         {
             return _context.promotion.Include(p => p.User).FirstOrDefault( p => p.PId == promotionId);
         }
+
+
+        public void Add(Promotion promotions)
+        { 
+            _context.promotion.Add(promotions);
+            _context.SaveChanges();
+        }
     }
 }
