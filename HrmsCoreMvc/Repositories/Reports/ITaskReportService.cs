@@ -13,5 +13,7 @@ namespace HrmsCoreMvc.Repositories.Reports
         Task<int> fetchOverdueTasks();
 
         Task<IEnumerable<TaskReportViewModel>> fetchTasks();
+
+        Task<IEnumerable<TaskReportViewModel>> sortTasks(string? priority, string? status, string? sortType);
     }
 }
