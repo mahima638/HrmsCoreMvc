@@ -123,6 +123,35 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // relations...............
+
+            modelBuilder.Entity<Promotion>(p =>
+            {
+                p.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Resignation>(r =>
+            {
+                r.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(x => x.Departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Termination>(t =>
+            {
+                t.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
         }
     }
 }

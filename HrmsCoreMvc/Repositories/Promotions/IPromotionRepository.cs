@@ -1,4 +1,5 @@
-﻿using HrmsCoreMvc.Models.Promotion;
+﻿using HrmsCoreMvc.Models;
+using HrmsCoreMvc.Models.Promotion;
 
 namespace HrmsCoreMvc.Repositories.Promotions
 {
@@ -6,6 +7,9 @@ namespace HrmsCoreMvc.Repositories.Promotions
     {
         List<Promotion> GetPromotions();
         Promotion GetPromotionById(int promotionId);
-        void Add(Promotion promotions);
+        string AddPromotion(Promotion promotions);
+        string UpdatePromotion(Promotion promotions);
+        string DeletePromotion(int promotionId);
+        List<User> GetUsers();
     }
 }
