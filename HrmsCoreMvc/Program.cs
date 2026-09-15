@@ -1,4 +1,5 @@
 using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
 
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
+
+builder.Services.AddScoped<IDailyReportService, DailyReportService>();
+
+builder.Services.AddScoped<ITaskReportService, TaskReportService>();
+
+builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
+
+builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

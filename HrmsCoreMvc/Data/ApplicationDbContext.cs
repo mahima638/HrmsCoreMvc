@@ -156,6 +156,13 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.Role)
+                .WithMany(x => x.users)
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }
