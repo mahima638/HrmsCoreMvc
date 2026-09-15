@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HrmsCoreMvc.Models.Projects
 {
@@ -6,13 +7,27 @@ namespace HrmsCoreMvc.Models.Projects
     {
         [Key]
         public int TaskBoardId { get; set; }
+
+        [ForeignKey("Task")]
+        public int TaskId { get; set; }
+
+        public Task tasks { get; set; }
+
+
+        [ForeignKey("Project")]
+        public int ProjectId { get; set; }
+
+        [Required(ErrorMessage = "Task Name is required.")]
+        public AllProjects? Project { get; set; }
+        public string? TaskName { get; set; }
+
         [Required(ErrorMessage = "Task Board Name is required.")]
         public string? TaskBoardName { get; set; }
+
         public decimal Percentage { get; set; }
         [Required(ErrorMessage = "Due Date is required.")]
         public DateTime Duedate { get; set; }
-        public int ProjectId { get; set; }
-        public AllProjects? Project { get; set; }
+
         public List<Task>? Tasks { get; set; } 
     }
 }
