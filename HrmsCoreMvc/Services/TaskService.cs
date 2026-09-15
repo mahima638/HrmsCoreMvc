@@ -14,42 +14,42 @@ namespace HrmsCoreMvc.Services
             db = cs;
         }
 
-        public List<Task> GetAllTasks()
+        public async Task<List<Task>> GetAllTasks()
         {
-            return db.tasks.ToList();
+            return await db.tasks.ToListAsync();
         }
 
-        public string AddTask(Task task)
+        public async Task<string> AddTask(Task task)
         {
             db.tasks.Add(task);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return "Task added successfully";
         }
 
-        public string UpdateTask(Task task)
+        public async Task<string> UpdateTask(Task task)
         {
             db.tasks.Update(task);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return "Task updated successfully";
         }
 
-        public string DeleteTask(int taskId)
+        public async Task<string> DeleteTask(int taskId)
         {
-            var task = db.tasks.Find(taskId);
+            var task = await db.tasks.FindAsync(taskId);
             if (task != null)
             {
                 db.tasks.Remove(task);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return "Task deleted successfully";
             }
             return "Task not found";
         }
 
-        public List<Task> SearchTasks(string searchtask)
+        public async Task<List<Task>> SearchTasks(string searchtask)
         {
-            return db.tasks
+            return await db.tasks
                 .Where(t => t.Title.Contains(searchtask) || t.Description.Contains(searchtask))
-                .ToList();
+                .ToListAsync();
         }
     }
 }

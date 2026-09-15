@@ -15,42 +15,42 @@ namespace HrmsCoreMvc.Services
              db = cs;
         }
 
-        public List<AllProjects> GetAllProjects()
+        public async Task<List<AllProjects>> GetAllProjects()
         {
-            return db.AllProjects.ToList();
+            return await db.AllProjects.ToListAsync();
         }
 
-        public string AddProject(AllProjects project)
+        public async Task<string> AddProject(AllProjects project)
         {
             db.AllProjects.Add(project);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return "Project added successfully";
         }
 
-        public string UpdateProject(AllProjects project)
+        public async Task<string> UpdateProject(AllProjects project)
         {
             db.AllProjects.Update(project);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return "Project updated successfully";
         }
 
-        public string DeleteProject(int projectId)
+        public async Task<string> DeleteProject(int projectId)
         {
-            var project = db.AllProjects.Find(projectId);
+            var project = await db.AllProjects.FindAsync(projectId);
             if (project != null)
             {
                 db.AllProjects.Remove(project);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return "Project deleted successfully";
             }
             return "Project not found";
         }
 
-        public List<AllProjects> SearchProjects(string searchproject)
+        public async Task<List<AllProjects>> SearchProjects(string searchproject)
         {
-            return db.AllProjects
+            return await db.AllProjects
                 .Where(p => p.ProjectName.Contains(searchproject) || p.ClientName.Contains(searchproject))
-                .ToList();
+                .ToListAsync();
         }
     }
 }

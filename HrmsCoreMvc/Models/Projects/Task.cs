@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HrmsCoreMvc.Models.Projects
 {
@@ -7,23 +6,25 @@ namespace HrmsCoreMvc.Models.Projects
     {
         [Key]
         public int TaskId { get; set; }
-        [ForeignKey("Project")]
-        public int ProjectId { get; set; }
+
         [Required(ErrorMessage = "Task Title is required.")]
-        public AllProjects? Project { get; set; }
         public string? Title { get; set; }
+
         [Required(ErrorMessage = "Task Description is required.")]
         public string? Description { get; set; }
+
         [Required(ErrorMessage = "Task Status is required.")]
         public string? Status { get; set; }
+
         [Required(ErrorMessage = "Task Priority is required.")]
         public string? Priority { get; set; }
+
         [Required(ErrorMessage = "File Path is required.")]
         public string? FilePath { get; set; }
-
-        public AllProjects projects { get; set; }
-
-        public TaskBoard taskboard { get; set; }
-
+        public int TaskBoardId { get; set; }
+        public TaskBoard? TaskBoard { get; set; }
+        public int ProjectId { get; set; }
+        public AllProjects? Project { get; set; }
+        public List<TaskMembers>? TaskMembers { get; set; } 
     }
 }
