@@ -10,21 +10,21 @@ namespace HrmsCoreMvc.Models
 
         public string Name { get; set; }
 
-        public int NoOfEmployee { get; set; }
+        public int? NoOfEmployee { get; set; } = 0;
 
         public string Status { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = "Admin";
 
-        public string ModifiedBy { get; set; }
+        public string ? ModifiedBy { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ? ModifiedAt { get; set; }
 
-        public List<Designation>designation { get; set; }
+        public List<Designation> ? designation { get; set; }
 
-        public List<User> user { get; set; }
+        public List<User> ?  user { get; set; }
 
     }
 }
