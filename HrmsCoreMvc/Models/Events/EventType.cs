@@ -10,5 +10,6 @@ namespace HrmsCoreMvc.Models.Events
         public string? EventTypeName { get; set; }
         [Required(ErrorMessage = "Event Type Color is required.")]
         public string? EventTypeColor { get; set; }
+        public List<Event>? Events { get; set; }
     }
 }

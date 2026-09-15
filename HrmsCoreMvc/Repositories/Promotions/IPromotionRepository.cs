@@ -5,11 +5,12 @@ namespace HrmsCoreMvc.Repositories.Promotions
 {
     public interface IPromotionRepository
     {
-        List<Promotion> GetPromotions();
-        Promotion GetPromotionById(int promotionId);
-        string AddPromotion(Promotion promotions);
-        string UpdatePromotion(Promotion promotions);
-        string DeletePromotion(int promotionId);
-        List<User> GetUsers();
+            Task<List<Promotion>> GetPromotionsAsync();
+            Task<Promotion?> GetPromotionByIdAsync(int promotionId);
+            Task<string> AddPromotionAsync(Promotion promotions);
+            Task<string> UpdatePromotionAsync(Promotion promotions);
+            Task<string> DeletePromotionAsync(int promotionId);
+            Task<List<User>> GetUsersAsync();       
+
     }
 }

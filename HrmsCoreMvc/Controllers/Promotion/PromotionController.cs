@@ -13,67 +13,134 @@ namespace HrmsCoreMvc.Controllers
             _promotionRepository = promotionRepository;
         }
 
-        // my index page...
-        public IActionResult Index()
+        // Promotion List
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            var promotions = _promotionRepository.GetPromotions();
+            var promotions = await _promotionRepository.GetPromotionsAsync();
+
             return View(promotions);
         }
 
+        // Open Add Promotion Page
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> AddPromotion()
         {
-            var promotion = _promotionRepository.GetPromotionById(id);
+            var users = await _promotionRepository.GetUsersAsync();
+
+            ViewBag.Users = users.Select(u => new
+            {
+                UserId = u.UserId,
+                FullName = u.FirstName + " " + u.LastName
+            }).ToList();
+
+            return View();
+        }
+
+        // Save New Promotion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPromotion(Promotion promotions)
+        {
+            if (ModelState.IsValid)
+            {
+                await _promotionRepository.AddPromotionAsync(promotions);
+
+                TempData["SuccessMessage"] =
+                    "Promotion added successfully.";
+
+                return RedirectToAction("Index");
+            }
+
+            // Reload users if validation fails
+            var users = await _promotionRepository.GetUsersAsync();
+
+            ViewBag.Users = users.Select(u => new
+            {
+                UserId = u.UserId,
+                FullName = u.FirstName + " " + u.LastName
+            }).ToList();
+
+            return View(promotions);
+        }
+
+        // Open Edit Page
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var promotion =
+                await _promotionRepository.GetPromotionByIdAsync(id);
+
             if (promotion == null)
             {
                 return NotFound();
             }
+
+            var users = await _promotionRepository.GetUsersAsync();
+
+            ViewBag.Users = users.Select(u => new
+            {
+                UserId = u.UserId,
+                FullName = u.FirstName + " " + u.LastName
+            }).ToList();
+
             return View(promotion);
         }
 
+        // Update Promotion
         [HttpPost]
-        public IActionResult Create(Promotion promotions)
-        {
-
-            if(ModelState.IsValid)
-            {
-                _promotionRepository.AddPromotion(promotions);
-                TempData["SuccessMessage"] = "Promotion added successfully.";
-                return RedirectToAction("Index");
-            }
-            return View(promotions);
-        }
-
-        [HttpPost]
-        public IActionResult Update(Promotion promotions)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdatePromotion(Promotion promotions)
         {
             if (ModelState.IsValid)
             {
-                _promotionRepository.UpdatePromotion(promotions);
-                TempData["SuccessMessage"] = "Promotion Updated Successfully.";
+                await _promotionRepository.UpdatePromotionAsync(promotions);
+
+                TempData["SuccessMessage"] =
+                    "Promotion updated successfully.";
+
                 return RedirectToAction("Index");
             }
-            return View(promotions);
+
+            var users = await _promotionRepository.GetUsersAsync();
+
+            ViewBag.Users = users.Select(u => new
+            {
+                UserId = u.UserId,
+                FullName = u.FirstName + " " + u.LastName
+            }).ToList();
+
+            return View("Edit", promotions);
         }
+
+        // Delete Promotion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeletePromotion(int id)
         {
-            var promotion=_promotionRepository.GetPromotionById(id);
-            if(promotion == null)
+            var promotion =
+                await _promotionRepository.GetPromotionByIdAsync(id);
+
+            if (promotion == null)
             {
                 return NotFound();
             }
-            
-            _promotionRepository.DeletePromotion(id);
-            return RedirectToAction("Index");
 
+            await _promotionRepository.DeletePromotionAsync(id);
+
+            TempData["SuccessMessage"] =
+                "Promotion deleted successfully.";
+
+            return RedirectToAction("Index");
         }
-        public IActionResult GetUser()
+
+        // Get Users as JSON
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
         {
-            var users=_promotionRepository.GetUsers();
+            var users = await _promotionRepository.GetUsersAsync();
+
             return Json(users);
         }
-
     }
 }

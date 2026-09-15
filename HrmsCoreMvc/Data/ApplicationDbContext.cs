@@ -1,6 +1,7 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Models.Projects;
+
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
@@ -23,7 +24,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<MasterLeaveType> MasterLeaveTypes { get; set; }
-
         public DbSet<Departments> department { get; set; }
         public DbSet<Designation> designation { get; set; }
         public DbSet<User> user { get; set; }
@@ -37,9 +37,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
         public DbSet<Resignation> resignations { get; set; }        
-
-
-
         
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
@@ -47,20 +44,49 @@ namespace HrmsCoreMvc.Data
         public DbSet<EarningType> EarningType { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
-
+        public object Departments { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // Configure the relationships and constraints for TaskMembers
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.tasks)
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskBoard)
+                .WithMany(tb => tb.Tasks)
+                .HasForeignKey(t => t.TaskBoardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TaskMembers>()
+                .HasOne(tm => tm.User)
+                .WithMany()
+                .HasForeignKey(tm => tm.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskBoard)
+                .WithMany(tb => tb.Tasks)
+                .HasForeignKey(t => t.TaskBoardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.EventType)
+                .WithMany(et => et.Events)
+                .HasForeignKey(e => e.EventTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Deduction>()
                 .HasOne(x => x.Designation)
                 .WithMany()
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<Deduction>()
                 .HasOne(x => x.Department)
                 .WithMany()
@@ -73,28 +99,28 @@ namespace HrmsCoreMvc.Data
                .HasForeignKey(x => x.DesignationId)
                .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<Earning>()
                 .HasOne(x => x.Department)
                 .WithMany()
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-           
+
             modelBuilder.Entity<User>()
                 .HasOne(x => x.designation)
                 .WithMany()
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<User>()
                 .HasOne(x => x.departments)
                 .WithMany()
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             modelBuilder.Entity<LeaveBalance>()
                 .HasOne(x => x.MasterLeaveType)
                 .WithMany()
@@ -124,7 +150,7 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // relations...............
+
 
             modelBuilder.Entity<Promotion>(p =>
             {
@@ -152,7 +178,44 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
+            {
+                pu.ProjectsProjectId, pu.UsersUserId
+            });
+
+            modelBuilder.Entity<ProjectsUser>(pu =>
+            {
+                pu.HasOne(x => x.AllProjects)
+                .WithMany(x => x.projectusers)
+                .HasForeignKey(x => x.ProjectsProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                pu.HasOne(x => x.user)
+                .WithMany(x => x.projectsUser)
+                .HasForeignKey(x => x.UsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            modelBuilder.Entity<TaskMembers>()
+                .HasOne(tm => tm.Task)
+                .WithMany(t => t.TaskMembers)
+                .HasForeignKey(tm => tm.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.tasks)
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
+        
+        
+
+
+        
     }
 }
+
 

@@ -21,7 +21,7 @@ namespace HrmsCoreMvc.Controllers.Reports
             var totalLeaves = await lr.fetchTotalLeaves();
             var fetchleaves = await lr.fetchLeaves();
 
-            if (!string.IsNullOrEmpty(datefilter) && !string.IsNullOrEmpty(statusfilter) && !string.IsNullOrEmpty(sortType))
+            if (!string.IsNullOrEmpty(datefilter) || !string.IsNullOrEmpty(statusfilter) || !string.IsNullOrEmpty(sortType))
             {
                 fetchleaves = await lr.sortLeaves(datefilter, statusfilter, sortType);
             }
