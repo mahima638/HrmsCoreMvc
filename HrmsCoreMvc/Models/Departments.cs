@@ -26,5 +26,6 @@ namespace HrmsCoreMvc.Models
 
         public List<User> ?  user { get; set; }
 
+
     }
 }
