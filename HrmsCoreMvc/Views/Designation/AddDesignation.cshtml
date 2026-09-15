@@ -1,0 +1,38 @@
+﻿@model Designation
+
+
+<html>
+<body>
+    <form asp-action="AddDesignation" method="post">
+
+        Designation Name : <input type="Text" asp-for="Name" />
+
+
+
+        <select asp-for="DepartmentId" class="form-control">
+            @foreach (var dept in ViewBag.Departments)
+                        
+             {
+                                        
+                <option value="@dept.DepartmentId">@dept.Name
+                </option>
+            }
+            
+
+
+        </select>
+        <select asp-for="status" class="form-control">
+
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+
+        <input type="submit" value="Add Designation" class="btn btn-primary" />
+
+
+    </form>
+
+
+</body>
+
+</html>

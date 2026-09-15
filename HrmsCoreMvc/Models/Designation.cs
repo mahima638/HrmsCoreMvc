@@ -11,7 +11,7 @@ namespace HrmsCoreMvc.Models
 
         public string Name { get; set; }
 
-        public  int NoOfEmployee { get; set; }
+        public int NoOfEmployee { get; set; } = 0;
 
         public string status { get; set; }
 
@@ -23,11 +23,11 @@ namespace HrmsCoreMvc.Models
 
         public DateTime ?  ModifiedAt { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int  ? DepartmentId { get; set; }
 
         [ForeignKey("DepartmentId")]
-        public Departments departments { get; set; }
-        public List<User> user { get; set; }
+        public Departments ?  departments { get; set; }
+        public List<User> ?  user { get; set; }
 
 
     }
