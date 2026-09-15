@@ -22,9 +22,11 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
+
+builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
