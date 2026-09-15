@@ -4,6 +4,7 @@ using HrmsCoreMvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915163216_AddTrainingType")]
+    partial class AddTrainingType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,8 +25,6 @@ namespace HrmsCoreMvc.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< Updated upstream
-=======
             modelBuilder.Entity("HrmsCoreMvc.Models.AddAdminDocName", b =>
                 {
                     b.Property<int>("DocId")
@@ -847,7 +848,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("resignations");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -863,11 +863,10 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
@@ -882,8 +881,6 @@ namespace HrmsCoreMvc.Migrations
 
                     b.ToTable("role");
                 });
-<<<<<<< Updated upstream
-=======
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
                 {
@@ -1545,7 +1542,6 @@ namespace HrmsCoreMvc.Migrations
                 {
                     b.Navigation("projectsUser");
                 });
->>>>>>> Stashed changes
 #pragma warning restore 612, 618
         }
     }

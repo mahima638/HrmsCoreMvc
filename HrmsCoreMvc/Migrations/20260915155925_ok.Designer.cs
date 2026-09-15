@@ -4,6 +4,7 @@ using HrmsCoreMvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915155925_ok")]
+    partial class ok
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,67 +24,6 @@ namespace HrmsCoreMvc.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-<<<<<<< Updated upstream
-=======
-            modelBuilder.Entity("HrmsCoreMvc.Models.AddAdminDocName", b =>
-                {
-                    b.Property<int>("DocId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocId"));
-
-                    b.Property<string>("AddDocName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DocId");
-
-                    b.ToTable("AddAdminDocName");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.AddEmpDocName", b =>
-                {
-                    b.Property<int>("DocId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocId"));
-
-                    b.Property<string>("AddDocName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DocId");
-
-                    b.ToTable("AddEmpDocName");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.AdminDocuments", b =>
-                {
-                    b.Property<int>("ADocId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ADocId"));
-
-                    b.Property<string>("DocFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DocName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ADocId");
-
-                    b.ToTable("AdminDocuments");
-                });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
@@ -847,7 +789,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("resignations");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -863,11 +804,10 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
@@ -882,8 +822,6 @@ namespace HrmsCoreMvc.Migrations
 
                     b.ToTable("role");
                 });
-<<<<<<< Updated upstream
-=======
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
                 {
@@ -915,131 +853,6 @@ namespace HrmsCoreMvc.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("terminations");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Trainer", b =>
-                {
-                    b.Property<int>("TrainerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainerId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Phone")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TrainerId");
-
-                    b.ToTable("Trainer");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Training", b =>
-                {
-                    b.Property<int>("TrainingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingId"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TrainingCost")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("TrainingTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TrainingId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.HasIndex("TrainingTypeId");
-
-                    b.ToTable("Training");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.TrainingType", b =>
-                {
-                    b.Property<int>("TrainingTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingTypeId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TrainingTypeId");
-
-                    b.ToTable("TraningType");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -1437,25 +1250,6 @@ namespace HrmsCoreMvc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HrmsCoreMvc.Models.Training", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.TrainingType", "TrainingType")
-                        .WithMany()
-                        .HasForeignKey("TrainingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trainer");
-
-                    b.Navigation("TrainingType");
-                });
-
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
@@ -1545,7 +1339,6 @@ namespace HrmsCoreMvc.Migrations
                 {
                     b.Navigation("projectsUser");
                 });
->>>>>>> Stashed changes
 #pragma warning restore 612, 618
         }
     }
