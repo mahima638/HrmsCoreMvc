@@ -1,4 +1,7 @@
 using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Repositories.Promotions;
+using HrmsCoreMvc.Repositories.Reports;
+using HrmsCoreMvc.Services.Promotions;
 using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
@@ -8,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
-
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
 
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
