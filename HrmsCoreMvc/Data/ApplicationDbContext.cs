@@ -44,7 +44,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<EarningType> EarningType { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
-        public object Departments { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -203,12 +202,13 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(tm => tm.TaskId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.Project)
-                .WithMany(p => p.tasks)
-                .HasForeignKey(t => t.ProjectId)
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.Role)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            });
         }
         
         

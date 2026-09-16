@@ -53,7 +53,7 @@ namespace HrmsCoreMvc.Models
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
 
-    
+        public Role Role { get; set; }
 
      
         public int DepartmentId { get; set; }

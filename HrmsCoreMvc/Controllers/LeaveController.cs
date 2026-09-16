@@ -11,20 +11,53 @@ namespace HrmsCoreMvc.Controllers
         {
             this.serive = service;
         }
-        public IActionResult Leave()
+        public async Task<IActionResult> Leave()
         {
-            ViewBag.LeaveTypeList = serive.FetchLeaveTypeList();
+            ViewBag.LeaveTypeList = await serive.FetchLeaveTypeList();
             return View(new MasterLeaveType());
-            serive.FetchDept();
-            serive.FetchLeaveType();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Leave(MasterLeaveType m)
+        public async Task<IActionResult> Leave(MasterLeaveType m)
         {
-            serive.AddLeaveType(m);
+            await serive.AddLeaveType(m);
             return RedirectToAction("Leave");
+        }
+
+        public async Task<IActionResult> DeleteLeaveType(int leaveTypeId)
+        {
+            await  serive.DeleteLeaveType(leaveTypeId);
+            return RedirectToAction("Leave");
+        }
+
+        public async Task<IActionResult> AddLeaveDeptWise()
+        {
+            ViewBag.DepartmentList = await serive.FetchDept();
+            ViewBag.LeaveTypeList = await serive.FetchLeaveType();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddLeaveDeptWise(DepartmentLeaves model)
+        {
+            if (!ModelState.IsValid)
+            {
+               
+                ViewBag.DepartmentList = await serive.FetchDept();
+                ViewBag.LeaveTypeList = await serive.FetchLeaveType();
+
+                return View(model);
+            }
+
+            await serive.AllocateLeaveDeptwise(
+                model.DepartmentId,
+                model.LeaveTypeId,
+                model.LeavesCount);
+
+            TempData["Success"] = "Leave allocated successfully";
+
+            return RedirectToAction("AddLeaveDeptWise");
         }
     }
 }
