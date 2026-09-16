@@ -1,8 +1,10 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using HrmsCoreMvc.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
+
 
 namespace HrmsCoreMvc.Controllers
 {
@@ -10,9 +12,12 @@ namespace HrmsCoreMvc.Controllers
 
     public class RoleController : Controller
     {
-        private readonly RoleService rs;
+
+        private readonly IRoleService rs;
         
+
         public RoleController(RoleService rs)
+
 
         {
             this.rs = rs;
@@ -39,6 +44,7 @@ namespace HrmsCoreMvc.Controllers
             rs.AddRole(role);
             return RedirectToAction("getRoles");
         }
+
 
         public IActionResult DeleteRole(int id) { 
         
@@ -68,6 +74,7 @@ namespace HrmsCoreMvc.Controllers
             }
         
         }
+
 
     }
 }

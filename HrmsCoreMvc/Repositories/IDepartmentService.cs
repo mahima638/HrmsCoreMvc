@@ -15,5 +15,7 @@ namespace HrmsCoreMvc.Repositories
       
         public Departments GetDepartmentById(int id);
 
+       
+
     }
 }

@@ -1,4 +1,7 @@
 using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Repositories.Promotions;
+using HrmsCoreMvc.Repositories.Reports;
+using HrmsCoreMvc.Services.Promotions;
 using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
@@ -8,14 +11,26 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
-
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
+
+builder.Services.AddScoped<IDailyReportService, DailyReportService>();
+
+builder.Services.AddScoped<ITaskReportService, TaskReportService>();
+
+builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
+
+builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRoleService, RoleService>();
+
+
 builder.Services.AddScoped<IDepartmentService, Departmentservice>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 

@@ -16,19 +16,19 @@
     </thead>
 
     <tbody>
-        @foreach (var role in Model)
+        @foreach (var dept in Model)
         {
             <tr>
-                <td>@role.DepartmentId</td>
-                <td>@role.Name</td>
-                <td>@role.Status</td>
-                <td>@role.CreatedAt</td>
-                <td>@role.CreatedBy</td>
+                <td>@dept.DepartmentId</td>
+                <td>@dept.Name</td>
+                <td>@dept.Status</td>
+                <td>@dept.CreatedAt</td>
+                <td>@dept.CreatedBy</td>
 
 
                 <td>
-                    <a asp-action="EditDepartment" asp-route-id="@role.DepartmentId" class="btn btn-warning">Edit</a>
-                    <a asp-action="DeleteDepartment" asp-route-id="@role.DepartmentId" class="btn btn-danger">Delete</a>
+                    <a asp-action="EditDepartment" asp-route-id="@dept.DepartmentId" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteDepartment" asp-route-id="@dept.DepartmentId" class="btn btn-danger">Delete</a>
 
 
                 </td>

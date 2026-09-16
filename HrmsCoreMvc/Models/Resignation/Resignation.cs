@@ -13,7 +13,7 @@ namespace HrmsCoreMvc.Models.Resignation
         [Required]
         [Display(Name = "Resigning Employee")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
 
 
@@ -21,12 +21,12 @@ namespace HrmsCoreMvc.Models.Resignation
         [Required]
         [Display(Name = "Department")]
         public int DepartmentId { get; set; }
-        public Departments Departments { get; set; }
+        public Departments? Departments { get; set; }
 
 
 
         [Required]
-        public string Reason{ get; set; }
+        public string?  Reason{ get; set; }
 
 
         [Required]

@@ -44,7 +44,6 @@ namespace HrmsCoreMvc.Data
         public DbSet<EarningType> EarningType { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
-        public object Departments { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -150,6 +149,34 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
+
+
+            modelBuilder.Entity<Promotion>(p =>
+            {
+                p.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Resignation>(r =>
+            {
+                r.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(x => x.Departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Termination>(t =>
+            {
+                t.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
             modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
             {
                 pu.ProjectsProjectId, pu.UsersUserId
@@ -175,12 +202,13 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(tm => tm.TaskId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.Project)
-                .WithMany(p => p.tasks)
-                .HasForeignKey(t => t.ProjectId)
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.Role)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            });
         }
         
         

@@ -9,9 +9,10 @@
             <th>Role Name</th>
             <th>Status</th>
             <th>Created At</th>
-            <th>Created By</th>
+
            
             <th>Action</th>
+
         </tr>
     </thead>
 
@@ -26,12 +27,14 @@
                 <td>@role.CreatedBy</td>
 
 
+
                 <td>
 <a asp-action="EditRole" asp-route-id="@role.RoleId" class="btn btn-warning">Edit</a>
 <a asp-action="DeleteRole" asp-route-id="@role.RoleId" class="btn btn-danger">Delete</a>
 
 
                </td>
+
             </tr>
         }
     </tbody>
