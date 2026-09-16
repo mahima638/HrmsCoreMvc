@@ -10,6 +10,6 @@
         public string ? ModifiedBy { get; set; }
         public DateTime ? ModifiedAt { get; set; } 
 
-        public List<User> user { get; set; }
+        public List<User> ? user { get; set; }
     }
 }

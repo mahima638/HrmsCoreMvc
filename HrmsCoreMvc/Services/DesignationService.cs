@@ -1,7 +1,7 @@
 ﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
-
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
 {
     public class DesignationService : IDesignationService
@@ -11,33 +11,33 @@ namespace HrmsCoreMvc.Services
         {
             this.db = db;
         }
-        public void AddDesignation(Designation designation)
+        public async Task AddDesignation(Designation designation)
         {
             db.Add(designation);
-            db.SaveChanges();
+            await  db.SaveChangesAsync();
         }
 
-        public List<Designation> GetAllDesignations()
+        public async Task<List<Designation>> GetAllDesignations()
         {
-            return db.designation.ToList();
+            return await  db.designation.ToListAsync();
         }
 
-        public Designation getDesignationById(int id)
+        public async Task<Designation> getDesignationById(int id)
         {
-            return db.designation.Find(id);
+            return await db.designation.FindAsync(id);
         }
 
-        public void RemoveDesignation(int id)
+        public async Task RemoveDesignation(int id)
         {
             var des = db.designation.Find(id);
             db.designation.Remove(des);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void UpdateDesignation(Designation designation)
+        public async Task UpdateDesignation(Designation designation)
         {
-            db.Update(designation); 
-            db.SaveChanges();
+            db.Update(designation);
+            await db.SaveChangesAsync();
         }
     }
 }

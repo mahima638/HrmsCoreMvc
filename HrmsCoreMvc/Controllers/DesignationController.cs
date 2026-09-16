@@ -15,53 +15,53 @@ namespace HrmsCoreMvc.Controllers
             
         }
 
-        public IActionResult AddDesignation() {
-            var departments = deptService.GetDepartments();
+        public async Task<IActionResult> AddDesignation() {
+            var departments = await deptService.GetDepartments();
             ViewBag.Departments = departments;
             return View();
 
         }
         [HttpPost]
-        public IActionResult AddDesignation(Designation des) {
+        public async Task<IActionResult> AddDesignation(Designation des) {
 
           
             if (!ModelState.IsValid) {
-                var departments = deptService.GetDepartments();
+                var departments = await deptService.GetDepartments();
                 ViewBag.Departments = departments;
                 return View(des);
             
             }
-            desService.AddDesignation(des);
+            await desService.AddDesignation(des);
             
             return RedirectToAction("GetDesignation");
            
         
         }
        
-        public IActionResult DeleteDesignation(int id) {
-            desService.RemoveDesignation(id);
+        public async Task<IActionResult> DeleteDesignation(int id) {
+            await desService.RemoveDesignation(id);
             return RedirectToAction("GetDesignation");
         
         }
-        public IActionResult GetDesignation() {
-            var des = desService.GetAllDesignations();
+        public async Task<IActionResult> GetDesignation() {
+            var des = await desService.GetAllDesignations();
             return View(des);
         
         }
 
-        public IActionResult EditDesignation(int id) { 
+        public async Task<IActionResult> EditDesignation(int id) { 
         
-        var des = desService.getDesignationById(id);
+        var des = await desService.getDesignationById(id);
             return View(des);
           
         }
         [HttpPost]
-        public IActionResult EditDesignation(Designation des)
+        public async Task<IActionResult> EditDesignation(Designation des)
         {
             if (!ModelState.IsValid) {
                 return View();
             }
-            desService.UpdateDesignation(des);
+            await desService.UpdateDesignation(des);
             return RedirectToAction("GetDesignation");
         }
         
