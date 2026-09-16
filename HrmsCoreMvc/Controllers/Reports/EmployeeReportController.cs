@@ -31,7 +31,7 @@ namespace HrmsCoreMvc.Controllers.Reports
             ViewBag.EmpCount = empCount;
             ViewBag.ActiveEmpCount = activeEmpCount;
             ViewBag.ActiveRoles = activeRoles;
-            return View(empsLists);
+            return View("~/Views/Reports/EmployeeRepView.cshtml", empsLists);
         }
     }
 }
