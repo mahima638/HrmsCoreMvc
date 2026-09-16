@@ -10,7 +10,8 @@ namespace HrmsCoreMvc.Repositories.Promotions
             Task<string> AddPromotionAsync(Promotion promotions);
             Task<string> UpdatePromotionAsync(Promotion promotions);
             Task<string> DeletePromotionAsync(int promotionId);
-            Task<List<User>> GetUsersAsync();       
+            Task<List<User>> GetUsersAsync();
+            Task<List<Designation>> GetDesignationsAsync();
 
     }
 }

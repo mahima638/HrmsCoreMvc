@@ -27,16 +27,12 @@
 
                         @Html.AntiForgeryToken()
 
-                        <!-- Hidden Promotion ID -->
                         <input type="hidden" asp-for="PId" />
 
-                        <!-- Validation Summary -->
                         <div asp-validation-summary="ModelOnly"
                              class="text-danger mb-3">
                         </div>
 
-
-                        <!-- Employee -->
                         <div class="mb-3">
 
                             <label asp-for="UserId"
@@ -60,8 +56,6 @@
 
                         </div>
 
-
-                        <!-- Designation From -->
                         <div class="mb-3">
 
                             <label asp-for="DesignationFrom"
@@ -85,8 +79,6 @@
 
                         </div>
 
-
-                        <!-- Designation To -->
                         <div class="mb-3">
 
                             <label asp-for="DesignationTo"
@@ -110,8 +102,6 @@
 
                         </div>
 
-
-                        <!-- Promotion Date -->
                         <div class="mb-3">
 
                             <label asp-for="Date"
@@ -129,26 +119,19 @@
 
                         </div>
 
-
-                        <!-- Buttons -->
                         <div class="d-flex gap-2">
 
                             <button type="submit"
                                     class="btn btn-success">
-
                                 <i class="bi bi-check-circle"></i>
-                                Update Promotion
-
+                                Update
                             </button>
-
 
                             <a asp-controller="Promotion"
                                asp-action="Index"
                                class="btn btn-secondary">
-
                                 <i class="bi bi-arrow-left"></i>
                                 Back
-
                             </a>
 
                         </div>
@@ -165,11 +148,8 @@
 
 </div>
 
-
 @section Scripts {
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
 }
