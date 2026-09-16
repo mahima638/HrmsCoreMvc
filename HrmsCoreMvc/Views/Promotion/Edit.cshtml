@@ -4,7 +4,7 @@
 @model Promotion
 
 @{
-    ViewData["Title"] = "Add Promotion";
+    ViewData["Title"] = "Edit Promotion";
 }
 
 <div class="container mt-5">
@@ -16,16 +16,18 @@
             <div class="card shadow">
 
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Add Promotion</h4>
+                    <h4 class="mb-0">Edit Promotion</h4>
                 </div>
 
                 <div class="card-body">
 
-                    <form asp-action="AddPromotion"
-                          asp-controller="Promotion"
+                    <form asp-controller="Promotion"
+                          asp-action="UpdatePromotion"
                           method="post">
 
                         @Html.AntiForgeryToken()
+
+                        <input type="hidden" asp-for="PId" />
 
                         <div asp-validation-summary="ModelOnly"
                              class="text-danger mb-3">
@@ -40,7 +42,7 @@
 
                             <select asp-for="UserId"
                                     class="form-select"
-                                    asp-items="@(new SelectList(ViewBag.Users, "UserId", "FullName"))">
+                                    asp-items="@(new SelectList(ViewBag.Users, "UserId", "FullName", Model.UserId))">
 
                                 <option value="">
                                     -- Select Employee --
@@ -63,7 +65,7 @@
 
                             <select asp-for="DesignationFrom"
                                     class="form-select"
-                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name"))">
+                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name", Model.DesignationFrom))">
 
                                 <option value="">
                                     -- Select Previous Designation --
@@ -86,7 +88,7 @@
 
                             <select asp-for="DesignationTo"
                                     class="form-select"
-                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name"))">
+                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name", Model.DesignationTo))">
 
                                 <option value="">
                                     -- Select New Designation --
@@ -120,20 +122,16 @@
                         <div class="d-flex gap-2">
 
                             <button type="submit"
-                                    class="btn btn-danger">
-
+                                    class="btn btn-success">
                                 <i class="bi bi-check-circle"></i>
-                                Save 
-
+                                Update
                             </button>
 
-                            <a asp-action="Index"
-                               asp-controller="Promotion"
+                            <a asp-controller="Promotion"
+                               asp-action="Index"
                                class="btn btn-secondary">
-
                                 <i class="bi bi-arrow-left"></i>
                                 Back
-
                             </a>
 
                         </div>
