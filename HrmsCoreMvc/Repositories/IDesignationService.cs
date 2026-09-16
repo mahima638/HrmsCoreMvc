@@ -4,15 +4,15 @@ namespace HrmsCoreMvc.Repositories
 {
     public interface IDesignationService
     {
-        public void AddDesignation(Designation designation);
+        public Task AddDesignation(Designation designation);
 
-        public void RemoveDesignation(int id);
+        public Task RemoveDesignation(int id);
 
-        public void UpdateDesignation(Designation designation);
+        public Task UpdateDesignation(Designation designation);
 
-        public Designation getDesignationById(int id);
+        public Task<Designation>getDesignationById(int id);
 
-        public List<Designation> GetAllDesignations();
+        public Task<List<Designation>> GetAllDesignations();
 
        
 

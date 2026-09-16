@@ -5,17 +5,17 @@ namespace HrmsCoreMvc.Repositories
     public interface IRoleService
     {
 
-        public void AddRole(Role role);
+        public Task AddRole(Role role);
 
-        public List<Role> GetAllRole();
+        public Task<List<Role>> GetAllRole();
 
 
 
-        public void DeleteRole(int id);
+        public Task DeleteRole(int id);
 
-        public void EditRole(Role role);
+        public Task EditRole(Role role);
 
-        public Role GetRoleById(int id);
+        public Task<Role> GetRoleById(int id);
 
     }
 }
