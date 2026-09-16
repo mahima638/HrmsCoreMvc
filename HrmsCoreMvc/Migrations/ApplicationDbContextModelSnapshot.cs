@@ -126,7 +126,7 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -219,9 +219,6 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<int>("LeavesCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("MasterLeaveTypeLeaveTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -230,7 +227,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("MasterLeaveTypeLeaveTypeId");
+                    b.HasIndex("LeaveTypeId");
 
                     b.ToTable("DepartmentLeaves");
                 });
@@ -961,8 +958,7 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("designation")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("departments");
                 });
@@ -988,7 +984,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
                         .WithMany("DepartmentLeaves")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId")
+                        .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HrmsCoreMvc.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FixDepartmentLeavesForeignKey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -139,7 +139,7 @@ namespace HrmsCoreMvc.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,7 +182,6 @@ namespace HrmsCoreMvc.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     LeaveTypeId = table.Column<int>(type: "int", nullable: false),
-                    MasterLeaveTypeLeaveTypeId = table.Column<int>(type: "int", nullable: false),
                     LeavesCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -190,8 +189,8 @@ namespace HrmsCoreMvc.Migrations
                 {
                     table.PrimaryKey("PK_DepartmentLeaves", x => x.DepartmentLeavesId);
                     table.ForeignKey(
-                        name: "FK_DepartmentLeaves_MasterLeaveTypes_MasterLeaveTypeLeaveTypeId",
-                        column: x => x.MasterLeaveTypeLeaveTypeId,
+                        name: "FK_DepartmentLeaves_MasterLeaveTypes_LeaveTypeId",
+                        column: x => x.LeaveTypeId,
                         principalTable: "MasterLeaveTypes",
                         principalColumn: "LeaveTypeId",
                         onDelete: ReferentialAction.Cascade);
@@ -692,9 +691,9 @@ namespace HrmsCoreMvc.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DepartmentLeaves_MasterLeaveTypeLeaveTypeId",
+                name: "IX_DepartmentLeaves_LeaveTypeId",
                 table: "DepartmentLeaves",
-                column: "MasterLeaveTypeLeaveTypeId");
+                column: "LeaveTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_designation_DepartmentId",
