@@ -1,7 +1,5 @@
 ﻿using HrmsCoreMvc.Models;
-<<<<<<< Updated upstream
 using Microsoft.EntityFrameworkCore;
-=======
 using HrmsCoreMvc.Models.Attendance;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Models.Leave;
@@ -13,19 +11,26 @@ using HrmsCoreMvc.Models.Termination;
 using Microsoft.EntityFrameworkCore;
 using HrmsCoreMvc.Models;
 using Task = HrmsCoreMvc.Models.Projects.Task;
->>>>>>> Stashed changes
+using HrmsCoreMvc.Models.Events;
+using HrmsCoreMvc.Models.Projects;
+
+using HrmsCoreMvc.Models.Promotion;
+using HrmsCoreMvc.Models.Resignation;
+using HrmsCoreMvc.Models.Termination;
+using Microsoft.EntityFrameworkCore;
+using Task = HrmsCoreMvc.Models.Projects.Task;
+using HrmsCoreMvc.Models.PayRoll;
+using HrmsCoreMvc.Models.Leave;
+using HrmsCoreMvc.Models.Attendance;
 
 namespace HrmsCoreMvc.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
         public DbSet<Role> role { get; set; }
-<<<<<<< Updated upstream
-=======
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<DepartmentLeaves> DepartmentLeaves { get; set; }
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
@@ -105,8 +110,138 @@ namespace HrmsCoreMvc.Data
                 .WithMany()
                 .HasForeignKey(x => x.DesignationId)
                 .OnDelete(DeleteBehavior.NoAction);
->>>>>>> Stashed changes
 
 
+            modelBuilder.Entity<Deduction>()
+                .HasOne(x => x.Department)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Earning>()
+               .HasOne(x => x.Designation)
+               .WithMany()
+               .HasForeignKey(x => x.DesignationId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Earning>()
+                .HasOne(x => x.Department)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.designation)
+                .WithMany()
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<LeaveBalance>()
+                .HasOne(x => x.MasterLeaveType)
+                .WithMany()
+                .HasForeignKey(x => x.LeaveTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.departments)
+                 .WithMany(x => x.user)
+                 .HasForeignKey(x => x.DepartmentId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+
+                u.HasOne(x => x.designation)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.DesignationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+            modelBuilder.Entity<Designation>(d =>
+            {
+                d.HasOne(x => x.departments)
+                .WithMany(x => x.designation)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+
+
+            modelBuilder.Entity<Promotion>(p =>
+            {
+                p.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Resignation>(r =>
+            {
+                r.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(x => x.Departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Termination>(t =>
+            {
+                t.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
+            {
+                pu.ProjectsProjectId, pu.UsersUserId
+            });
+
+            modelBuilder.Entity<ProjectsUser>(pu =>
+            {
+                pu.HasOne(x => x.AllProjects)
+                .WithMany(x => x.projectusers)
+                .HasForeignKey(x => x.ProjectsProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                pu.HasOne(x => x.user)
+                .WithMany(x => x.projectsUser)
+                .HasForeignKey(x => x.UsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            modelBuilder.Entity<TaskMembers>()
+                .HasOne(tm => tm.Task)
+                .WithMany(t => t.TaskMembers)
+                .HasForeignKey(tm => tm.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(x => x.Role)
+                .WithMany(x => x.user)
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+        }
+        
+        
+
+
+        
     }
 }
+
+
