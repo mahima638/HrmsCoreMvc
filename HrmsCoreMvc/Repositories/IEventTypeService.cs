@@ -3,10 +3,10 @@ namespace HrmsCoreMvc.Repositories
 {
     public interface IEventTypeService
     {
-        public List<EventType> GetAllEventTypes();
-        public string AddEventType(EventType eventType);
-        public string UpdateEventType(EventType eventType);
-        public string DeleteEventType(int eventTypeId);
-        public List<EventType> SearchEventTypes(string searcheventtype);
+        public Task<List<EventType>> GetAllEventTypes();
+        public Task<string> AddEventType(EventType eventType);
+        public Task<string> UpdateEventType(EventType eventType);
+        public Task<string> DeleteEventType(int eventTypeId);
+        public Task<List<EventType>> SearchEventTypes(string searcheventtype);
     }
 }
