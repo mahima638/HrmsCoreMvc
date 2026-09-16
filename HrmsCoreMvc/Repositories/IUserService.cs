@@ -4,14 +4,14 @@ namespace HrmsCoreMvc.Repositories
 {
     public interface IUserService
     {
-        public void AddEmployee(User us);
+        public Task AddEmployee(User us);
 
-        public void DeleteEmployee(int id);
+        public Task DeleteEmployee(int id);
 
-        public List<User> getEmployees();
+        public Task<List<User>> getEmployees();
 
-        public void UpdateEmployee(User us);
+        public Task UpdateEmployee(User us);
 
-        public User GetEmpById(int id);
+        public Task<User>GetEmpById(int id);
     }
 }

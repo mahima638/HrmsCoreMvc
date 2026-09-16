@@ -6,19 +6,17 @@
 <form asp-action="RoleView" method="post">
 
 RoleName: <input type="Text" asp-for="RoleName"/>
+        <span asp-validation-for="RoleName"></span>
 
         <select asp-for="Status" class="form-control">
            
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
             </select>
-
+        <span asp-validation-for="Status"></span>
         <input type="submit"  value="Add Role" class="btn btn-primary" />
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 </form>
 
 
