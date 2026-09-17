@@ -13,32 +13,400 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HrmsCoreMvc</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Promotion" asp-action="Index">Promotions</a>
-                        </li>
-                          <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Resignation" asp-action="Index">Resignations</a>
-                        </li>
+   
+    <div class="d-flex">
 
-                    </ul>
-                </div>
+        <!-- SIDEBAR -->
+        <div class="bg-dark text-white"
+             style="width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            z-index: 1000;">
+
+            <!-- LOGO -->
+            <div class="p-4 text-center border-bottom border-secondary">
+                <h3 class="fw-bold mb-0">Pulse360</h3>
+            </div>
+
+            <!-- MENU -->
+            <div class="p-3">
+
+                <ul class="nav nav-pills flex-column">
+
+                    <!-- Dashboard -->
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-white px-3 py-2"
+                           asp-controller="Admin"
+                           asp-action="Dashboard">
+                            Dashboard
+                        </a>
+                    </li>
+
+
+                    <!-- Employees -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#employeeMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="employeeMenu">
+
+                            <span>Employees</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="employeeMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Department"
+                                   asp-action="getDepartment">
+                                    Add Department
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Role"
+                                   asp-action="getRoles">
+                                    Add Role
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Designation"
+                                   asp-action="GetDesignation">
+                                    Add Designation
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="User"
+                                   asp-action="GetEmployee">
+                                    Employee List
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="User"
+                                   asp-action="EmployeeGrid">
+                                    Employee Grid
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="User"
+                                   asp-action="EmployeeDetails">
+                                    Employee Details
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Events -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#eventMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="eventMenu">
+
+                            <span>Events</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="eventMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Add Event
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Add Master Event
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Event List
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Training -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#trainingMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="trainingMenu">
+
+                            <span>Training</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="trainingMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Traning"
+                                   asp-action="TrainingIndex">
+                                    Training List
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Traning"
+                                   asp-action="TrainerIndex">
+                                    Trainers
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Traning"
+                                   asp-action="TrainingTypeIndex">
+                                    Training Type
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Master Documents -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#masterDocumentsMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="masterDocumentsMenu">
+
+                            <span>Master Documents</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="masterDocumentsMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Add Master Documents
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Master Document List
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Documents -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#documentsMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="documentsMenu">
+
+                            <span>Documents</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="documentsMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Upload Documents
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Generate Letter
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Projects -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#projectsMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="projectsMenu">
+
+                            <span>Projects</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="projectsMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Project
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Task
+                                </a>
+
+                                <a class="nav-link text-white-50 py-2">
+                                    Task Board
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Reports -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#reportsMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="reportsMenu">
+
+                            <span>Reports</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="reportsMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">Employee Report</a>
+                                <a class="nav-link text-white-50 py-2">Attendance Report</a>
+                                <a class="nav-link text-white-50 py-2">Leave Report</a>
+                                <a class="nav-link text-white-50 py-2">Payslip Report</a>
+                                <a class="nav-link text-white-50 py-2">Project Report</a>
+                                <a class="nav-link text-white-50 py-2">Task Report</a>
+                                <a class="nav-link text-white-50 py-2">Daily Report</a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Attendance -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#attendanceMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="attendanceMenu">
+
+                            <span>Attendance</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="attendanceMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">Leaves</a>
+                                <a class="nav-link text-white-50 py-2">Attendance (Admin)</a>
+                                <a class="nav-link text-white-50 py-2">Timesheet</a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Payroll -->
+                    <li class="nav-item mb-1">
+
+                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                           data-bs-toggle="collapse"
+                           href="#payrollMenu"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="payrollMenu">
+
+                            <span>Payroll</span>
+                            <span>⌄</span>
+
+                        </a>
+
+                        <div class="collapse" id="payrollMenu">
+
+                            <div class="ps-3 pt-1">
+
+                                <a class="nav-link text-white-50 py-2">Add Employee Salary</a>
+                                <a class="nav-link text-white-50 py-2">Master Payroll</a>
+                                <a class="nav-link text-white-50 py-2">Employee Salary List</a>
+                                <a class="nav-link text-white-50 py-2">Generate Payslip Monthly</a>
+                                <a class="nav-link text-white-50 py-2">Transaction History</a>
+
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                    <!-- Normal Links -->
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-white px-3 py-2">Promotion</a>
+                    </li>
+
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-white px-3 py-2">Resignation</a>
+                    </li>
+
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-white px-3 py-2">Termination</a>
+                    </li>
+
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-white px-3 py-2">Tickets</a>
+                    </li>
+
+                    <li class="nav-item mt-2">
+                        <a class="nav-link text-danger px-3 py-2">Logout</a>
+                    </li>
+
+                </ul>
+
             </div>
 
         </div>
