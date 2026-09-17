@@ -26,12 +26,16 @@ namespace HrmsCoreMvc.Controllers
             await LoadDropdowns();
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddResignation(Resignation resignation)
         {
-            if(ModelState.IsValid)
+            var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
+            if (user != null)
+            {
+                resignation.DepartmentId = user.DepartmentId;
+            }
+            if (ModelState.IsValid)
             {
                 await _resignationRepository.AddResignationAsync(resignation);
                 TempData["SuccessMessage"] = "Resignation added successfully.";
@@ -42,27 +46,29 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Edit(int id)
         {
-            var resignation = await _resignationRepository.GetResignationByIdAsync(id);
-            if(resignation==null)
+            var resignation =await _resignationRepository.GetResignationByIdAsync(id);
+            if (resignation == null)
             {
                 return NotFound();
             }
             await LoadDropdowns();
             return View(resignation);
-
         }
 
         [HttpPost]
-        
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateResignation(Resignation resignation)
         {
+            var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
+            if (user != null)
+            {
+                resignation.DepartmentId = user.DepartmentId;
+            }
             if (ModelState.IsValid)
             {
                 await _resignationRepository.UpdateResignationAsync(resignation);
-
                 TempData["SuccessMessage"] = "Resignation updated successfully.";
                 return RedirectToAction("Index");
             }
