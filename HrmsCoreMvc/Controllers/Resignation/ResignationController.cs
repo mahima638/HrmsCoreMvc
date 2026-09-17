@@ -33,7 +33,7 @@ namespace HrmsCoreMvc.Controllers
             var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
             if (user != null)
             {
-                resignation.DepartmentId = user.DepartmentId;
+                resignation.DepartmentId = user.DepartmentId ?? 0;
             }
             if (ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace HrmsCoreMvc.Controllers
             var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
             if (user != null)
             {
-                resignation.DepartmentId = user.DepartmentId;
+                resignation.DepartmentId = user.DepartmentId ?? 0;
             }
             if (ModelState.IsValid)
             {

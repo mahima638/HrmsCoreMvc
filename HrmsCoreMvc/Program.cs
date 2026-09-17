@@ -10,12 +10,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using HrmsCoreMvc.Exceptions;
+using HrmsCoreMvc.Repositories.Resignations;
+using HrmsCoreMvc.Services.Resignations;
+using HrmsCoreMvc.Repositories.Terminations;
+using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
 
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
@@ -31,18 +37,18 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 
 
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    })
-    .AddCookie()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    });
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//    })
+//    .AddCookie()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    });
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();
