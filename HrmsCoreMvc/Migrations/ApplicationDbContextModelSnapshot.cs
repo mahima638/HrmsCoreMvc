@@ -279,9 +279,6 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<int>("LeavesCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("MasterLeaveTypeLeaveTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -290,7 +287,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("MasterLeaveTypeLeaveTypeId");
+                    b.HasIndex("LeaveTypeId");
 
                     b.ToTable("DepartmentLeaves");
                 });
@@ -1179,7 +1176,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
                         .WithMany("DepartmentLeaves")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId")
+                        .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

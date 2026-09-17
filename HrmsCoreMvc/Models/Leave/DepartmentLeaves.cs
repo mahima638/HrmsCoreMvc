@@ -9,14 +9,17 @@ namespace HrmsCoreMvc.Models.Leave
         public int DepartmentLeavesId { get; set; }
 
         [ForeignKey("DepartmentId")]
+        [Required(ErrorMessage = "Department is required")]
         public int DepartmentId { get; set; }
-        public Departments Department { get; set; }
+        public Departments? Department { get; set; }
 
-        [ForeignKey("LeaveTypeId")]
+        [ForeignKey("MasterLeaveType")]
+        [Required(ErrorMessage = "Leave Type is required")] 
         public int LeaveTypeId { get; set; }
-        public MasterLeaveType MasterLeaveType { get; set; }
+        public MasterLeaveType? MasterLeaveType { get; set; }
       
+        [Required(ErrorMessage = "Leave Count is required")]    
         public int LeavesCount { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }
