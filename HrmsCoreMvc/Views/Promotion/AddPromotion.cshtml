@@ -1,4 +1,6 @@
 ﻿@using HrmsCoreMvc.Models.Promotion
+@using Microsoft.AspNetCore.Mvc.Rendering
+
 @model Promotion
 
 @{
@@ -19,7 +21,7 @@
 
                 <div class="card-body">
 
-                    <form asp-action="Create"
+                    <form asp-action="AddPromotion"
                           asp-controller="Promotion"
                           method="post">
 
@@ -29,7 +31,6 @@
                              class="text-danger mb-3">
                         </div>
 
-                        <!-- Employee -->
                         <div class="mb-3">
 
                             <label asp-for="UserId"
@@ -53,7 +54,6 @@
 
                         </div>
 
-                        <!-- Designation From -->
                         <div class="mb-3">
 
                             <label asp-for="DesignationFrom"
@@ -61,9 +61,15 @@
                                 Designation From
                             </label>
 
-                            <input asp-for="DesignationFrom"
-                                   class="form-control"
-                                   placeholder="Enter previous designation" />
+                            <select asp-for="DesignationFrom"
+                                    class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name"))">
+
+                                <option value="">
+                                    -- Select Previous Designation --
+                                </option>
+
+                            </select>
 
                             <span asp-validation-for="DesignationFrom"
                                   class="text-danger">
@@ -71,7 +77,6 @@
 
                         </div>
 
-                        <!-- Designation To -->
                         <div class="mb-3">
 
                             <label asp-for="DesignationTo"
@@ -79,9 +84,15 @@
                                 Designation To
                             </label>
 
-                            <input asp-for="DesignationTo"
-                                   class="form-control"
-                                   placeholder="Enter new designation" />
+                            <select asp-for="DesignationTo"
+                                    class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Designations, "Name", "Name"))">
+
+                                <option value="">
+                                    -- Select New Designation --
+                                </option>
+
+                            </select>
 
                             <span asp-validation-for="DesignationTo"
                                   class="text-danger">
@@ -89,7 +100,6 @@
 
                         </div>
 
-                        <!-- Promotion Date -->
                         <div class="mb-3">
 
                             <label asp-for="Date"
@@ -107,18 +117,18 @@
 
                         </div>
 
-                        <!-- Buttons -->
                         <div class="d-flex gap-2">
 
                             <button type="submit"
-                                    class="btn btn-success">
+                                    class="btn btn-danger">
 
                                 <i class="bi bi-check-circle"></i>
-                                Save Promotion
+                                Save 
 
                             </button>
 
                             <a asp-action="Index"
+                               asp-controller="Promotion"
                                class="btn btn-secondary">
 
                                 <i class="bi bi-arrow-left"></i>

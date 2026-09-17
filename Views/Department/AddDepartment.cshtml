@@ -1,0 +1,24 @@
+﻿@model Departments
+
+
+<html>
+<body>
+    <form asp-action="AddDepartment" method="post">
+
+        Department Name : <input type="Text" asp-for="Name" />
+
+        <select asp-for="Status" class="form-control">
+
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+
+        <input type="submit" value="Add Department" class="btn btn-primary" />
+
+
+    </form>
+
+
+</body>
+
+</html>

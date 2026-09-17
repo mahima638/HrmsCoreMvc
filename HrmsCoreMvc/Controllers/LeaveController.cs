@@ -13,9 +13,8 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> Leave()
         {
-            ViewBag.LeaveTypeList = await serive.FetchLeaveTypeList();
-            return View(new MasterLeaveType());
-            return View();
+            var LeaveTypeList = await serive.FetchLeaveTypeList();
+            return View(LeaveTypeList);
         }
 
         [HttpPost]
@@ -31,6 +30,7 @@ namespace HrmsCoreMvc.Controllers
             return RedirectToAction("Leave");
         }
 
+        [HttpGet]
         public async Task<IActionResult> AddLeaveDeptWise()
         {
             ViewBag.DepartmentList = await serive.FetchDept();
@@ -41,15 +41,12 @@ namespace HrmsCoreMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLeaveDeptWise(DepartmentLeaves model)
         {
+            
             if (!ModelState.IsValid)
             {
-               
-                ViewBag.DepartmentList = await serive.FetchDept();
-                ViewBag.LeaveTypeList = await serive.FetchLeaveType();
-
                 return View(model);
             }
-
+           
             await serive.AllocateLeaveDeptwise(
                 model.DepartmentId,
                 model.LeaveTypeId,
@@ -59,5 +56,26 @@ namespace HrmsCoreMvc.Controllers
 
             return RedirectToAction("AddLeaveDeptWise");
         }
+
+        public async Task<IActionResult> ShowDeptLeaveDetails()
+        {
+            var data = await serive.FetchDeptLeaveDetails();
+            return View(data);
+        }
+
+        public async Task<IActionResult> LeaveSettings()
+        {
+            var leaveTypeList = await serive.FetchLeaveTypeList();
+            return View(leaveTypeList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateLeaveTypeStatus(int leaveTypeId, bool isActive)
+        {
+            await serive.UpdateLeaveTypeStatus(leaveTypeId, isActive);
+
+            return Json(new { success = true });
+        }
+
     }
 }
