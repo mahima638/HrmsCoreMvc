@@ -43,6 +43,7 @@ namespace HrmsCoreMvc.Services.Reports
                 WorkingHours= a.WorkingHours,
                 ProductionHours= a.ProductionHours,
                 OvertimeHours= a.OvertimeHours,
+                Status = a.Status
             }).ToListAsync();
         }
 
@@ -91,7 +92,7 @@ namespace HrmsCoreMvc.Services.Reports
             }
             else if (datefilter == "Last Year")
             {
-                query = query.Where(a => a.Date >= DateTime.Now.AddYears(-1));
+                query = query.Where(a => a.Date.Year == DateTime.Now.Year - 1);
             }
             else if (datefilter == "Yesterday")
             {
@@ -113,6 +114,7 @@ namespace HrmsCoreMvc.Services.Reports
                 WorkingHours = av.WorkingHours,
                 ProductionHours = av.ProductionHours,
                 OvertimeHours = av.OvertimeHours,
+                Status = av.Status
             }).ToListAsync();
 
             return result;
@@ -121,7 +123,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<AttendanceChartDto> GetAttendanceChartDataAsync()
         {
-            var groupData = await db.Attendance.Where(x => x.Date != null && x.Status != null)
+            var groupData = await db.Attendance.Where(x => x.Date !=null && x.Status != null)
                 .GroupBy(x => new
                 {
                     Year = x.Date.Year,
@@ -142,7 +144,7 @@ namespace HrmsCoreMvc.Services.Reports
             var result = new AttendanceChartDto();
             foreach(var item in groupData)
             {
-                result.Labels.Add($"{item.Year}-{item.Month:2D}");
+                result.Labels.Add($"{item.Year}-{item.Month:D2}");
                 result.AbsentData.Add(item.Absent);
                 result.PresentData.Add(item.Present);
 
