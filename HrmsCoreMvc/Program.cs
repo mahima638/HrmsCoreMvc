@@ -3,12 +3,11 @@ using HrmsCoreMvc.Repositories.Promotions;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services.Promotions;
 using HrmsCoreMvc.Repositories;
-using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+//using Microsoft.AspNetCore.Authentication.Cookies;
+//using Microsoft.AspNetCore.Authentication.Google;
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
@@ -79,6 +78,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
