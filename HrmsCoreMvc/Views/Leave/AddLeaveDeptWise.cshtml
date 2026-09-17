@@ -1,0 +1,48 @@
+﻿@model HrmsCoreMvc.Models.Leave.DepartmentLeaves
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+
+<div class="card">
+    <div class="card-body">
+
+        <form  asp-action="AddLeaveDeptWise" method="post">
+
+            <div class="mb-3">
+                <label>Select Department</label>
+                <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.DepartmentList">
+                    <option value="">Select Department</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Select Leave Type</label>
+                <select asp-for="LeaveTypeId" class="form-select" asp-items="ViewBag.LeaveTypeList">
+                    <option value="">Select Leave Type</option>
+                </select>
+                <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>No Of Leave Allocated</label>
+                <input asp-for="LeavesCount" type="number" class="form-control" placeholder="Enter Leave Days" />
+                <span asp-validation-for="LeavesCount" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Allocate Leave</button>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

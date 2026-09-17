@@ -2,6 +2,7 @@
 using HrmsCoreMvc.Models.Leave;
 using HrmsCoreMvc.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
 {
     public class LeaveService : ILeaveService
@@ -13,43 +14,98 @@ namespace HrmsCoreMvc.Services
             this.db = db;
         }
 
-        public void AddLeaveType(MasterLeaveType m)
+        public async Task AddLeaveType(MasterLeaveType m)
         {
             m.Status = "Active";
             db.MasterLeaveTypes.Add(m);
-            db.SaveChanges();   
+            await db.SaveChangesAsync();   
 
         }
 
-        public void AllocateLeaveDeptwise(int deptId, int leaveTypeId, int noOfLeaves)
+        public async Task AllocateLeaveDeptwise(int deptId, int leaveTypeId, int noOfLeaves)
         {
-            
+            var deptLeave=await db.DepartmentLeaves
+                .FirstOrDefaultAsync(x=>
+                x.DepartmentId== deptId && x.LeaveTypeId == leaveTypeId);
+
+            if (deptLeave == null)
+            {
+                var newDeptLeave = new DepartmentLeaves
+                {
+                    DepartmentId = deptId,
+                    LeaveTypeId = leaveTypeId,
+                    LeavesCount = noOfLeaves,
+                    Status = "Active"
+                };
+                db.DepartmentLeaves.Add(newDeptLeave);
+
+            }
+            else 
+            {
+                deptLeave.LeavesCount = noOfLeaves;
+                deptLeave.Status = "Active";
+                db.DepartmentLeaves.Update(deptLeave);
+            }
+            await db.SaveChangesAsync();
+
+
         }
 
-        public List<SelectListItem> FetchDept()
+        public async Task DeleteLeaveType(int leaveTypeId)
         {
-            return db.department
+            var del = db.MasterLeaveTypes.Find(leaveTypeId);
+            if (del != null)
+            {
+                db.MasterLeaveTypes.Remove(del);
+               await db.SaveChangesAsync();
+            }  
+        }
+
+        public async Task<List<SelectListItem>> FetchDept()
+        {
+            return await db.department
                  .Where(x => x.Status == "Active")
                  .Select(x => new SelectListItem
                  {
                      Text = x.Name,
                      Value = x.DepartmentId.ToString()
-                 }).ToList();
+                 }).ToListAsync();
         }
 
-        public List<SelectListItem> FetchLeaveType()
+        public async Task<List<DepartmentLeaves>> FetchDeptLeaveDetails()
         {
-            return db.MasterLeaveTypes
+            return await db.DepartmentLeaves
+                .Include(x => x.Department)
+                .Include(x => x.MasterLeaveType)
+                .ToListAsync();   
+        }
+
+        public async Task<List<SelectListItem>> FetchLeaveType()
+        {
+            return await db.MasterLeaveTypes
+                .Where(x => x.Status == "Active")
                  .Select(x => new SelectListItem
                  {
                      Text = x.LeaveType,
                      Value = x.LeaveTypeId.ToString()
-                 }).ToList();
+                 }).ToListAsync();
         }
 
-        public List<MasterLeaveType> FetchLeaveTypeList()
+        public async Task<List<MasterLeaveType>> FetchLeaveTypeList()
         {
-            return db.MasterLeaveTypes.ToList();
+            return await db.MasterLeaveTypes.ToListAsync();
+        }
+
+  
+
+        public async Task UpdateLeaveTypeStatus(int leaveTypeId, bool isActive)
+        {
+            var id= await db.MasterLeaveTypes.FindAsync(leaveTypeId);
+            if (id!= null)
+            { 
+                id.Status = isActive ? "Active" : "Inactive";
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

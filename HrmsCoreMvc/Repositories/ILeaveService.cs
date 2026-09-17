@@ -5,13 +5,20 @@ namespace HrmsCoreMvc.Repositories
 {
     public interface ILeaveService
     {
-        public void AddLeaveType(MasterLeaveType m);
-        List<SelectListItem> FetchDept();
+        public Task AddLeaveType(MasterLeaveType m);
+        Task<List<SelectListItem>> FetchDept();
 
-        List<SelectListItem> FetchLeaveType();
+        Task<List<SelectListItem>> FetchLeaveType();
 
-        List<MasterLeaveType> FetchLeaveTypeList();
+        Task<List<MasterLeaveType>> FetchLeaveTypeList();
 
-        public void AllocateLeaveDeptwise(int deptId,int leaveTypeId,int noOfLeaves);
+        public Task AllocateLeaveDeptwise(int deptId,int leaveTypeId,int noOfLeaves);
+
+        public Task DeleteLeaveType(int leaveTypeId);
+
+        Task<List<DepartmentLeaves>> FetchDeptLeaveDetails();
+
+        public Task UpdateLeaveTypeStatus(int leaveTypeId, bool isActive);
+
     }
 }

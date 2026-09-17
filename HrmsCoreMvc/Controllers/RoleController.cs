@@ -1,8 +1,11 @@
 ﻿using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
+
 
 namespace HrmsCoreMvc.Controllers
 {
@@ -10,17 +13,20 @@ namespace HrmsCoreMvc.Controllers
 
     public class RoleController : Controller
     {
-        private readonly RoleService rs;
+
+        private readonly IRoleService rs;
         
-        public RoleController(RoleService rs)
+
+        public RoleController(IRoleService rs)
+
 
         {
             this.rs = rs;
         }
 
-        public IActionResult getRoles() {
+        public async Task<IActionResult> getRoles() {
 
-            var roles = rs.GetAllRole();
+            var roles = await  rs.GetAllRole();
             return View(roles);
 
         }
@@ -29,37 +35,39 @@ namespace HrmsCoreMvc.Controllers
             return View();
         }
 
+
         [HttpPost]
-        public IActionResult RoleView(Role role)
+        public async Task<IActionResult> RoleView(Role role)
         {
-           if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
-            rs.AddRole(role);
+            await rs.AddRole(role);
             return RedirectToAction("getRoles");
         }
 
-        public IActionResult DeleteRole(int id) { 
+
+        public async Task<IActionResult> DeleteRole(int id) { 
         
-           rs.DeleteRole(id);
+           await rs.DeleteRole(id);
 
             return RedirectToAction("getRoles");
 
         }
 
-        public IActionResult EditRole(int id) { 
-            var role = rs.GetRoleById(id);
+        public async Task<IActionResult> EditRole(int id) { 
+            var role = await rs.GetRoleById(id);
             return View(role);
 
         }
 
         [HttpPost]
-        public IActionResult EditRole(Role role) {
+        public async Task<IActionResult> EditRole(Role role) {
 
             if (ModelState.IsValid)
             {
-                rs.EditRole(role);
+                await rs.EditRole(role);
                 return RedirectToAction("getRoles");
 
             }
@@ -68,6 +76,7 @@ namespace HrmsCoreMvc.Controllers
             }
         
         }
+
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
-
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
 {
     public class RoleService : IRoleService
@@ -11,37 +11,40 @@ namespace HrmsCoreMvc.Services
         {
             this.db = db;
         }
-        public void AddRole(Role role)
+        public async Task AddRole(Role role)
         {
             db.Add(role);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteRole(int id)
+
+        public async Task DeleteRole(int id)
         {
-            var role = db.role.Find(id);
+            var role = await db.role.FindAsync(id);
             if (role != null) { 
             
               db.Remove(role);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
             }
         }
 
-        public void EditRole(Role role)
+        public async Task EditRole(Role role)
         {
             db.Update(role);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public List<Role> GetAllRole()
+        public async Task<List<Role>> GetAllRole()
         {
-            return db.role.ToList();
+            return await  db.role.ToListAsync();
         }
 
-        public Role GetRoleById(int id)
+
+        public async Task<Role?> GetRoleById(int id)
         {
-          return db.role.Find(id);
+          return await  db.role.FindAsync(id);
         }
+
     }
 }
