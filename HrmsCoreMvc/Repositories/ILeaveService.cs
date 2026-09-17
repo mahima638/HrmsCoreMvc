@@ -20,5 +20,7 @@ namespace HrmsCoreMvc.Repositories
 
         public Task UpdateLeaveTypeStatus(int leaveTypeId, bool isActive);
 
+        public Task ApplyLeave(LeaveRequest req);
+
     }
 }

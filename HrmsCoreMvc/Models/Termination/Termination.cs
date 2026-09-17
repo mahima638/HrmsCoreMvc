@@ -13,11 +13,11 @@ namespace HrmsCoreMvc.Models.Termination
         [Required]
         [Display(Name = "Employee Name")]
         public int UserId{ get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [Required]
         [Display(Name = "Termination Type")]
-        public string TerminationType { get; set; }
+        public string ? TerminationType { get; set; }
 
         [Required]
         [Display(Name = "Notice Date")]
@@ -29,7 +29,7 @@ namespace HrmsCoreMvc.Models.Termination
 
         [Required]
         [Display(Name = "Reason")]
-        public string Reason { get; set; }
+        public string ? Reason { get; set; }
     }
 }
 

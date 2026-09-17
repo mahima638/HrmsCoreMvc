@@ -77,5 +77,24 @@ namespace HrmsCoreMvc.Controllers
             return Json(new { success = true });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ApplyLeave()
+        {
+            ViewBag.leaveTypeList = await serive.FetchLeaveTypeList();
+            return View(new LeaveRequest());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyLeave(LeaveRequest req)
+        {
+            ViewBag.LeaveTypeList = await serive.FetchLeaveType();
+            if (ModelState.IsValid)
+            {
+                await serive.ApplyLeave(req);
+                TempData["Success"] = "Leave request submitted successfully";
+                return RedirectToAction("ApplyLeave");
+            }
+            return View(req);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
-
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
 {
     public class Departmentservice : IDepartmentService
@@ -11,36 +11,36 @@ namespace HrmsCoreMvc.Services
         {
             this.db = db;
         }
-        public void AddDepartment(Departments dept)
+        public async Task AddDepartment(Departments dept)
         {
             db.Add(dept);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteDepartment(int id)
+        public async Task DeleteDepartment(int id)
         {
             var dept = db.department.Find(id);
             if (dept != null)
             {
                 db.department.Remove(dept);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
         }
 
-        public Departments GetDepartmentById(int id)
+        public async Task<Departments> GetDepartmentById(int id)
         {
             return db.department.Find(id);
         }
 
-        public List<Departments> GetDepartments()
+        public async Task<List<Departments>> GetDepartments()
         {
-            return db.department.ToList();
+            return await db.department.ToListAsync();
         }
 
-        public void UpdateDepartment(Departments dept)
+        public async Task UpdateDepartment(Departments dept)
         { 
             db.Update(dept);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

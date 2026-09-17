@@ -107,5 +107,12 @@ namespace HrmsCoreMvc.Services
                 await db.SaveChangesAsync();
             }
         }
+
+        public async Task ApplyLeave(LeaveRequest req)
+        { 
+            db.LeaveRequests.Add(req);
+            await db.SaveChangesAsync();
+        }
+
     }
 }
