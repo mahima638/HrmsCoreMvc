@@ -7,9 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>@ViewData["Title"] - HrmsCoreMvc</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -685,17 +683,11 @@
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-light bg-white border-bottom shadow-sm">
-
                 <div class="container-fluid">
-
-                    <span class="navbar-brand mb-0 h1">
-                        HRMS
-                    </span>
+                    <span class="navbar-brand mb-0 h1">HRMS</span>
 
                     <div>
-                        <span class="me-3">
-                            Welcome, Admin
-                        </span>
+                        <span class="me-3">Welcome, Admin</span>
 
                         <a class="btn btn-outline-danger"
                            asp-controller="Account"
@@ -703,37 +695,25 @@
                             Logout
                         </a>
                     </div>
-
                 </div>
-
             </nav>
-
 
             <!-- PAGE CONTENT -->
             <main class="p-4">
-
                 @RenderBody()
-
             </main>
 
         </div>
-
     </div>
 
-
     <!-- SCRIPTS -->
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
+

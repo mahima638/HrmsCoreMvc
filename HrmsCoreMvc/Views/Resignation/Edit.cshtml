@@ -1,1 +1,100 @@
 ﻿
+@using HrmsCoreMvc.Models.Resignation
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Resignation
+
+@{
+    ViewData["Title"] = "Edit Resignation";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info">
+            <h4 class="mb-0">Edit Resignation</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="UpdateResignation"
+                  asp-controller="Resignation"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="RId" type="hidden" />
+                <input asp-for="DepartmentId" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="UserId" class="form-label">
+                        Employee
+                    </label>
+
+                    <select asp-for="UserId"
+                            class="form-select"
+                            asp-items="@(new SelectList(ViewBag.Users, "UserId", "FullName", Model.UserId))">
+                        <option value="">-- Select Employee --</option>
+                    </select>
+
+                    <span asp-validation-for="UserId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NoticeDate" class="form-label">
+                        Notice Date
+                    </label>
+
+                    <input asp-for="NoticeDate"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="NoticeDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ResignDate" class="form-label">
+                        Resignation Date
+                    </label>
+
+                    <input asp-for="ResignDate"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="ResignDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Reason" class="form-label">
+                        Reason
+                    </label>
+
+                    <input asp-for="Reason"
+                           type="text"
+                           class="form-control" />
+
+                    <span asp-validation-for="Reason"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-info">
+                    Update
+                </button>
+
+                <a asp-action="Index"
+                   asp-controller="Resignation"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

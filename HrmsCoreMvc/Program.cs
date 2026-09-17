@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
 
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
