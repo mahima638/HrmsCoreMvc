@@ -53,5 +53,10 @@ namespace HrmsCoreMvc.Services.Promotions
         {
             return await _context.user.ToListAsync();
         }
+
+        public async Task<List<Designation>> GetDesignationsAsync()
+        {
+            return await _context.designation.ToListAsync();
+        }
     }
 }

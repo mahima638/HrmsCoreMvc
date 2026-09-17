@@ -1,0 +1,65 @@
+﻿@using HrmsCoreMvc.Models.Resignation
+@model IEnumerable<Resignation>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css" />
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h3>Resignation List</h3>
+        <a asp-action="AddResignation" class="btn btn-primary">
+            Add Resignation
+        </a>
+    </div>
+
+    <table id="resignationTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Reason</th>
+                <th>Notice Date</th>
+                <th>Resign Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.RId</td>
+                    <td>@item.User.FirstName @item.User.LastName</td>
+                    <td>@item.Departments.Name</td>
+                    <td>@item.Reason</td>
+                    <td>@item.NoticeDate.ToString("dd-MM-yyyy")</td>
+                    <td>@item.ResignDate.ToString("dd-MM-yyyy")</td>
+                    <td>
+                        <a asp-action="Edit"
+                           asp-route-id="@item.RId"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <button class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+<script>
+    $('#resignationTable').DataTable({
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100]
+    });
+</script>
