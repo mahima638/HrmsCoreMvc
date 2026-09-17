@@ -63,6 +63,10 @@ namespace HrmsCoreMvc.Data
                 .Property(x => x.Status)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Trainer>()
+                .Property(x => x.Status)
+                .HasConversion<string>();
+
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
