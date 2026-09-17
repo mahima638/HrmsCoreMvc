@@ -1,0 +1,158 @@
+@model HrmsCoreMvc.Models.Training
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Add Training List</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-controller="Traning"
+              asp-action="AddTraining"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Trainer -->
+            <div class="form-group">
+                <label asp-for="TrainerId" class="control-label">Trainer</label>
+
+                <select asp-for="TrainerId" class="form-control">
+                    <option value="">-- Select Trainer --</option>
+
+                    @foreach (var trainer in ViewBag.Trainers)
+                    {
+                        <option value="@trainer.TrainerId">
+                            @trainer.FirstName @trainer.LastName
+                        </option>
+                    }
+                </select>
+
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+            </div>
+
+            <!-- Training Type -->
+            <div class="form-group">
+                <label asp-for="TrainingTypeId" class="control-label">
+                    Training Type
+                </label>
+
+                <select asp-for="TrainingTypeId" class="form-control">
+                    <option value="">-- Select Training Type --</option>
+
+                    @foreach (var type in ViewBag.TrainingTypes)
+                    {
+                        <option value="@type.TrainingTypeId">
+                            @type.TrainingTypeName
+                        </option>
+                    }
+                </select>
+
+                <span asp-validation-for="TrainingTypeId" class="text-danger"></span>
+            </div>
+
+            <!-- Employee -->
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label">Employee</label>
+
+                <select asp-for="UserId" class="form-control">
+                    <option value="">-- Select Employee --</option>
+
+                    @foreach (var employee in ViewBag.Employees)
+                    {
+                        <option value="@employee.UserId">
+                            @employee.FirstName @employee.LastName
+                        </option>
+                    }
+                </select>
+
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+            <!-- Training Cost -->
+            <div class="form-group">
+                <label asp-for="TrainingCost" class="control-label">
+                    Training Cost
+                </label>
+
+                <input asp-for="TrainingCost" class="form-control" />
+
+                <span asp-validation-for="TrainingCost"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">
+                    Description
+                </label>
+
+                <input asp-for="Description" class="form-control" />
+
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">
+                    Status
+                </label>
+
+                <select asp-for="Status"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<Status>()">
+                    <option value="">-- Select Status --</option>
+                </select>
+
+                <span asp-validation-for="Status"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Start Date -->
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label">
+                    Start Date
+                </label>
+
+                <input asp-for="StartDate"
+                       type="datetime-local"
+                       class="form-control" />
+
+                <span asp-validation-for="StartDate"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label">
+                    End Date
+                </label>
+
+                <input asp-for="EndDate"
+                       type="datetime-local"
+                       class="form-control" />
+
+                <span asp-validation-for="EndDate"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-group mt-3">
+                <input type="submit"
+                       value="Submit"
+                       class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="TrainingIndex">Cancel</a>
+</div>

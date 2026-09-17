@@ -3,17 +3,14 @@ using HrmsCoreMvc.Repositories.Promotions;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services.Promotions;
 using HrmsCoreMvc.Repositories;
-using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+//using Microsoft.AspNetCore.Authentication.Cookies;
+//using Microsoft.AspNetCore.Authentication.Google;
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
-using HrmsCoreMvc.Repositories.Terminations;
-using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +32,7 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession();
 
 //builder.Services
 //    .AddAuthentication(options =>
@@ -71,10 +68,10 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -83,6 +80,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
