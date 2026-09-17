@@ -43,8 +43,8 @@ namespace HrmsCoreMvc.Services.Reports
             var groupedData = await db.user.Where(x => x.Role != null && x.Role.RoleName.Contains("Employee") && x.CreatedAt != null)
                 .GroupBy(x => new
                 {
-                    Year = x.CreatedAt.Year,
-                    Month = x.CreatedAt.Month
+                    Year = x.CreatedAt.Value.Year,
+                    Month = x.CreatedAt.Value.Month
                 })
                 .Select(g => new
                 {
@@ -78,7 +78,8 @@ namespace HrmsCoreMvc.Services.Reports
                 DepartmentName = u.departments.Name,
                 PhoneNumber = u.PhoneNumber,
                 DateOfJoining = u.DateOfJoining,
-                Status = u.Status
+                Status = u.Status,
+                ProfilePicture = u.ProfilePicture
             }).ToListAsync();
         }
 
@@ -123,6 +124,7 @@ namespace HrmsCoreMvc.Services.Reports
                 PhoneNumber = u.PhoneNumber,
                 DateOfJoining = u.DateOfJoining,
                 Status = u.Status,
+                ProfilePicture = u.ProfilePicture
             }).ToListAsync();
 
             return result;

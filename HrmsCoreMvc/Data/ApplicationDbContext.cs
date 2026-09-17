@@ -8,10 +8,8 @@ using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
-using Microsoft.EntityFrameworkCore;
-using HrmsCoreMvc.Models;
-using Task = HrmsCoreMvc.Models.Projects.Task;
 
+using Task = HrmsCoreMvc.Models.Projects.Task;
 
 
 namespace HrmsCoreMvc.Data

@@ -2,6 +2,7 @@
 using HrmsCoreMvc.Models.Reports;
 using HrmsCoreMvc.Repositories.Reports;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace HrmsCoreMvc.Services.Reports
 {
@@ -113,6 +114,39 @@ namespace HrmsCoreMvc.Services.Reports
                 ProductionHours = av.ProductionHours,
                 OvertimeHours = av.OvertimeHours,
             }).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<AttendanceChartDto> GetAttendanceChartDataAsync()
+        {
+            var groupData = await db.Attendance.Where(x => x.Date != null && x.Status != null)
+                .GroupBy(x => new
+                {
+                    Year = x.Date.Year,
+                    Month = x.Date.Month
+                })
+                .Select(g => new
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Present = g.Count(x => x.Status == "Present"),
+                    Absent = g.Count(x => x.Status == "Absent")
+
+                })
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
+                .ToListAsync();
+
+            var result = new AttendanceChartDto();
+            foreach(var item in groupData)
+            {
+                result.Labels.Add($"{item.Year}-{item.Month:2D}");
+                result.AbsentData.Add(item.Absent);
+                result.PresentData.Add(item.Present);
+
+            }
 
             return result;
 

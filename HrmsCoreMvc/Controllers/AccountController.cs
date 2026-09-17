@@ -38,6 +38,9 @@ namespace HrmsCoreMvc.Controllers
                 return RedirectToAction("Dashboard", "Admin");
             
             }
+            //if (lg.RoleName == "Manager") {
+            //    return RedirectToAction("Dashboard", "Manager");
+            //}
 
            
 

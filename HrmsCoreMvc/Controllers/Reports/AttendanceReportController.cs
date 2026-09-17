@@ -25,7 +25,7 @@ namespace HrmsCoreMvc.Controllers.Reports
             }
             ViewBag.totalLeaves= fetchTotalLeaves;
             ViewBag.totalHolidays= fetchTotalHolidays;
-            return View(fetchattendances);
+            return View("~/Views/Reports/GetAttendanceReports.cshtml",fetchattendances);
         }
     }
 }

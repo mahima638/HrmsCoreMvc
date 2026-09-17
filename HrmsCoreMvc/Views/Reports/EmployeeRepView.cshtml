@@ -40,12 +40,12 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="exportDropdown">
             <li>
-                <a class="dropdown-item" href="@Url.Action("ExportToExcel", "EmployeeReport")">
+                <a class="dropdown-item">
                     <i class="bi bi-file-earmark-excel text-success me-2"></i>Export to Excel
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="@Url.Action("ExportToPdf", "EmployeeReport")">
+                <a class="dropdown-item">
                     <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Export to PDF
                 </a>
             </li>
@@ -190,11 +190,21 @@
                     {
                         <tr>
                             <td>@emp.UserId</td>
-                            <td>@emp.Name </td>
+                            <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="@(string.IsNullOrEmpty(emp.ProfilePicture) ? "/uploads/pic.jpg" : emp.ProfilePicture)"
+                                alt="Profile"
+                                class="rounded-circle object-fit-cover"
+                                width="38"
+                                height="38"
+                                />
+                                <span>@emp.Name</span>
+                            </div>
+                            </td>
                             <td>@emp.Email</td>
                             <td>@(emp.DepartmentName ?? "N/A")</td>
                             <td>@emp.PhoneNumber</td>
-                            <td>@emp.DateOfJoining.ToString("dd/MM/yyyy")</td>
+                            <td>@(emp.DateOfJoining.HasValue ? emp.DateOfJoining.Value.ToString("dd/MM/yyyy") : "N/A")</td>
                             <td>
                                 @if (emp.Status == "Active")
                                 {
@@ -218,6 +228,7 @@
 
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
     new Chart(document.getElementById('employeeChart'),{
         type:'bar',
@@ -236,12 +247,14 @@
  @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#employeeTable').DataTable({
                 "dom": 'frtip'
             });
+            $('.dropdown-toggle').dropdown();
         });
+
     </script>
 }
