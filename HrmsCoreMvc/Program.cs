@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using HrmsCoreMvc.Exceptions;
+using HrmsCoreMvc.Repositories.Resignations;
+using HrmsCoreMvc.Services.Resignations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,8 +77,11 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    //pattern: "{controller=Account}/{action=Login}/{id?}")
+    //.WithStaticAssets();
 
 
 app.Run();

@@ -186,14 +186,19 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("nvarchar(max)");
 
 
+
                     b.Property<int?>("DepartmentId");
 
                     //b.Property<int>("DepartmentId")
 
                     //    .HasColumnType("int");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    //b.Property<int?>("DepartmentId")
+
+                    //b.Property<int?>("DepartmentId");
+                    //b.Property<int>("DepartmentId")
+
+                    //    .HasColumnType("int");
 
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -987,8 +992,12 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+
                     //b.Property<DateTime>("ModifiedAt")
                     //    .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedAt");
+
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");

@@ -8,11 +8,7 @@ using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
-using Microsoft.EntityFrameworkCore;
-using HrmsCoreMvc.Models;
-using Task = HrmsCoreMvc.Models.Projects.Task;
-using HrmsCoreMvc.Models.Events;
-using HrmsCoreMvc.Models.Projects;
+
 
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
@@ -22,6 +18,10 @@ using Microsoft.EntityFrameworkCore;
 using HrmsCoreMvc.Models.PayRoll;
 using HrmsCoreMvc.Models.Leave;
 using HrmsCoreMvc.Models.Attendance;
+
+using Task = HrmsCoreMvc.Models.Projects.Task;
+
+
 
 namespace HrmsCoreMvc.Data
 {

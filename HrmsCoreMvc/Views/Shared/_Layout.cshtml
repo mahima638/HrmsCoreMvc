@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - HrmsCoreMvc</title>
-    <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HrmsCoreMvc.styles.css" asp-append-version="true" />
-
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -39,24 +40,64 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        </div>
+
+
+        <!-- MAIN AREA -->
+        <div style="margin-left: 260px; width: 100%;">
+
+            <!-- TOP NAVBAR -->
+            <nav class="navbar navbar-light bg-white border-bottom shadow-sm">
+
+                <div class="container-fluid">
+
+                    <span class="navbar-brand mb-0 h1">
+                        HRMS
+                    </span>
+
+                    <div>
+                        <span class="me-3">
+                            Welcome, Admin
+                        </span>
+
+                        <a class="btn btn-outline-danger"
+                           asp-controller="Account"
+                           asp-action="Logout">
+                            Logout
+                        </a>
+                    </div>
+
+                </div>
+
+            </nav>
+
+
+            <!-- PAGE CONTENT -->
+            <main class="p-4">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - HrmsCoreMvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+    <!-- SCRIPTS -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
