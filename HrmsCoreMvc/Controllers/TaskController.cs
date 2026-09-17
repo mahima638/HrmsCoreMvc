@@ -15,18 +15,18 @@ namespace HrmsCoreMvc.Controllers
             cs = ts;
         }
 
-        public IActionResult GetAllTasks()
+        public async Task<IActionResult> GetAllTasks()
         {
-            var tasks = cs.GetAllTasks();
-            return View(tasks);
+            var tasks = await cs.GetAllTasks();
+            return View("~/Views/Project/GetAllTasks.cshtml", tasks);
         }
 
         [HttpPost]
-        public IActionResult AddTask(Task task)
+        public async Task<IActionResult> AddTask(Task task)
         {
             if (ModelState.IsValid)
             {
-                cs.AddTask(task);
+                await cs.AddTask(task);
                 TempData["SuccessMessage"] = "Task Added Successfully!";
                 return RedirectToAction("GetAllTasks");
             }
@@ -34,11 +34,11 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateTask(Task task)
+        public async Task<IActionResult> UpdateTask(Task task)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateTask(task);
+                await cs.UpdateTask(task);
                 TempData["SuccessMessage"] = "Task Updated Successfully!";
                 return RedirectToAction("GetAllTasks");
             }
@@ -46,22 +46,19 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteTask(int taskId)
+        public async Task<IActionResult> DeleteTask(int taskId)
         {
-            cs.DeleteTask(taskId);
+            await cs.DeleteTask(taskId);
             TempData["SuccessMessage"] = "Task Deleted Successfully!";
             return RedirectToAction("GetAllTasks");
         }
 
         [HttpPost]
-        public IActionResult SearchTasks(string searchtask)
+        public async Task<IActionResult> SearchTasks(string searchtask)
         {
-            var tasks = cs.SearchTasks(searchtask);
+            var tasks = await cs.SearchTasks(searchtask);
             return View("GetAllTasks", tasks);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
     }
 }

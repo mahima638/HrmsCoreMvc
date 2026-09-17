@@ -15,49 +15,46 @@ namespace HrmsCoreMvc.Controllers
             cs = tms;
         }
 
-        public IActionResult GetAllTaskMembers()
+        public async Task<IActionResult> GetAllTaskMembers()
         {
-            var taskMembers = cs.GetAllTaskMembers();
-            return View(taskMembers);
+            var taskMembers = await cs.GetAllTaskMembers();
+            return View("~/Views/Project/GetAllTaskMembers.cshtml", taskMembers);
         }
 
-        public IActionResult AddTaskMember(TaskMembers taskMember)
+        public async Task<IActionResult> AddTaskMember(TaskMembers taskMember)
         {
             if (ModelState.IsValid)
             {
-                cs.AddTaskMember(taskMember);
+                await cs.AddTaskMember(taskMember);
                 TempData["SuccessMessage"] = "Task Member Added Successfully!";
                 return RedirectToAction("GetAllTaskMembers");
             }
             return View(taskMember);
         }
 
-        public IActionResult UpdateTaskMember(TaskMembers taskMember)
+        public async Task<IActionResult> UpdateTaskMember(TaskMembers taskMember)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateTaskMember(taskMember);
+                await cs.UpdateTaskMember(taskMember);
                 TempData["SuccessMessage"] = "Task Member Updated Successfully!";
                 return RedirectToAction("GetAllTaskMembers");
             }
             return View(taskMember);
         }
 
-        public IActionResult DeleteTaskMember(int taskMemberId)
+        public async Task<IActionResult> DeleteTaskMember(int taskMemberId)
         {
-            cs.DeleteTaskMember(taskMemberId);
+            await cs.DeleteTaskMember(taskMemberId);
             TempData["SuccessMessage"] = "Task Member Deleted Successfully!";
             return RedirectToAction("GetAllTaskMembers");
         }
 
-        public IActionResult SearchTaskMembers(string searchtaskmember)
+        public async Task<IActionResult> SearchTaskMembers(string searchtaskmember)
         {
-            var taskMembers = cs.SearchTaskMembers(searchtaskmember);
+            var taskMembers = await cs.SearchTaskMembers(searchtaskmember);
             return View("GetAllTaskMembers", taskMembers);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
     }
 }

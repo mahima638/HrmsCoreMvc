@@ -14,18 +14,18 @@ namespace HrmsCoreMvc.Controllers
             cs = ps;
         }
 
-        public IActionResult GetAllProjects()
+        public async Task<IActionResult> GetAllProjects()
         {
-            var projects = cs.GetAllProjects();
+            var projects = await cs.GetAllProjects();
             return View(projects);
         }
 
         [HttpPost]
-        public IActionResult AddProject(AllProjects project)
+        public async Task<IActionResult> AddProject(AllProjects project)
         {
             if (ModelState.IsValid)
             {
-                cs.AddProject(project);
+                await cs.AddProject(project);
                 TempData["SuccessMessage"] = "Project Added Successfully!";
                 return RedirectToAction("GetAllProjects");
             }
@@ -33,11 +33,11 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateProject(AllProjects project)
+        public async Task<IActionResult> UpdateProject(AllProjects project)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateProject(project);
+                await cs.UpdateProject(project);
                 TempData["SuccessMessage"] = "Project Updated Successfully!";
                 return RedirectToAction("GetAllProjects");
             }
@@ -45,23 +45,19 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteProject(int projectId)
+        public async Task<IActionResult> DeleteProject(int projectId)
         {
-            cs.DeleteProject(projectId);
+            await cs.DeleteProject(projectId);
             TempData["SuccessMessage"] = "Project Deleted Successfully!";
             return RedirectToAction("GetAllProjects");
         }
 
         [HttpPost]
-        public IActionResult SearchProjects(string searchproject)
+        public async Task<IActionResult> SearchProjects(string searchproject)
         {
-            var projects = cs.SearchProjects(searchproject);
+            var projects = await cs.SearchProjects(searchproject);
             return View("GetAllProjects", projects);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

@@ -4,12 +4,20 @@ using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
+using HrmsCoreMvc.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
-
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
+builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -36,11 +44,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Event}/{action=Holidays}/{id?}")
     .WithStaticAssets();
 
 
