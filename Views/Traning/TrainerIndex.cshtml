@@ -1,0 +1,82 @@
+@model IEnumerable<HrmsCoreMvc.Models.Trainer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Trainer</h1>
+
+<p>
+    <a asp-action="AddTrainer">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainerId)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.TrainerId)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => item.ProfilePicture)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FirstName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => item.Phone)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Status)
+                </td>
+                <td>
+                    <a asp-action="EditTrainer"
+                       asp-route-TrainerId="@item.TrainerId">
+                        Edit
+                    </a> |
+
+                    <a asp-action="DeleteTrainer"
+                       asp-route-TrainerId="@item.TrainerId">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

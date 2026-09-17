@@ -1,6 +1,8 @@
 ﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace HrmsCoreMvc.Controllers
 {
@@ -36,12 +38,38 @@ namespace HrmsCoreMvc.Controllers
                 return RedirectToAction("Dashboard", "Admin");
             
             }
+            if (lg.RoleName == "Manager") {
+                return RedirectToAction("Dashboard", "Manager");
+            }
 
            
 
            
             return RedirectToAction("Dashboard", "User");
 
+        }
+        public IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = "/Account/GoogleResponse"
+            };
+
+            return Challenge(
+                properties,
+                GoogleDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult GoogleResponse()
+        {
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+
+            if (email == "admin.hrms12@gmail.com")
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            return RedirectToAction("Dashboard", "User");
         }
     }
 }

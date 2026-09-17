@@ -5,15 +5,15 @@ namespace HrmsCoreMvc.Repositories
     public interface IDepartmentService
     {
 
-        public void AddDepartment(Departments dept);
+        public Task AddDepartment(Departments dept);
 
-        public void UpdateDepartment(Departments dept);
+        public Task UpdateDepartment(Departments dept);
 
-        public List<Departments> GetDepartments();
+        public Task<List<Departments>> GetDepartments();
 
-        public void DeleteDepartment(int id);
+        public Task DeleteDepartment(int id);
       
-        public Departments GetDepartmentById(int id);
+        public Task<Departments> GetDepartmentById(int id);
 
        
 

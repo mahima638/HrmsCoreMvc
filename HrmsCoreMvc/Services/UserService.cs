@@ -2,7 +2,7 @@
 using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
 {
     public class UserService : IUserService
@@ -12,33 +12,33 @@ namespace HrmsCoreMvc.Services
         {
             this.db = db;
         }
-        public void AddEmployee(User us)
+        public async Task AddEmployee(User us)
         {
             db.Add(us);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteEmployee(int id)
+        public async Task DeleteEmployee(int id)
         {
             db.Remove(id);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public User GetEmpById(int id)
+        public async Task<User> GetEmpById(int id)
         {
-            return db.user.Find(id);
+            return await  db.user.FindAsync(id);
            
         }
 
-        public List<User> getEmployees()
+        public async Task<List<User>> getEmployees()
         {
-            return db.user.ToList();
+            return await db.user.ToListAsync();
         }
 
-        public void UpdateEmployee(User us)
+        public async Task UpdateEmployee(User us)
         {
             db.Update(us);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

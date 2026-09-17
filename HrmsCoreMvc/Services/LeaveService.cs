@@ -72,6 +72,14 @@ namespace HrmsCoreMvc.Services
                  }).ToListAsync();
         }
 
+        public async Task<List<DepartmentLeaves>> FetchDeptLeaveDetails()
+        {
+            return await db.DepartmentLeaves
+                .Include(x => x.Department)
+                .Include(x => x.MasterLeaveType)
+                .ToListAsync();   
+        }
+
         public async Task<List<SelectListItem>> FetchLeaveType()
         {
             return await db.MasterLeaveTypes
@@ -88,6 +96,16 @@ namespace HrmsCoreMvc.Services
             return await db.MasterLeaveTypes.ToListAsync();
         }
 
+  
 
+        public async Task UpdateLeaveTypeStatus(int leaveTypeId, bool isActive)
+        {
+            var id= await db.MasterLeaveTypes.FindAsync(leaveTypeId);
+            if (id!= null)
+            { 
+                id.Status = isActive ? "Active" : "Inactive";
+                await db.SaveChangesAsync();
+            }
+        }
     }
 }

@@ -14,9 +14,9 @@ namespace HrmsCoreMvc.Controllers
         {
             this.ds = ds;
         }
-        public IActionResult getDepartment() {
+        public async Task<IActionResult> getDepartment() {
         
-            var dept = ds.GetDepartments();
+            var dept = await ds.GetDepartments();
             return View(dept);
 
 
@@ -27,38 +27,38 @@ namespace HrmsCoreMvc.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddDepartment(Departments dept) {
+        public async Task<IActionResult> AddDepartment(Departments dept) {
 
             if (!ModelState.IsValid) {
                 return View();
             }
            
-            ds.AddDepartment(dept);
+            await ds.AddDepartment(dept);
             return RedirectToAction("getDepartment");
 
         }
 
 
-        public IActionResult DeleteDepartment(int id) {
+        public async Task<IActionResult> DeleteDepartment(int id) {
         
-            ds.DeleteDepartment(id);
+            await ds.DeleteDepartment(id);
             return RedirectToAction("getDepartment");
 
         }
 
-        public IActionResult EditDepartment(int id) {
+        public async Task<IActionResult> EditDepartment(int id) {
         
-            var dept = ds.GetDepartmentById(id);
+            var dept = await ds.GetDepartmentById(id);
             return View(dept);
 
         }
 
         [HttpPost]
-        public IActionResult EditDepartment(Departments dept) {
+        public async Task<IActionResult> EditDepartment(Departments dept) {
 
             if (ModelState.IsValid) { 
             
-              ds.UpdateDepartment(dept);
+              await ds.UpdateDepartment(dept);
               return RedirectToAction("getDepartment");
             }
             return View(dept);
