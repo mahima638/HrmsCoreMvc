@@ -30,18 +30,18 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 
 
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    })
-    .AddCookie()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    });
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//    })
+//    .AddCookie()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    });
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();
@@ -67,7 +67,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

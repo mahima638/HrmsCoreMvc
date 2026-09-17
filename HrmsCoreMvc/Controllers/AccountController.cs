@@ -48,28 +48,28 @@ namespace HrmsCoreMvc.Controllers
             return RedirectToAction("Dashboard", "User");
 
         }
-        public IActionResult GoogleLogin()
-        {
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = "/Account/GoogleResponse"
-            };
+        //public IActionResult GoogleLogin()
+        //{
+        //    var properties = new AuthenticationProperties
+        //    {
+        //        RedirectUri = "/Account/GoogleResponse"
+        //    };
 
-            return Challenge(
-                properties,
-                GoogleDefaults.AuthenticationScheme);
-        }
+        //    return Challenge(
+        //        properties,
+        //        GoogleDefaults.AuthenticationScheme);
+        //}
 
-        public IActionResult GoogleResponse()
-        {
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+        //public IActionResult GoogleResponse()
+        //{
+        //    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
 
-            if (email == "admin.hrms12@gmail.com")
-            {
-                return RedirectToAction("Dashboard", "Admin");
-            }
+        //    if (email == "admin.hrms12@gmail.com")
+        //    {
+        //        return RedirectToAction("Dashboard", "Admin");
+        //    }
 
-            return RedirectToAction("Dashboard", "User");
-        }
+        //    return RedirectToAction("Dashboard", "User");
+        //}
     }
 }
