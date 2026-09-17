@@ -24,7 +24,7 @@ namespace HrmsCoreMvc.Models
         public string Description { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         public string? ProfilePicture { get; set; }
 
@@ -34,4 +34,5 @@ namespace HrmsCoreMvc.Models
         public long Phone { get; set; }
 
     }
+
 }
