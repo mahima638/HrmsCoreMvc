@@ -1,15 +1,18 @@
 ﻿using HrmsCoreMvc.Models;
+using Microsoft.EntityFrameworkCore;
+using HrmsCoreMvc.Models.Attendance;
 using HrmsCoreMvc.Models.Events;
+using HrmsCoreMvc.Models.Leave;
+using HrmsCoreMvc.Models.PayRoll;
 using HrmsCoreMvc.Models.Projects;
-
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
 using Microsoft.EntityFrameworkCore;
+using HrmsCoreMvc.Models;
 using Task = HrmsCoreMvc.Models.Projects.Task;
-using HrmsCoreMvc.Models.PayRoll;
-using HrmsCoreMvc.Models.Leave;
-using HrmsCoreMvc.Models.Attendance;
+
+
 
 namespace HrmsCoreMvc.Data
 {
@@ -44,10 +47,24 @@ namespace HrmsCoreMvc.Data
         public DbSet<EarningType> EarningType { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
+        public DbSet<TrainingType> TraningType { get; set; }
+        public DbSet<Training> Training { get; set; }
+        public DbSet<Trainer> Trainer { get; set; }
+        public DbSet<AdminDocuments> AdminDocuments { get; set; }
+        public DbSet<AddEmpDocName> AddEmpDocName { get; set; }
+        public DbSet<AddAdminDocName> AddAdminDocName { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // TrainingType Status stored as string
+            modelBuilder.Entity<TrainingType>()
+                .Property(x => x.Status)
+                .HasConversion<string>();
+
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
@@ -146,6 +163,34 @@ namespace HrmsCoreMvc.Data
                 d.HasOne(x => x.departments)
                 .WithMany(x => x.designation)
                 .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+
+
+            modelBuilder.Entity<Promotion>(p =>
+            {
+                p.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Resignation>(r =>
+            {
+                r.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                r.HasOne(x => x.Departments)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Termination>(t =>
+            {
+                t.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
 

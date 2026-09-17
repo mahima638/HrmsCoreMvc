@@ -22,15 +22,24 @@ namespace HrmsCoreMvc.Controllers.Reports
 
             var empsLists = await er.GetEmployeeReportsAsync();
 
+            var chartData = await er.GetEmployeeChartDataAsync();
+
             if (!string.IsNullOrEmpty(sortType) || !string.IsNullOrEmpty(sortStatus))
             {
                 empsLists = await er.SortEmployeeReportsAsync(sortType, sortStatus);
             }
 
+            ViewBag.ChartLabels = chartData.Labels;
+            ViewBag.ChartActive = chartData.ActiveData;
+            ViewBag.ChartInactive = chartData.InactiveData;
             ViewBag.DeptCount = deptCount;
             ViewBag.EmpCount = empCount;
             ViewBag.ActiveEmpCount = activeEmpCount;
             ViewBag.ActiveRoles = activeRoles;
+
+            ViewBag.SelectedSortType = sortType;
+            ViewBag.SelectedSortStatus = sortStatus;
+
             return View("~/Views/Reports/EmployeeRepView.cshtml", empsLists);
         }
     }

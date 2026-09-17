@@ -1,0 +1,20 @@
+﻿@model HrmsCoreMvc.Models.Leave.DepartmentLeaves
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="AddLeaveDeptWise" method="post">
+        <label>Select Department</label>
+        <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.DepartmentList">
+            <option value="">Select Department</option>
+        </select>
+        <label>Select Leave Type</label>
+        <select asp-for="LeaveTypeId" class="form-select" asp-items="ViewBag.LeaveTypeList">
+            <option value="">Select Leave Type</option>
+        </select>
+        <label>No Of Leave Allocated</label>
+        <input type="number" asp-for="LeavesCount" class="form-control" placeholder="Enter Leave Days" />
+
+        <input type="submit" value="Allocate Leave" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
