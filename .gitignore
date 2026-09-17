@@ -3,6 +3,7 @@
 *.user
 *.suo
 *.rsuser
+Migrations/
 
 # Build files
 bin/
