@@ -9,6 +9,7 @@ using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using HrmsCoreMvc.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,7 +74,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Traning}/{action=Index}/{id?}")
+    pattern: "{controller=Account}/{action=Login}/{id?}")
     .WithStaticAssets();
 
 
