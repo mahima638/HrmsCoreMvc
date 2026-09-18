@@ -1498,11 +1498,9 @@ namespace HrmsCoreMvc.Migrations
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
-<<<<<<< HEAD
+
                     b.Navigation("Tasks");
 
-=======
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
                     b.Navigation("projectusers");
                 });
 

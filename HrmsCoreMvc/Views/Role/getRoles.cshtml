@@ -1,16 +1,26 @@
 ﻿@model List<HrmsCoreMvc.Models.Role>
 
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
 <h2>All Roles</h2>
 
-<table class="table table-bordered">
+<button type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addRoleModal">
+    + Add Role
+</button>
+<table id="roleTable" class="table table-bordered">
     <thead>
         <tr>
             <th>Role Id</th>
             <th>Role Name</th>
             <th>Status</th>
-            <th>Created At</th>
-
-           
+            <th>Created By</th>
             <th>Action</th>
 
         </tr>
@@ -23,7 +33,7 @@
                 <td>@role.RoleId</td>
                 <td>@role.RoleName</td>
                 <td>@role.Status</td>
-                <td>@role.CreatedAt</td>
+               
                 <td>@role.CreatedBy</td>
 
 
@@ -39,3 +49,66 @@
         }
     </tbody>
 </table>
+<div class="modal fade" id="addRoleModal" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add Role</h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form asp-controller="Role"
+                      asp-action="RoleView"
+                      method="post">
+
+                    <div class="mb-3">
+                        <label>Role Name</label>
+
+                        <input type="text"
+                               name="RoleName"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label>Status</label>
+
+                        <select name="Status"
+                                class="form-control">
+
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+
+                        </select>
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Add Role
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+<script>$(document).ready(function() { $('#roleTable').DataTable(); });</script>
+

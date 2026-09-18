@@ -6,17 +6,16 @@ using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
+
 using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-=======
-//using Microsoft.AspNetCore.Authentication.Cookies;
-//using Microsoft.AspNetCore.Authentication.Google;
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
+
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
+using HrmsCoreMvc.Repositories.Terminations;
+using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,10 +41,7 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-<<<<<<< HEAD
 
-=======
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
 //builder.Services
 //    .AddAuthentication(options =>
 //    {

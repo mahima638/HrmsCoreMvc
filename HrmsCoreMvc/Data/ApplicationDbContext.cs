@@ -52,6 +52,13 @@ namespace HrmsCoreMvc.Data
         public DbSet<AddEmpDocName> AddEmpDocName { get; set; }
         public DbSet<AddAdminDocName> AddAdminDocName { get; set; }
 
+        public DbSet<EmpEducation> EmpEducation { get; set; }
+        public DbSet<EmpExperience> EmpExperience { get; set; }
+        public DbSet<EmpBankDetails> EmpBankDetails { get; set; }
+        public DbSet<EmpFamilyInfo> EmpFamily{ get; set; }
+
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
