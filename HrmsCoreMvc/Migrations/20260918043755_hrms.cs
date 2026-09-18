@@ -6,11 +6,52 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HrmsCoreMvc.Migrations
 {
     /// <inheritdoc />
-    public partial class FixDepartmentLeavesForeignKey : Migration
+    public partial class hrms : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AddAdminDocName",
+                columns: table => new
+                {
+                    DocId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddDocName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddAdminDocName", x => x.DocId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AddEmpDocName",
+                columns: table => new
+                {
+                    DocId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddDocName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddEmpDocName", x => x.DocId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdminDocuments",
+                columns: table => new
+                {
+                    ADocId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocFile = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminDocuments", x => x.ADocId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AllProjects",
                 columns: table => new
@@ -127,6 +168,41 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Trainer",
+                columns: table => new
+                {
+                    TrainerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trainer", x => x.TrainerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TraningType",
+                columns: table => new
+                {
+                    TrainingTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TraningType", x => x.TrainingTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "designation",
                 columns: table => new
                 {
@@ -183,7 +259,7 @@ namespace HrmsCoreMvc.Migrations
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     LeaveTypeId = table.Column<int>(type: "int", nullable: false),
                     LeavesCount = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -199,6 +275,42 @@ namespace HrmsCoreMvc.Migrations
                         column: x => x.DepartmentId,
                         principalTable: "department",
                         principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Training",
+                columns: table => new
+                {
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainerId = table.Column<int>(type: "int", nullable: false),
+                    TrainingTypeId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TrainingCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Training", x => x.TrainingId);
+                    table.ForeignKey(
+                        name: "FK_Training_Trainer_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainer",
+                        principalColumn: "TrainerId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Training_TraningType_TrainingTypeId",
+                        column: x => x.TrainingTypeId,
+                        principalTable: "TraningType",
+                        principalColumn: "TrainingTypeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -281,26 +393,26 @@ namespace HrmsCoreMvc.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    DateOfJoining = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AboutEmployee = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReportingManager = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    DesignationId = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    DateOfJoining = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AboutEmployee = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReportingManager = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    DesignationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -495,7 +607,7 @@ namespace HrmsCoreMvc.Migrations
                         column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -518,13 +630,13 @@ namespace HrmsCoreMvc.Migrations
                         column: x => x.DepartmentId,
                         principalTable: "department",
                         principalColumn: "DepartmentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_resignations_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -547,7 +659,7 @@ namespace HrmsCoreMvc.Migrations
                         column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -614,7 +726,7 @@ namespace HrmsCoreMvc.Migrations
                 {
                     TaskId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Priority = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -645,6 +757,7 @@ namespace HrmsCoreMvc.Migrations
                 {
                     TaskMembersId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TaskMemberName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TaskId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -821,6 +934,16 @@ namespace HrmsCoreMvc.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Training_TrainerId",
+                table: "Training",
+                column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Training_TrainingTypeId",
+                table: "Training",
+                column: "TrainingTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_user_DepartmentId",
                 table: "user",
                 column: "DepartmentId");
@@ -858,6 +981,15 @@ namespace HrmsCoreMvc.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_taskboards_tasks_tasksTaskId",
                 table: "taskboards");
+
+            migrationBuilder.DropTable(
+                name: "AddAdminDocName");
+
+            migrationBuilder.DropTable(
+                name: "AddEmpDocName");
+
+            migrationBuilder.DropTable(
+                name: "AdminDocuments");
 
             migrationBuilder.DropTable(
                 name: "Attendance");
@@ -899,6 +1031,9 @@ namespace HrmsCoreMvc.Migrations
                 name: "Timesheets");
 
             migrationBuilder.DropTable(
+                name: "Training");
+
+            migrationBuilder.DropTable(
                 name: "DeductionType");
 
             migrationBuilder.DropTable(
@@ -912,6 +1047,12 @@ namespace HrmsCoreMvc.Migrations
 
             migrationBuilder.DropTable(
                 name: "user");
+
+            migrationBuilder.DropTable(
+                name: "Trainer");
+
+            migrationBuilder.DropTable(
+                name: "TraningType");
 
             migrationBuilder.DropTable(
                 name: "MasterLeaveTypes");

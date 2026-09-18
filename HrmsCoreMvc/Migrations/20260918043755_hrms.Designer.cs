@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260916082854_FixDepartmentLeavesForeignKey")]
-    partial class FixDepartmentLeavesForeignKey
+    [Migration("20260918043755_hrms")]
+    partial class hrms
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,65 @@ namespace HrmsCoreMvc.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.AddAdminDocName", b =>
+                {
+                    b.Property<int>("DocId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocId"));
+
+                    b.Property<string>("AddDocName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DocId");
+
+                    b.ToTable("AddAdminDocName");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.AddEmpDocName", b =>
+                {
+                    b.Property<int>("DocId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocId"));
+
+                    b.Property<string>("AddDocName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DocId");
+
+                    b.ToTable("AddEmpDocName");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.AdminDocuments", b =>
+                {
+                    b.Property<int>("ADocId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ADocId"));
+
+                    b.Property<string>("DocFile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ADocId");
+
+                    b.ToTable("AdminDocuments");
+                });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
                 {
@@ -223,7 +282,6 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DepartmentLeavesId");
@@ -651,6 +709,7 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TaskId");
@@ -711,6 +770,9 @@ namespace HrmsCoreMvc.Migrations
 
                     b.Property<int>("TaskId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TaskMemberName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -852,40 +914,17 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("terminations");
                 });
 
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
+            modelBuilder.Entity("HrmsCoreMvc.Models.Trainer", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("TrainerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainerId"));
 
-                    b.Property<string>("AboutEmployee")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfJoining")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DesignationId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -895,13 +934,50 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Phone")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TrainerId");
+
+                    b.ToTable("Trainer");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Training", b =>
+                {
+                    b.Property<int>("TrainingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -910,28 +986,126 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<int>("TrainerId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TrainingCost")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("TrainingTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.HasIndex("TrainingTypeId");
+
+                    b.ToTable("Training");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.TrainingType", b =>
+                {
+                    b.Property<int>("TrainingTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingTypeId"));
+
+                    b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TrainingTypeId");
+
+                    b.ToTable("TraningType");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("AboutEmployee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfJoining")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DesignationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportingManager")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -1152,7 +1326,7 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany("tasks")
+                        .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1211,7 +1385,7 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1222,13 +1396,13 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Departments");
@@ -1241,10 +1415,29 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HrmsCoreMvc.Models.Training", b =>
+                {
+                    b.HasOne("HrmsCoreMvc.Models.Trainer", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrmsCoreMvc.Models.TrainingType", "TrainingType")
+                        .WithMany()
+                        .HasForeignKey("TrainingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainer");
+
+                    b.Navigation("TrainingType");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -1252,20 +1445,17 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("user")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
                         .WithMany("user")
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HrmsCoreMvc.Models.Role", "Role")
                         .WithMany("user")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Role");
 
@@ -1312,9 +1502,9 @@ namespace HrmsCoreMvc.Migrations
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
-                    b.Navigation("projectusers");
+                    b.Navigation("Tasks");
 
-                    b.Navigation("tasks");
+                    b.Navigation("projectusers");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>

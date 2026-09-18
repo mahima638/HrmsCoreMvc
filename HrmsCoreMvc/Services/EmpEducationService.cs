@@ -32,6 +32,11 @@ namespace HrmsCoreMvc.Services
             await db.SaveChangesAsync();
         }
 
+        public Task<List<EmpEducation?>> GetEducationByUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<EmpEducation>> GetEmpEducation()
         {
             return await db.EmpEducation.ToListAsync();
@@ -44,9 +49,6 @@ namespace HrmsCoreMvc.Services
 
         }
 
-        List<Task<EmpEducation>> IEmpEducation.GetEmpEducation()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

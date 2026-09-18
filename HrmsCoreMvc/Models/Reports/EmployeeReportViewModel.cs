@@ -16,6 +16,8 @@
 
         public string Status { get; set; }
 
+        public string ProfilePicture { get; set; }
+
 
 
     }

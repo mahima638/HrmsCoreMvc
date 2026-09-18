@@ -42,7 +42,7 @@ namespace HrmsCoreMvc.Services
             return await db.EmpExperience.FindAsync(id);
         }
 
-        List<Task<EmpExperience>> IEmpExperience.GetEmpExperience()
+        public Task<List<EmpExperience?>> GetExperienceByUserId(int userId)
         {
             throw new NotImplementedException();
         }

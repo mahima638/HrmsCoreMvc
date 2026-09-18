@@ -238,7 +238,7 @@ namespace HrmsCoreMvc.Controllers
 
             if (ModelState.IsValid)
             {
-                await Fam.EditEmpFamilyInfo(emp)
+                await Fam.EditEmpFamilyInfo(emp);
                 return RedirectToAction("GetEmpFamilyInfo");
             }
             else

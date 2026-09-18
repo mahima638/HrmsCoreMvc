@@ -41,7 +41,7 @@ namespace HrmsCoreMvc.Services
             return await db.EmpFamily.FindAsync(id);
         }
 
-        List<Task<EmpFamilyInfo>> IEmpFamilyInfo.GetEmpFamilyInfo()
+        public Task<List<EmpFamilyInfo?>> GetFamilyInfoByUserId(int userId)
         {
             throw new NotImplementedException();
         }

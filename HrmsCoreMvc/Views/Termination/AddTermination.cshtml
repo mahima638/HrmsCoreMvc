@@ -1,0 +1,57 @@
+﻿
+@using HrmsCoreMvc.Models.Termination
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Termination
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white"><h4>Add Termination</h4></div>
+        <div class="card-body">
+            <form asp-action="AddTermination" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="UserId" class="form-label">Employee</label>
+                    <select asp-for="UserId" class="form-select"
+                            asp-items="@(new SelectList(ViewBag.Users, "UserId", "FullName"))">
+                        <option value="">-- Select Employee --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TerminationType" class="form-label">Termination Type</label>
+                    <select asp-for="TerminationType" class="form-select">
+                        <option value="">-- Select Type --</option>
+                        <option>Misconduct</option>
+                        <option>Performance</option>
+                        <option>Policy Violation</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NoticeDate" class="form-label">Notice Date</label>
+                    <input asp-for="NoticeDate" type="date" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ResignDate" class="form-label">Termination Date</label>
+                    <input asp-for="ResignDate" type="date" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Reason" class="form-label">Reason</label>
+                    <input asp-for="Reason" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
