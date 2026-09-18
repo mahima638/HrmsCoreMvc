@@ -14,51 +14,46 @@ namespace HrmsCoreMvc.Controllers
             cs = tbs;
         }
 
-        public IActionResult GetAllTaskBoards()
+        public async Task<IActionResult> GetAllTaskBoards()
         {
-            var taskBoards = cs.GetAllTaskBoards();
-            return View(taskBoards);
+            var taskBoards = await cs.GetAllTaskBoards();
+            return View("~/Views/Project/GetAllTaskBoards.cshtml", taskBoards);
         }
 
-        public IActionResult AddTaskBoard(TaskBoard taskBoard)
+        public async Task<IActionResult> AddTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
             {
-                cs.AddTaskBoard(taskBoard);
+                await cs.AddTaskBoard(taskBoard);
                 TempData["SuccessMessage"] = "Task Board Added Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
             return View(taskBoard);
         }
 
-        public IActionResult UpdateTaskBoard(TaskBoard taskBoard)
+        public async Task<IActionResult> UpdateTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateTaskBoard(taskBoard);
+                await cs.UpdateTaskBoard(taskBoard);
                 TempData["SuccessMessage"] = "Task Board Updated Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
             return View(taskBoard);
         }
 
-        public IActionResult DeleteTaskBoard(int taskBoardId)
+        public async Task<IActionResult> DeleteTaskBoard(int taskBoardId)
         {
-            cs.DeleteTaskBoard(taskBoardId);
+            await cs.DeleteTaskBoard(taskBoardId);
             TempData["SuccessMessage"] = "Task Board Deleted Successfully!";
             return RedirectToAction("GetAllTaskBoards");
         }
 
-        public IActionResult SearchTaskBoards(string searchtaskboard)
+        public async Task<IActionResult> SearchTaskBoards(string searchtaskboard)
         {
-            var taskBoards = cs.SearchTaskBoards(searchtaskboard);
+            var taskBoards = await cs.SearchTaskBoards(searchtaskboard);
             return View("GetAllTaskBoards", taskBoards);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
+        
     }
 }

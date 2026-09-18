@@ -6,8 +6,14 @@ using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+using HrmsCoreMvc.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+=======
 //using Microsoft.AspNetCore.Authentication.Cookies;
 //using Microsoft.AspNetCore.Authentication.Google;
+>>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
@@ -20,13 +26,15 @@ builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
-
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
+builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
-
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-
 builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
-
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 
 
@@ -34,6 +42,10 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
 //builder.Services
 //    .AddAuthentication(options =>
 //    {
@@ -73,6 +85,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 //app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 
