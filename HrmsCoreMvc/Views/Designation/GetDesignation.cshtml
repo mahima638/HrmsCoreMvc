@@ -1,14 +1,27 @@
 ﻿@model List<HrmsCoreMvc.Models.Designation>
 
-<h2>All Designation</h2>
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
 
-<table class="table table-bordered">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+<h2>All Designation</h2>
+<button type="button"
+class="btn btn-primary"
+data-bs-toggle="modal"
+data-bs-target="#addDesignationModal">
++ Add Designation
+</button>
+
+<table id="designationTable"class="table table-bordered">
     <thead>
         <tr>
             <th>Designation Id</th>
             <th>Designation Name</th>
             <th>Status</th>
-            <th>Created At</th>
+            
             <th>Created By</th>
 
             <th>Action</th>
@@ -22,7 +35,7 @@
                 <td>@des.DesignationId</td>
                 <td>@des.Name</td>
                 <td>@des.status</td>
-                <td>@des.CreatedAt</td>
+                
                 <td>@des.CreatedBy</td>
 
 
@@ -36,3 +49,72 @@
         }
     </tbody>
 </table>
+    <div class="modal fade" id="addDesignationModal" tabindex="-1">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Designation</h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form asp-controller="Designation"
+                          asp-action="AddDesignation"
+                          method="post">
+
+                        <div class="mb-3">
+                            <label>Designation Name</label>
+
+                            <input type="text"
+                                   name="Name"
+                                   class="form-control" />
+                        </div>
+
+                        <div class="mb-3"> 
+                        <label>Department</label> 
+                            <select name="DepartmentId" class="form-control">
+                        @foreach (var dept in ViewBag.Departments) {
+                       <option value="@dept.DepartmentId"> @dept.Name </option>
+                        }
+                    </select> </div>
+                        <div class="mb-3">
+                            <label>Status</label>
+
+                            <select name="Status"
+                                    class="form-control">
+
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+
+                            </select>
+                        </div>
+
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Add Designation
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+    <script>$(document).ready(function() { $('#designationTable').DataTable(); });</script>
+
