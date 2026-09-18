@@ -8,16 +8,26 @@ namespace HrmsCoreMvc.Controllers
 {
     public class ProjectController : Controller
     {
-        private readonly IProjectService cs;            
-        public ProjectController(IProjectService ps)
+        private readonly IProjectService cs;    
+        private readonly ApplicationDbContext db;
+        public ProjectController(IProjectService ps, ApplicationDbContext db)
         {
             cs = ps;
+            this.db = db;
         }
 
         public async Task<IActionResult> GetAllProjects()
         {
             var projects = await cs.GetAllProjects();
             return View(projects);
+        }
+
+        [HttpGet]
+        public IActionResult AddProject()
+        {
+            ViewBag.TeamMembers = db.user.Select(u => new{
+            u.UserId, FullName = u.FirstName + " " + u.LastName}).ToList();
+            return View();
         }
 
         [HttpPost]
@@ -29,6 +39,9 @@ namespace HrmsCoreMvc.Controllers
                 TempData["SuccessMessage"] = "Project Added Successfully!";
                 return RedirectToAction("GetAllProjects");
             }
+
+            ViewBag.TeamMembers = db.user.Select(u => new {
+                u.UserId, FullName = u.FirstName + " " + u.LastName}).ToList();
             return View(project);
         }
 

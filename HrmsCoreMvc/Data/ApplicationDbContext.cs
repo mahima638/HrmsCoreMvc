@@ -66,7 +66,7 @@ namespace HrmsCoreMvc.Data
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.tasks)
+                .WithMany(p => p.Tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -80,12 +80,6 @@ namespace HrmsCoreMvc.Data
                 .HasOne(tm => tm.User)
                 .WithMany()
                 .HasForeignKey(tm => tm.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
-                .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Event>()

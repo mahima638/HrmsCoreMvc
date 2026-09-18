@@ -26,14 +26,9 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
 builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
-
-
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
-
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-
 builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
-
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 
 
@@ -41,18 +36,18 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddControllersWithViews();
 
 
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    })
-    .AddCookie()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    });
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//    })
+//    .AddCookie()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    });
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();

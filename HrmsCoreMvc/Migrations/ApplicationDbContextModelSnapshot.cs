@@ -185,8 +185,7 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DepartmentId");
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -280,7 +279,6 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DepartmentLeavesId");
@@ -847,7 +845,6 @@ namespace HrmsCoreMvc.Migrations
                     b.ToTable("resignations");
                 });
 
-
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -863,11 +860,10 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
@@ -980,12 +976,11 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ModifiedAt");
-
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -1050,77 +1045,64 @@ namespace HrmsCoreMvc.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("AboutEmployee")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfJoining")
+                    b.Property<DateTime?>("DateOfJoining")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DesignationId")
+                    b.Property<int?>("DesignationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportingManager")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -1341,7 +1323,7 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany("tasks")
+                        .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1400,7 +1382,7 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1411,13 +1393,13 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Departments");
@@ -1430,7 +1412,7 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1460,20 +1442,17 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
                         .WithMany("user")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
                         .WithMany("user")
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HrmsCoreMvc.Models.Role", "Role")
                         .WithMany("user")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Role");
 
@@ -1519,528 +1498,10 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
-                {
-                    b.Navigation("projectusers");
-
-                    b.Navigation("tasks");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
-                {
-                    b.Navigation("TaskMembers");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskBoard", b =>
                 {
                     b.Navigation("Tasks");
-                });
 
-            modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
-                {
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
-                {
-                    b.Navigation("projectsUser");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
-                {
-                    b.Property<int>("TId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TId"));
-
-                    b.Property<DateTime>("NoticeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ResignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TerminationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("terminations");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("AboutEmployee")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfJoining")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DesignationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("ProfilePicture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReportingManager")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("DesignationId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
-                        .WithMany("designation")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("departments");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Events.Event", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Events.EventType", "EventType")
-                        .WithMany("Events")
-                        .HasForeignKey("EventTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("EventType");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
-                        .WithMany("DepartmentLeaves")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("MasterLeaveType");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Leave.LeaveBalance", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Leave.DepartmentLeaves", "DepartmentLeaves")
-                        .WithMany()
-                        .HasForeignKey("DepartmentLeavesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
-                        .WithMany()
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", null)
-                        .WithMany("LeaveBalances")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId");
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DepartmentLeaves");
-
-                    b.Navigation("MasterLeaveType");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Leave.LeaveRequest", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Leave.MasterLeaveType", "MasterLeaveType")
-                        .WithMany("LeaveRequests")
-                        .HasForeignKey("MasterLeaveTypeLeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MasterLeaveType");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Deduction", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.PayRoll.DeductionType", "DeductionType")
-                        .WithMany("Deductions")
-                        .HasForeignKey("DeductionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "Designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("DeductionType");
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Designation");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Earning", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "Designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.PayRoll.EarningType", "EarningType")
-                        .WithMany("Earnings")
-                        .HasForeignKey("EarningTypeEarntypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Designation");
-
-                    b.Navigation("EarningType");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Payslips", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Timesheet", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.ProjectsUser", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "AllProjects")
-                        .WithMany("projectusers")
-                        .HasForeignKey("ProjectsProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "user")
-                        .WithMany("projectsUser")
-                        .HasForeignKey("UsersUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AllProjects");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany("tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Projects.TaskBoard", "TaskBoard")
-                        .WithMany("Tasks")
-                        .HasForeignKey("TaskBoardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("TaskBoard");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
-                        .WithMany()
-                        .HasForeignKey("tasksTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("tasks");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskMembers", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "Task")
-                        .WithMany("TaskMembers")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "Departments")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Departments");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
-                {
-                    b.HasOne("HrmsCoreMvc.Models.Departments", "departments")
-                        .WithMany("user")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Designation", "designation")
-                        .WithMany("user")
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HrmsCoreMvc.Models.Role", "Role")
-                        .WithMany("user")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("departments");
-
-                    b.Navigation("designation");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
-                {
-                    b.Navigation("designation");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
-                {
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Events.EventType", b =>
-                {
-                    b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Leave.MasterLeaveType", b =>
-                {
-                    b.Navigation("DepartmentLeaves");
-
-                    b.Navigation("LeaveBalances");
-
-                    b.Navigation("LeaveRequests");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.DeductionType", b =>
-                {
-                    b.Navigation("Deductions");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
-                {
-                    b.Navigation("Earnings");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
-                {
                     b.Navigation("projectusers");
-
-                    b.Navigation("tasks");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
