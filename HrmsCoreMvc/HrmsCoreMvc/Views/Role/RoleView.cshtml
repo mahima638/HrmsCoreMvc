@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model Role
+
+<form asp-action="RoleView" method="post">
+
+    <div class="mb-3">
+        <label>Role Name</label>
+        <input type="text" asp-for="RoleName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <select asp-for="Status" class="form-control">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
+
+    <input type="submit" value="Add Role" class="btn btn-primary" />
+
+</form>

@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model HrmsCoreMvc.Models.Promotion.Promotion
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label asp-for="UserId"></label>
+
+        <select asp-for="UserId"
+                class="form-control"
+                asp-items="@(new SelectList(ViewBag.Users, "UserId", "Name"))">
+
+            <option value="">-- Select Employee --</option>
+
+        </select>
+
+        <span asp-validation-for="UserId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DesignationFrom"></label>
+
+        <input asp-for="DesignationFrom"
+               class="form-control" />
+
+        <span asp-validation-for="DesignationFrom"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DesignationTo"></label>
+
+        <input asp-for="DesignationTo"
+               class="form-control" />
+
+        <span asp-validation-for="DesignationTo"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Date"></label>
+
+        <input asp-for="Date"
+               type="date"
+               class="form-control" />
+
+        <span asp-validation-for="Date"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+</form>

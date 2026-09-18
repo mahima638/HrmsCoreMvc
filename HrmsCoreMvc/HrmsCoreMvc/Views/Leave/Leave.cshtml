@@ -1,0 +1,91 @@
+﻿@model List<HrmsCoreMvc.Models.Leave.MasterLeaveType>
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add Leave Type
+</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" asp-action="Leave">
+            <div class="modal-body">
+            
+                    <label class="form-label">Leave Type</label>
+                    <input type="text" name="LeaveType" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+           </form>
+        </div>
+    </div>
+</div>
+
+<table id ="leaveTable" class="table table-bordered table-striped">
+    <thead class="table-secondary"> 
+        <tr>
+            <th>Leave Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>   
+    </thead>
+    <tbody>
+        @foreach (var leaveType in Model)
+        {
+            <tr>
+                <td>@leaveType.LeaveType</td>
+                <td>
+                @if (@leaveType.Status == "Active")
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@leaveType.LeaveTypeId" class="btn btn-primary">Edit</a>
+                    <a asp-action="DeleteLeaveType" asp-route-leaveTypeId="@leaveType.LeaveTypeId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+     
+</table >
+
+
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+        $('#leaveTable').DataTable({
+        pageLength: 10,
+
+        lengthMenu: [5, 10, 25, 50],
+
+        ordering: true,
+
+        searching: true,
+
+        paging: true,
+
+        info: true
+        });
+
+        });
+    </script>
+}

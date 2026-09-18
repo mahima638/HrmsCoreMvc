@@ -1,0 +1,62 @@
+﻿@model List<HrmsCoreMvc.Models.Leave.DepartmentLeaves>
+
+<table id="leaveDetails" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Department Name</th>
+            <th>Leave Type</th>
+            <th>No of Leaves</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Department.Name</td>
+                <td>@item.MasterLeaveType.LeaveType</td>
+                <td>@item.LeavesCount</td>
+                <td>
+                    @if (item.Status == "Active")
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="DeleteDepartmentLeave"
+                       asp-route-id="@item.DepartmentLeavesId"
+                       class="btn btn-sm btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#leaveDetails').DataTable({
+                pageLength: 10,
+
+                lengthMenu: [5, 10, 25, 50],
+
+                ordering: true,
+
+                searching: true,
+
+                paging: true,
+
+                info: true
+            } );
+        });
+    </script>
+}
