@@ -8,6 +8,7 @@ using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
+using HrmsCoreMvc.Models.Ticketing;
 
 using Task = HrmsCoreMvc.Models.Projects.Task;
 
@@ -37,8 +38,13 @@ namespace HrmsCoreMvc.Data
 
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
-        public DbSet<Resignation> resignations { get; set; }        
-        
+        public DbSet<Resignation> resignations { get; set; }
+        public DbSet<Ticket> tickets { get; set; }
+        public DbSet<TicketComment> ticketcomments { get; set; }
+        public DbSet<TicketResolution> ticketresolutions { get; set; }
+        public DbSet<TicketAttachment> ticketattachments { get; set; }
+        public DbSet<TicketHistory> tickethistories { get; set; }
+
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
         public DbSet<Earning> Earning { get; set; }
@@ -191,6 +197,50 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.RaisedByUser)
+                .WithMany()
+                .HasForeignKey(t => t.RaisedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.AssignedToUser)
+                .WithMany()
+                .HasForeignKey(t => t.AssignedTo)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.AssignedByUser)
+                .WithMany()
+                .HasForeignKey(t => t.AssignedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketComment>()
+                .HasOne(c => c.Ticket)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketResolution>()
+                .HasOne(r => r.Ticket)
+                .WithOne(t => t.Resolution)
+                .HasForeignKey<TicketResolution>(r => r.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketAttachment>()
+                .HasOne(a => a.Ticket)
+                .WithMany(t => t.Attachments)
+                .HasForeignKey(a => a.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketHistory>()
+                .HasOne(h => h.Ticket)
+                .WithMany()
+                .HasForeignKey(h => h.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
 
             modelBuilder.Entity<ProjectsUser>().HasKey(pu => new
             {

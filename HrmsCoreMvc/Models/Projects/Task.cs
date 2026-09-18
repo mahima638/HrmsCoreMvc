@@ -25,6 +25,7 @@ namespace HrmsCoreMvc.Models.Projects
         public int TaskBoardId { get; set; }
         public TaskBoard? TaskBoard { get; set; }
         public int ProjectId { get; set; }
+
         public List<TaskMembers>? TaskMembers { get; set; } 
     }
 }
