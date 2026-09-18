@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "IxqV99z3DkI=",
+  "dgSpecHash": "HvhXa/9lZyg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\MASSTECH\\Projects\\NEWPROULOAD\\HrmsCoreMvc\\HrmsCoreMvc.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Documents\\Abhishek1305Masstech\\HrmsCoreMvcGit\\HrmsCoreMvc.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.53.0\\azure.core.1.53.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.21.0\\azure.identity.1.21.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\10.0.12\\microsoft.aspnetcore.authentication.google.10.0.12.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\10.0.3\\microsoft.bcl.asyncinterfaces.10.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",

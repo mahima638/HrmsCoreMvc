@@ -12,9 +12,11 @@
 
         public string PhoneNumber { get; set; }
 
-        public DateTime DateOfJoining { get; set; }
+        public DateTime  ? DateOfJoining { get; set; }
 
         public string Status { get; set; }
+
+        public string ProfilePicture { get; set; }
 
 
 

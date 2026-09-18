@@ -15,5 +15,10 @@ namespace HrmsCoreMvc.Repositories
         public Task AllocateLeaveDeptwise(int deptId,int leaveTypeId,int noOfLeaves);
 
         public Task DeleteLeaveType(int leaveTypeId);
+
+        Task<List<DepartmentLeaves>> FetchDeptLeaveDetails();
+
+        public Task UpdateLeaveTypeStatus(int leaveTypeId, bool isActive);
+
     }
 }

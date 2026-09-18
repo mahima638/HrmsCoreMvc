@@ -1,26 +1,16 @@
 ﻿using HrmsCoreMvc.Models;
-using HrmsCoreMvc.Models;
-using HrmsCoreMvc.Models.Attendance;
+using Microsoft.EntityFrameworkCore;
 using HrmsCoreMvc.Models.Attendance;
 using HrmsCoreMvc.Models.Events;
-using HrmsCoreMvc.Models.Events;
-using HrmsCoreMvc.Models.Leave;
 using HrmsCoreMvc.Models.Leave;
 using HrmsCoreMvc.Models.PayRoll;
-using HrmsCoreMvc.Models.PayRoll;
-using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Models.Promotion;
-using HrmsCoreMvc.Models.Promotion;
-using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
-using HrmsCoreMvc.Models.Termination;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using HrmsCoreMvc.Models;
+
 using Task = HrmsCoreMvc.Models.Projects.Task;
+
 
 namespace HrmsCoreMvc.Data
 {
@@ -56,8 +46,8 @@ namespace HrmsCoreMvc.Data
         public DbSet<Payslips> Payslips { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
         public DbSet<TrainingType> TraningType { get; set; }
-        public DbSet<Trainer> Trainer { get; set; }
         public DbSet<Training> Training { get; set; }
+        public DbSet<Trainer> Trainer { get; set; }
         public DbSet<AdminDocuments> AdminDocuments { get; set; }
         public DbSet<AddEmpDocName> AddEmpDocName { get; set; }
         public DbSet<AddAdminDocName> AddAdminDocName { get; set; }

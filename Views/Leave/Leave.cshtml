@@ -1,4 +1,4 @@
-﻿@model HrmsCoreMvc.Models.Leave.MasterLeaveType
+﻿@model List<HrmsCoreMvc.Models.Leave.MasterLeaveType>
 
 
 
@@ -19,8 +19,8 @@
             <form method="post" asp-action="Leave">
             <div class="modal-body">
             
-                    <label asp-for="LeaveType" class="form-label"></label>
-                    <input type="text" asp-for="LeaveType"/>
+                    <label class="form-label">Leave Type</label>
+                    <input type="text" name="LeaveType" class="form-control" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -40,11 +40,20 @@
         </tr>   
     </thead>
     <tbody>
-        @foreach (var leaveType in ViewBag.LeaveTypeList)
+        @foreach (var leaveType in Model)
         {
             <tr>
                 <td>@leaveType.LeaveType</td>
-                <td>@leaveType.Status</td>
+                <td>
+                @if (@leaveType.Status == "Active")
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@leaveType.LeaveTypeId" class="btn btn-primary">Edit</a>
                     <a asp-action="DeleteLeaveType" asp-route-leaveTypeId="@leaveType.LeaveTypeId" class="btn btn-danger">Delete</a>

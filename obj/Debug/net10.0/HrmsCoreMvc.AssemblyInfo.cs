@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("ddc57bb0-6f3a-427e-916f-95e7d94cd843")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("HrmsCoreMvc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a534f169cfc89cd73761b4a2b544abba4e363929")]
 [assembly: System.Reflection.AssemblyProductAttribute("HrmsCoreMvc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HrmsCoreMvc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
