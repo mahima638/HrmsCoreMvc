@@ -3,6 +3,7 @@ using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HrmsCoreMvc.Controllers
 {
@@ -34,42 +35,68 @@ namespace HrmsCoreMvc.Controllers
                 return View(lg);
             }
             if (lg.Email == "Admin@gmail.com" && lg.Password == "admin123") {
-
+                HttpContext.Session.SetString("Role", "Admin");
                 return RedirectToAction("Dashboard", "Admin");
             
             }
-            //if (lg.RoleName == "Manager") {
-            //    return RedirectToAction("Dashboard", "Manager");
-            //}
 
+            var user = db.user.FirstOrDefault(u => u.Email == lg.Email && u.PasswordHash == lg.Password);
+
+            if (user == null) {
+
+                ModelState.AddModelError("","Invalid email or password");
+                return View(lg);
+            }
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+
+            var role = db.role.FirstOrDefault(r => r.RoleId == user.RoleId);
+
+            if (role == null)
+            {
+
+                ModelState.AddModelError("", "Role not found");
+                return View(lg);
+            }
            
 
-           
-            return RedirectToAction("Dashboard", "User");
+            HttpContext.Session.SetString("Role", role.RoleName);
 
-        }
-        public IActionResult GoogleLogin()
-        {
-            var properties = new AuthenticationProperties
+            
+
+            if (role?.RoleName == "Manager")
             {
-                RedirectUri = "/Account/GoogleResponse"
-            };
-
-            return Challenge(
-                properties,
-                GoogleDefaults.AuthenticationScheme);
-        }
-
-        public IActionResult GoogleResponse()
-        {
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-
-            if (email == "admin.hrms12@gmail.com")
-            {
-                return RedirectToAction("Dashboard", "Admin");
+                return RedirectToAction("Dashboard", "Manager");
             }
 
+
+
+
+
             return RedirectToAction("Dashboard", "User");
+
         }
+        //public IActionResult GoogleLogin()    
+        //{
+        //    var properties = new AuthenticationProperties
+        //    {
+        //        RedirectUri = "/Account/GoogleResponse"
+        //    };
+
+        //    return Challenge(
+        //        properties,
+        //        GoogleDefaults.AuthenticationScheme);
+        //}
+
+        //public IActionResult GoogleResponse()
+        //{
+        //    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+
+        //    if (email == "admin.hrms12@gmail.com")
+        //    {
+        //        return RedirectToAction("Dashboard", "Admin");
+        //    }
+
+        //    return RedirectToAction("Dashboard", "User");
+        //}
     }
 }

@@ -38,6 +38,36 @@ namespace HrmsCoreMvc.Services.Reports
             return data;
         }
 
+        public async Task<EmployeeChartDto> GetEmployeeChartDataAsync()
+        {
+            var groupedData = await db.user.Where(x => x.Role != null && x.Role.RoleName.Contains("Employee") && x.CreatedAt != null)
+                .GroupBy(x => new
+                {
+                    Year = x.CreatedAt.Value.Year,
+                    Month = x.CreatedAt.Value.Month
+                })
+                .Select(g => new
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    ActiveCount = g.Count(x => x.Status == "Active"),
+                    InactiveCount = g.Count(x => x.Status == "Inactive")
+                })
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
+                .ToListAsync();
+
+            var result = new EmployeeChartDto();
+            foreach (var item in groupedData)
+            {
+                result.Labels.Add($"{item.Year}-{item.Month:D2}");
+                result.ActiveData.Add(item.ActiveCount);
+                result.InactiveData.Add(item.InactiveCount);
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<EmployeeReportViewModel>> GetEmployeeReportsAsync()
         {
             return await db.user.Include(u => u.departments).Select(u => new EmployeeReportViewModel
@@ -48,7 +78,8 @@ namespace HrmsCoreMvc.Services.Reports
                 DepartmentName = u.departments.Name,
                 PhoneNumber = u.PhoneNumber,
                 DateOfJoining = u.DateOfJoining,
-                Status = u.Status
+                Status = u.Status,
+                ProfilePicture = u.ProfilePicture
             }).ToListAsync();
         }
 
@@ -93,6 +124,7 @@ namespace HrmsCoreMvc.Services.Reports
                 PhoneNumber = u.PhoneNumber,
                 DateOfJoining = u.DateOfJoining,
                 Status = u.Status,
+                ProfilePicture = u.ProfilePicture
             }).ToListAsync();
 
             return result;

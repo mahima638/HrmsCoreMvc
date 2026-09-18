@@ -15,5 +15,7 @@ namespace HrmsCoreMvc.Repositories.Reports
         Task<IEnumerable<EmployeeReportViewModel>> GetEmployeeReportsAsync();
 
         Task<IEnumerable<EmployeeReportViewModel>> SortEmployeeReportsAsync(string? sortType, string? sortStatus);
+
+        Task<EmployeeChartDto> GetEmployeeChartDataAsync();
     }
 }

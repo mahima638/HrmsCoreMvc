@@ -48,5 +48,8 @@ namespace HrmsCoreMvc.Models.Projects
         public List<Task>? tasks { get; set; }
         
 
+        //public List<ProjectsUser> projectusers { get; set; } = new List<ProjectsUser>();
+        public List<Task> Tasks { get; set; } = new List<Task>();
+
     }
 }
