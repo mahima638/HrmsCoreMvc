@@ -14,6 +14,29 @@ namespace HrmsCoreMvc.Services.Reports
             this.db = db;
         }
 
+        public async Task<TaskChartDto> fetchCharts()
+        {
+            var tasks = await db.tasks.Where(x => x.Status != null).ToListAsync();
+
+            if (tasks == null || !tasks.Any()) return new TaskChartDto();
+            int completedTasks = tasks.Count(x => x.Status == "Completed");
+            int pendingTasks = tasks.Count(x => x.Status == "Pending");
+            int inprogressTasks = tasks.Count(x => x.Status == "Inprogress");
+            int onholdTasks = tasks.Count(x => x.Status == "Onhold");
+
+            double totaltasks = completedTasks + pendingTasks + inprogressTasks + onholdTasks;
+            return new TaskChartDto
+            {
+                ChartLabels = new List<string> { "Completed", "Pending", "Inprogress", "OnHold" },
+                ChartCompleted = new List<double> {  totaltasks > 0 ? Math.Round(((double)completedTasks/totaltasks)*100,2):0},
+                ChartPending = new List<double> {  totaltasks > 0 ? Math.Round(((double)pendingTasks/totaltasks)*100,2):0},
+                ChartInProgress = new List<double> {  totaltasks > 0 ? Math.Round(((double)inprogressTasks/totaltasks)*100,2):0},
+                ChartOnHold = new List<double> { totaltasks > 0 ? Math.Round(((double)onholdTasks / totaltasks) * 100, 2) : 0 }
+
+            };
+
+        }
+
         public async Task<int> fetchCompletedTasks()
         {
             var data = await db.tasks.Where(t => t.Status == "Completed").CountAsync();

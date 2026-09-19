@@ -13,20 +13,26 @@ namespace HrmsCoreMvc.Controllers.Reports
         }
 
         [HttpGet]
-        public async Task<IActionResult> Getreports(string? priority, string? status, string? sortType)
+        public async Task<IActionResult> GetTaskreports(string? priority, string? status, string? sortType)
         {
             var completedTasks = await t.fetchCompletedTasks();
             var onHoldTasks = await t.fetchOnHoldTasks();
             var overdueTasks = await t.fetchOverdueTasks();
             var fetchTasks = await t.fetchTasks();
+            var chartData = await t.fetchCharts();
             if (!string.IsNullOrEmpty(priority) || string.IsNullOrEmpty(status) || string.IsNullOrEmpty(sortType)) 
             {
                 fetchTasks = await t.sortTasks(priority,status,sortType);
             }
+            ViewBag.Chartlabels = chartData.ChartLabels;
+            ViewBag.ChartCompleted = chartData.ChartCompleted;
+            ViewBag.ChartInprogress = chartData.ChartInProgress;
+            ViewBag.ChartPending = chartData.ChartPending;
+            ViewBag.ChartOnhold = chartData.ChartOnHold;
             ViewBag.completedTasks = completedTasks;
             ViewBag.onHoldTasks = onHoldTasks;
             ViewBag.overdueTasks = overdueTasks;
-            return View(fetchTasks);
+            return View("~/View/Reports/GetTaskreports.cshtml",fetchTasks);
 
 
         }

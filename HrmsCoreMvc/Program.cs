@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
+using HrmsCoreMvc.Repositories.Terminations;
+using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
