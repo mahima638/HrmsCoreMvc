@@ -6,9 +6,9 @@ namespace HrmsCoreMvc.Models.Projects
     {
         [Key]
         public int TaskId { get; set; }
+        public AllProjects? Project { get; set; }
 
         [Required(ErrorMessage = "Task Title is required.")]
-        public AllProjects? Project { get; set; }
         public string? Title { get; set; }
 
         [Required(ErrorMessage = "Task Description is required.")]

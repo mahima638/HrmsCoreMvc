@@ -1,11 +1,12 @@
-﻿namespace HrmsCoreMvc.Repositories.Reports
+﻿using HrmsCoreMvc.Models.Reports;
+
+namespace HrmsCoreMvc.Repositories.Reports
 {
     public interface IPayslipService
     {
-        Task<double> TotalPayroll { get; set; }
+        Task<List<PayslipViewModel>> fetchPayslips();
 
-       
-
+        Task<List<PayslipViewModel>> sortPayslips(string? sortMonth, string? sortType);
 
     }
 }

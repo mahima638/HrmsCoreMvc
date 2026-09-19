@@ -23,14 +23,14 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<ProjectChartDto> fetchCharts()
         {
-            var projects = await db.AllProjects.Where(x => x.Status != null).Include(x => x.tasks).ToListAsync();
+            var projects = await db.AllProjects.Where(x => x.Status != null).Include(x => x.Tasks).ToListAsync();
 
             if (projects == null || !projects.Any()) return new ProjectChartDto();
 
             int ActiveProjects = projects.Count(x => x.Status == "Active");
             int InActiveProjects = projects.Count(x => x.Status == "Inactive");
-            int CompletedTasks = projects.Where(x => x.tasks != null).SelectMany(x => x.tasks).Count(t => t.Status == "Completed");
-            int InprogressTasks = projects.Where(x => x.tasks != null).SelectMany(x => x.tasks).Count(t => t.Status == "Inprogress");
+            int CompletedTasks = projects.Where(x => x.Tasks != null).SelectMany(x => x.Tasks).Count(t => t.Status == "Completed");
+            int InprogressTasks = projects.Where(x => x.Tasks != null).SelectMany(x => x.Tasks).Count(t => t.Status == "Inprogress");
 
             double total = ActiveProjects + InActiveProjects + CompletedTasks + InprogressTasks;
             return new ProjectChartDto

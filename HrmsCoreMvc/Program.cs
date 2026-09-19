@@ -6,8 +6,11 @@ using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.AspNetCore.Authentication.Cookies;
-//using Microsoft.AspNetCore.Authentication.Google;
+
+using HrmsCoreMvc.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
@@ -22,19 +25,22 @@ builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
-
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
+builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
-
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-
 builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
-
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+
 
 //builder.Services
 //    .AddAuthentication(options =>
@@ -75,6 +81,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 //app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 

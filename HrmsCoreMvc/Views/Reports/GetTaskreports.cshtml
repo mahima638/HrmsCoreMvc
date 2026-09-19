@@ -157,3 +157,149 @@
 </div>
 
 
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="get" asp-controller="TaskReport" asp-action="GetTaskreports" id="filterForm">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold m-0">All Tasks List</h5>
+                <div class="d-flex gap-2">
+                    <select name="priority" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Priority</option>
+                        <option value="Low" selected="@(ViewBag.SelectedPriorityType == "Low")">Low</option>
+                        <option value="Medium" selected="@(ViewBag.SelectedPriorityType == "Medium")">Medium</option>
+                        <option value="High" selected="@(ViewBag.SelectedPriorityType == "High")">High</option>
+                    </select>
+
+                    <!-- Sorting Filter Dropdown -->
+                    <select name="status" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Status</option>
+                        <option value="Completed" selected="@(ViewBag.SelecetedStatusType == "Completed")">Completed</option>
+                        <option value="Pending" selected="@(ViewBag.SelecetedStatusType == "Pending")">Pending</option>
+                        <option value="Inprogress" selected="@(ViewBag.SelecetedStatusType == "Inprogress")">Inprogress</option>
+                        <option value="Onhold" selected="@(ViewBag.SelecetedStatusType == "Onhold")">Onhold</option>
+                    </select>
+
+                    <select name="sortType" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Priority</option>
+                        <option value="Recently Added" selected="@(ViewBag.SelectedPriorityType == "Recently Added")">Recently Added</option>
+                        <option value="Ascending" selected="@(ViewBag.SelectedPriorityType == "Ascending")">Ascending</option>
+                        <option value="Descending" selected="@(ViewBag.SelectedPriorityType == "Descending")">Descending</option>
+                        <option value="Last Month" selected="@(ViewBag.SelectedPriorityType == "Last Month")">Last Month</option>
+                        <option value="Last 7 Days" selected="@(ViewBag.SelectedPriorityType == "Last 7 Days")">Last 7 Days</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table id="AllProjectsTable" class="table align-middle table-hover w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>Task Id</th>
+                        <th>Task Name</th>
+                        <th>Project Name</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tsk in Model)
+                    {
+                        <tr>
+                            <td>@tsk.TaskId</td>
+                            <td>@tsk.TaskName</td>
+                            <td>@tsk.ProjectName</td>
+                            <td>
+                                @tsk.DueDate
+                            </td>
+                            <td>
+                                @if (tsk.Priority == "High")
+                                {
+                                    <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-3"> <span class="me-1">•</span>High</span>
+                                }
+                                else if (tsk.Priority == "Medium")
+                                {
+                                    <span class="badge bg-warning-subtle text-warning px-3 py-1 rounded-3"> <span class="me-1">•</span> Medium</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success-subtle text-success px-3 py-1 rounded-3">
+                                        <span class="me-1">•</span> Low
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                @if (tsk.Status == "Active")
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+    new Chart(document.getElementById('alltakssChart'),{
+        type:'doughnut',
+        data:{
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Chartlabels)),
+            datasets: [{
+                label: 'Projects & Tasks Summary',
+                data: [
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartCompleted)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartPending)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartInprogress)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartOnhold)?.FirstOrDefault() ?? 0))
+                ],
+                backgroundColor: [
+                    '#00bcd4', // Active Projects (Cyan)
+                    '#9c27b0', // Inactive Projects (Purple)
+                    '#ffc107', // In Progress Tasks (Yellow)
+                    '#4caf50'  // Completed Tasks (Green)
+                ],
+                borderWidth: 2
+
+            }]
+        },
+        options:{
+            maintainAspectRatio: false,
+            plugins:{
+                legend:{
+                    position : 'right',
+                    labels:{
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#AllProjectsTable').DataTable({
+                "dom": 'frtip'
+            });
+            $('.dropdown-toggle').dropdown();
+        });
+
+    </script>
+}

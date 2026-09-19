@@ -52,8 +52,13 @@ namespace HrmsCoreMvc.Data
         public DbSet<AddEmpDocName> AddEmpDocName { get; set; }
         public DbSet<AddAdminDocName> AddAdminDocName { get; set; }
 
+        public DbSet<EmpEducation> EmpEducation { get; set; }
+        public DbSet<EmpExperience> EmpExperience { get; set; }
+        public DbSet<EmpBankDetails> EmpBankDetails { get; set; }
+        public DbSet<EmpFamilyInfo> EmpFamily{ get; set; }
 
-        public DbSet<EmployeeSalary> EmployeeSalaries { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,7 +76,7 @@ namespace HrmsCoreMvc.Data
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.tasks)
+                .WithMany(p => p.Tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -85,12 +90,6 @@ namespace HrmsCoreMvc.Data
                 .HasOne(tm => tm.User)
                 .WithMany()
                 .HasForeignKey(tm => tm.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
-                .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Event>()
@@ -230,13 +229,7 @@ namespace HrmsCoreMvc.Data
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<EmployeeSalary>(u =>
-            {
-                u.HasOne(x => x.users)
-                .WithOne(x => x.employeeSalary)
-                .HasForeignKey<EmployeeSalary>(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
+
         }
         
         

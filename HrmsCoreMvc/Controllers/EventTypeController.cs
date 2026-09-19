@@ -13,50 +13,45 @@ namespace HrmsCoreMvc.Controllers
             cs = ets;
         }
 
-        public IActionResult GetAllEventTypes()
+        public async Task<IActionResult> GetAllEventTypes()
         {
-            var eventTypes = cs.GetAllEventTypes();
-            return View(eventTypes);
+            var eventTypes = await cs.GetAllEventTypes();
+            return View("~/Views/Event/GetAllEventTypes.cshtml", eventTypes);
         }
 
-        public IActionResult AddEventType(EventType eventType)
+        public async Task<IActionResult> AddEventType(EventType eventType)
         {
             if (ModelState.IsValid)
             {
-                cs.AddEventType(eventType);
+                await cs.AddEventType(eventType);
                 TempData["SuccessMessage"] = "Event Type Added Successfully!";
                 return RedirectToAction("GetAllEventTypes");
             }
             return View(eventType);
         }
 
-        public IActionResult UpdateEventType(EventType eventType)
+        public async Task<IActionResult> UpdateEventType(EventType eventType)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateEventType(eventType);
+                await cs.UpdateEventType(eventType);
                 TempData["SuccessMessage"] = "Event Type Updated Successfully!";
                 return RedirectToAction("GetAllEventTypes");
             }
             return View(eventType);
         }
 
-        public IActionResult DeleteEventType(int eventTypeId)
+        public async Task<IActionResult> DeleteEventType(int eventTypeId)
         {
-            cs.DeleteEventType(eventTypeId);
+            await cs.DeleteEventType(eventTypeId);
             TempData["SuccessMessage"] = "Event Type Deleted Successfully!";
             return RedirectToAction("GetAllEventTypes");
         }
 
-        public IActionResult SearchEventTypes(string searcheventtype)
+        public async Task<IActionResult> SearchEventTypes(string searcheventtype)
         {
-            var eventTypes = cs.SearchEventTypes(searcheventtype);
+            var eventTypes = await cs.SearchEventTypes(searcheventtype);
             return View("GetAllEventTypes", eventTypes);
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

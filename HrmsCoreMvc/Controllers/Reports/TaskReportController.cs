@@ -25,6 +25,9 @@ namespace HrmsCoreMvc.Controllers.Reports
             {
                 fetchTasks = await t.sortTasks(priority,status,sortType);
             }
+            ViewBag.SelectedPriorityType = priority;
+            ViewBag.SelecetedStatusType = status;
+            ViewBag.SelectedPriorityType = sortType;
             ViewBag.Chartlabels = chartData.ChartLabels;
             ViewBag.ChartCompleted = chartData.ChartCompleted;
             ViewBag.ChartInprogress = chartData.ChartInProgress;
@@ -34,6 +37,8 @@ namespace HrmsCoreMvc.Controllers.Reports
             ViewBag.completedTasks = completedTasks;
             ViewBag.onHoldTasks = onHoldTasks;
             ViewBag.overdueTasks = overdueTasks;
+
+
             return View("~/Views/Reports/GetTaskreports.cshtml",fetchTasks);
 
 
