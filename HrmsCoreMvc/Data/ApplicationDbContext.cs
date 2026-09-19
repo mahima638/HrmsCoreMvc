@@ -53,6 +53,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<AddAdminDocName> AddAdminDocName { get; set; }
 
 
+        public DbSet<EmployeeSalary> EmployeeSalaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -227,6 +228,14 @@ namespace HrmsCoreMvc.Data
                 .WithMany(x => x.user)
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<EmployeeSalary>(u =>
+            {
+                u.HasOne(x => x.users)
+                .WithOne(x => x.employeeSalary)
+                .HasForeignKey<EmployeeSalary>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
         }
         

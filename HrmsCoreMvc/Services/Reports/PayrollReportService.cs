@@ -14,6 +14,9 @@ namespace HrmsCoreMvc.Services.Reports
             
         }
 
-
+        public Task<double> TotalPayroll 
+        {
+            var data = db.
+        }
     }
 }

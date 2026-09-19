@@ -68,6 +68,8 @@ namespace HrmsCoreMvc.Models
 
         public List<ProjectsUser> ?  projectsUser { get; set; }
 
+        public EmployeeSalary employeeSalary { get; set; }
+
 
 
     }

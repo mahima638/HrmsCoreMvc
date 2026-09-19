@@ -18,6 +18,7 @@ namespace HrmsCoreMvc.Controllers.Reports
             var completedTasks = await t.fetchCompletedTasks();
             var onHoldTasks = await t.fetchOnHoldTasks();
             var overdueTasks = await t.fetchOverdueTasks();
+            var totalTasks = await t.fetchTotalTasks();
             var fetchTasks = await t.fetchTasks();
             var chartData = await t.fetchCharts();
             if (!string.IsNullOrEmpty(priority) || string.IsNullOrEmpty(status) || string.IsNullOrEmpty(sortType)) 
@@ -29,10 +30,11 @@ namespace HrmsCoreMvc.Controllers.Reports
             ViewBag.ChartInprogress = chartData.ChartInProgress;
             ViewBag.ChartPending = chartData.ChartPending;
             ViewBag.ChartOnhold = chartData.ChartOnHold;
+            ViewBag.totalTasks = totalTasks;
             ViewBag.completedTasks = completedTasks;
             ViewBag.onHoldTasks = onHoldTasks;
             ViewBag.overdueTasks = overdueTasks;
-            return View("~/View/Reports/GetTaskreports.cshtml",fetchTasks);
+            return View("~/Views/Reports/GetTaskreports.cshtml",fetchTasks);
 
 
         }
