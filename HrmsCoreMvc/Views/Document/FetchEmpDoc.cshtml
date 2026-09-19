@@ -1,0 +1,166 @@
+﻿@model IEnumerable<HrmsCoreMvc.Models.AdminDocuments>
+
+@{
+    ViewData["Title"] = "Uploaded Document List";
+}
+
+<div class="container-fluid">
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <h2>Uploaded Document List</h2>
+
+        <div class="breadcrumb">
+            <span>Documents</span>
+            <span>/</span>
+            <span>Uploaded Document List</span>
+        </div>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h4>Uploaded Document List</h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Document ID
+                            </th>
+
+                            <th>
+                                Document Name
+                            </th>
+
+                            <th>
+                                User Email
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <!-- DOCUMENT ID -->
+
+                                    <td>
+                                        @item.ADocId
+                                    </td>
+
+
+                                    <!-- DOCUMENT NAME -->
+
+                                    <td>
+                                        @item.DocName
+                                    </td>
+
+
+                                    <!-- USER EMAIL -->
+
+                                    <td>
+                                        @item.Email
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <!-- VIEW -->
+
+                                        <a asp-controller="Document"
+                                           asp-action="ViewDocument"
+                                           asp-route-id="@item.ADocId"
+                                           title="View"
+                                           class="me-2">
+
+                                            <i class="fa fa-eye"></i>
+
+                                        </a>
+
+
+                                        <!-- DOWNLOAD -->
+
+                                        <a asp-controller="Document"
+                                           asp-action="DownloadDocument"
+                                           asp-route-id="@item.ADocId"
+                                           title="Download"
+                                           class="me-2">
+
+                                            <i class="fa fa-download"></i>
+
+                                        </a>
+
+
+                                        <!-- DELETE -->
+
+                                        <a asp-controller="Document"
+                                           asp-action="DeleteDocument"
+                                           asp-route-id="@item.ADocId"
+                                           title="Delete"
+                                           onclick="return confirm('Are you sure you want to delete this document?');">
+
+                                            <i class="fa fa-trash"></i>
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="4"
+                                    class="text-center">
+
+                                    No documents found.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HrmsCoreMvc.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HrmsCoreMvc.styles.css" asp-append-version="true" /> 
 </head>
 
 <body>
@@ -262,13 +262,18 @@
 
                             <div class="ps-3 pt-1">
 
-                                <a class="nav-link text-white-50 py-2">
-                                    Upload Documents
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Document"
+                                   asp-action="AdminFileUpload">
+                                    File Upload
                                 </a>
 
-                                <a class="nav-link text-white-50 py-2">
-                                    Generate Letter
+                                <a class="nav-link text-white-50 py-2"
+                                   asp-controller="Document"
+                                   asp-action="FetchEmpDoc">
+                                    Fetch Emp Doc
                                 </a>
+
 
                             </div>
 
