@@ -1,0 +1,159 @@
+﻿@using System.Linq
+@using HrmsCoreMvc.Models.Events
+@model IEnumerable<Event>
+
+@{
+    ViewData["Title"] = "Holidays";
+    var events = Model?.ToList() ?? new List<Event>();
+    var eventTypes = ViewBag.EventTypes as IEnumerable<EventType> ?? new List<EventType>();
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4"><div><h2 class="mb-1">Holidays</h2><p class="text-secondary mb-0">Manage holiday dates for the organisation.</p></div><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#eventModal">+ Add Holiday</button></div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white py-3"><strong>Holiday Details</strong></div>
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3"><div><select class="form-select form-select-sm d-inline-block" style="width:75px;"><option>10</option><option>25</option><option>50</option></select><span class="ms-2">entries per page</span></div><div class="d-flex align-items-center"><label class="me-2 mb-0">Search:</label><input type="text" id="holidaySearch" class="form-control form-control-sm" style="width:190px;" placeholder="Search..." /></div></div>
+
+            <div class="table-responsive">
+
+                <table id="holidayTable" class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Event Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (events.Any())
+                        {
+                            foreach (var item in events)
+                            {
+                                var eventTypeName = eventTypes.FirstOrDefault(x => x.EventTypeId == item.EventTypeId)?.EventTypeName ?? "Other";
+
+                                <tr>
+                                    <td>@item.EventId</td>
+                                    <td class="fw-semibold">@item.Title</td>
+                                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @if (eventTypeName == "Birthday")
+                                        {
+                                            <span class="badge bg-success">@eventTypeName</span>
+                                        }
+                                        else if (eventTypeName == "Holiday")
+                                        {
+                                            <span class="badge bg-danger">@eventTypeName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@eventTypeName</span>
+                                        }
+                                    </td>
+                                    <td><a asp-action="UpdateEvent" asp-route-eventId="@item.EventId" class="btn btn-sm btn-outline-primary me-1">Edit</a> <form asp-action="DeleteEvent" asp-route-eventId="@item.EventId" method="post" class="d-inline">@Html.AntiForgeryToken()<button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</button></form></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-secondary py-4">No holidays found.</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3"><div class="text-secondary">Showing 1 to @events.Count of @events.Count entries</div><div><button class="btn btn-sm btn-outline-secondary" disabled>&laquo;</button><button class="btn btn-sm btn-primary">1</button><button class="btn btn-sm btn-outline-secondary" disabled>&raquo;</button></div></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <form asp-action="AddEvent" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header"><h5 class="modal-title" id="eventModalLabel">Add Holiday</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="EventId" value="0" />
+                    <input type="hidden" name="EventColor" id="eventColor" />
+
+                    <div class="mb-3"><label for="Title" class="form-label">Holiday Title</label><input class="form-control" id="Title" name="Title" required maxlength="100" /></div>
+
+                    <div class="mb-3"><label for="Date" class="form-label">Holiday Date</label><input class="form-control" id="Date" name="Date" type="date" required /></div>
+
+                    <div class="mb-3"><label for="EventTypeId" class="form-label">Event Type</label><select class="form-select" id="EventTypeId" name="EventTypeId" required><option value="">Select Event Type</option>@foreach (var type in eventTypes){<option value="@type.EventTypeId" data-color="@type.EventTypeColor">@type.EventTypeName</option>}</select>@if (!eventTypes.Any()){<div class="form-text text-danger">No event types were supplied to this view.</div>}</div>
+
+                </div>
+
+                <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Holiday</button></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    const eventTypeSelect = document.getElementById('EventTypeId');
+
+    if (eventTypeSelect) {
+        eventTypeSelect.addEventListener('change', function () {
+            const option = this.options[this.selectedIndex];
+            document.getElementById('eventColor').value = option?.dataset.color || '';
+        });
+    }
+
+    document.getElementById('holidaySearch').addEventListener('keyup', function () {
+
+        var searchValue = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#holidayTable tbody tr');
+
+        rows.forEach(function (row) {
+
+            var rowText = row.innerText.toLowerCase();
+
+            if (rowText.includes(searchValue)) {
+                row.style.display = '';
+            }
+            else {
+                row.style.display = 'none';
+            }
+
+        });
+
+    });
+
+</script>

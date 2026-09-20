@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260917105202_FixProjectTaskRelationships")]
-    partial class FixProjectTaskRelationships
+    [Migration("20260919145342_updateeventmodel")]
+    partial class updateeventmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -690,6 +690,9 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -705,10 +708,11 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskBoardId")
+                    b.Property<int?>("TaskBoardId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TaskId");
@@ -738,7 +742,6 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TaskBoardName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
@@ -747,14 +750,11 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<string>("TaskName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("tasksTaskId")
-                        .HasColumnType("int");
-
                     b.HasKey("TaskBoardId");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("tasksTaskId");
+                    b.HasIndex("TaskId");
 
                     b.ToTable("taskboards");
                 });
@@ -1009,6 +1009,8 @@ namespace HrmsCoreMvc.Migrations
                     b.HasIndex("TrainerId");
 
                     b.HasIndex("TrainingTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Training");
                 });
@@ -1325,16 +1327,15 @@ namespace HrmsCoreMvc.Migrations
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
                 {
                     b.HasOne("HrmsCoreMvc.Models.Projects.AllProjects", "Project")
-                        .WithMany("tasks")
+                        .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HrmsCoreMvc.Models.Projects.TaskBoard", "TaskBoard")
-                        .WithMany("Tasks")
+                        .WithMany()
                         .HasForeignKey("TaskBoardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Project");
 
@@ -1349,15 +1350,15 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
+                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("tasksTaskId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
 
-                    b.Navigation("tasks");
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskMembers", b =>
@@ -1434,9 +1435,17 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Trainer");
 
                     b.Navigation("TrainingType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -1501,19 +1510,14 @@ namespace HrmsCoreMvc.Migrations
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
-                    b.Navigation("projectusers");
+                    b.Navigation("Tasks");
 
-                    b.Navigation("tasks");
+                    b.Navigation("projectusers");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
                 {
                     b.Navigation("TaskMembers");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskBoard", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>

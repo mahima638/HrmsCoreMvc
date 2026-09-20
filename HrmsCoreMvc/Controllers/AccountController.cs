@@ -39,17 +39,7 @@ namespace HrmsCoreMvc.Controllers
                 return RedirectToAction("Dashboard", "Admin");
             
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
-            //if (lg.RoleName == "Manager") {
-            //    return RedirectToAction("Dashboard", "Manager");
-            //}
-=======
-=======
-            //if (lg.RoleName == "Manager") {
-            //    return RedirectToAction("Dashboard", "Manager");
-            //}
->>>>>>> 4d2c1e59cd3a28c4ccee7ab3a87107da2d963546
+
             var user = db.user.FirstOrDefault(u => u.Email == lg.Email && u.PasswordHash == lg.Password);
 
             if (user == null) {
@@ -77,10 +67,6 @@ namespace HrmsCoreMvc.Controllers
             {
                 return RedirectToAction("Dashboard", "Manager");
             }
-<<<<<<< HEAD
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
-=======
->>>>>>> 4d2c1e59cd3a28c4ccee7ab3a87107da2d963546
 
 
 

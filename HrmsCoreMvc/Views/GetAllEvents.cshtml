@@ -1,0 +1,124 @@
+﻿@using HrmsCoreMvc.Models.Events
+@model IEnumerable<Event>
+
+@{
+    ViewData["Title"] = "Event Calendar";
+    var events = Model?.ToList() ?? new List<Event>();
+    var eventTypes = ViewBag.EventTypes as IEnumerable<EventType> ?? new List<EventType>();
+    var upcomingEvents = events.Where(x => x.Date.Date >= DateTime.Today).OrderBy(x => x.Date).Take(6).ToList();
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.css" rel="stylesheet" />
+
+<div class="container py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4"><div><h2 class="mb-1">Event Calendar</h2><p class="text-secondary mb-0">View company events and holidays.</p></div><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#eventModal">+ Add Event</button></div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3"><strong>Upcoming Events</strong></div>
+
+                @if (upcomingEvents.Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in upcomingEvents)
+                        {
+                            <div class="list-group-item py-3"><div class="fw-semibold">@item.Title</div><small class="text-secondary">@item.Date.ToString("yyyy-MM-dd")</small></div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="card-body text-secondary">No upcoming events.</div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form asp-action="AddEvent" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header"><h5 class="modal-title" id="eventModalLabel">Add Event</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="EventId" value="0" />
+                    <input type="hidden" name="EventColor" id="eventColor" />
+
+                    <div class="mb-3"><label for="Title" class="form-label">Event title</label><input class="form-control" id="Title" name="Title" required maxlength="100" /></div>
+
+                    <div class="mb-3"><label for="Date" class="form-label">Event date</label><input class="form-control" id="Date" name="Date" type="date" required /></div>
+
+                    <div class="mb-3"><label for="EventTypeId" class="form-label">Event type</label><select class="form-select" id="EventTypeId" name="EventTypeId" required><option value="">Select event type</option>@foreach (var type in eventTypes){<option value="@type.EventTypeId" data-color="@type.EventTypeColor">@type.EventTypeName</option>}</select></div>
+
+                </div>
+
+                <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Event</button></div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 'auto',
+            headerToolbar: {
+                left: 'prev',
+                center: 'title',
+                right: 'today next'
+            },
+            events: [
+                @foreach (var item in events)
+                {
+                    <text>
+                    {
+                        title: '@Html.Raw(item.Title?.Replace("'", "\\'"))',
+                        start: '@item.Date.ToString("yyyy-MM-dd")',
+                        backgroundColor: '@(item.EventColor ?? "#6c757d")',
+                        borderColor: '@(item.EventColor ?? "#6c757d")'
+                    },
+                    </text>
+                }
+            ]
+        });
+
+        calendar.render();
+    });
+
+    const eventTypeSelect = document.getElementById('EventTypeId');
+
+    eventTypeSelect.addEventListener('change', function () {
+        const option = this.options[this.selectedIndex];
+        document.getElementById('eventColor').value = option?.dataset.color || '';
+    });
+
+</script>

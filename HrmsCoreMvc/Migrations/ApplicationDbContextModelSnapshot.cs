@@ -687,6 +687,9 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -702,10 +705,11 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskBoardId")
+                    b.Property<int?>("TaskBoardId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TaskId");
@@ -735,7 +739,6 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TaskBoardName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
@@ -744,14 +747,11 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<string>("TaskName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("tasksTaskId")
-                        .HasColumnType("int");
-
                     b.HasKey("TaskBoardId");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("tasksTaskId");
+                    b.HasIndex("TaskId");
 
                     b.ToTable("taskboards");
                 });
@@ -1006,6 +1006,8 @@ namespace HrmsCoreMvc.Migrations
                     b.HasIndex("TrainerId");
 
                     b.HasIndex("TrainingTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Training");
                 });
@@ -1328,10 +1330,9 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired();
 
                     b.HasOne("HrmsCoreMvc.Models.Projects.TaskBoard", "TaskBoard")
-                        .WithMany("Tasks")
+                        .WithMany()
                         .HasForeignKey("TaskBoardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Project");
 
@@ -1346,15 +1347,15 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
+                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("tasksTaskId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
 
-                    b.Navigation("tasks");
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskMembers", b =>
@@ -1431,9 +1432,17 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Trainer");
 
                     b.Navigation("TrainingType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -1498,22 +1507,14 @@ namespace HrmsCoreMvc.Migrations
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
                 {
-<<<<<<< HEAD
                     b.Navigation("Tasks");
 
-=======
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
                     b.Navigation("projectusers");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
                 {
                     b.Navigation("TaskMembers");
-                });
-
-            modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskBoard", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>

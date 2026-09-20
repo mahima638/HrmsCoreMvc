@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HrmsCoreMvc.Repositories;
+﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models.Projects;
+using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
-using HrmsCoreMvc.Data;
-using Task = HrmsCoreMvc.Models.Projects.Task;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Task = HrmsCoreMvc.Models.Projects.Task;
 
 
 namespace HrmsCoreMvc.Controllers
@@ -13,7 +13,6 @@ namespace HrmsCoreMvc.Controllers
     {
         private readonly ITaskService cs;
         private readonly ApplicationDbContext db;
-
         public TaskController(ITaskService ts, ApplicationDbContext db)
         {
             cs = ts;
@@ -23,19 +22,20 @@ namespace HrmsCoreMvc.Controllers
         public async Task<IActionResult> GetAllTasks()
         {
             var tasks = await cs.GetAllTasks();
-            return View("~/Views/Project/GetAllTasks.cshtml", tasks);
+            return View("GetAllTasks", tasks);
         }
 
         [HttpGet]
         public IActionResult AddTask()
         {
             ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.TaskBoards = db.taskboards.ToList();
             ViewBag.TeamMembers = db.user.Select(u => new
             {
                 u.UserId,
                 FullName = u.FirstName + " " + u.LastName
             }).ToList();
-            return View("~/Views/Project/AddTask.cshtml");
+            return View("AddTask");
         }
 
         [HttpPost]
@@ -48,13 +48,27 @@ namespace HrmsCoreMvc.Controllers
                 return RedirectToAction("GetAllTasks");
             }
             ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.TaskBoards = db.taskboards.ToList();
             ViewBag.TeamMembers = db.user.Select(u => new
             {
                 u.UserId,
                 FullName = u.FirstName + " " + u.LastName
             }).ToList();
 
-            return View("~/Views/Project/AddTask.cshtml", task);
+            return View("AddTask", task);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateTask(int taskId)
+        {
+            var task = (await cs.GetAllTasks()).FirstOrDefault(x => x.TaskId == taskId);
+            ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.TaskBoards = db.taskboards.ToList();
+            ViewBag.TeamMembers = db.user.Select(u => new
+            {
+                u.UserId, FullName = u.FirstName + " " + u.LastName
+            }).ToList();
+            return View("UpdateTask", task);
         }
 
         [HttpPost]
@@ -66,7 +80,7 @@ namespace HrmsCoreMvc.Controllers
                 TempData["SuccessMessage"] = "Task Updated Successfully!";
                 return RedirectToAction("GetAllTasks");
             }
-            return View(task);
+            return View("UpdateTask", task);
         }
 
         [HttpPost]

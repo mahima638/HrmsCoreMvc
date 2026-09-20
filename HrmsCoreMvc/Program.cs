@@ -6,17 +6,14 @@ using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
 using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-=======
-//using Microsoft.AspNetCore.Authentication.Cookies;
-//using Microsoft.AspNetCore.Authentication.Google;
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
+using HrmsCoreMvc.Repositories.Terminations;
+using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,13 +36,13 @@ builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
+builder.Services.AddControllersWithViews().
+    AddRazorOptions(options =>
+    {
+        options.ViewLocationFormats.Insert(0, "/Views/{0}.cshtml");
+    }); builder.Services.AddSession();
 
-<<<<<<< HEAD
 
-=======
->>>>>>> f0925b238e3117df7a155b2699f4ee2051d2ae35
 //builder.Services
 //    .AddAuthentication(options =>
 //    {
@@ -72,7 +69,7 @@ builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionsFile>();
+//app.UseMiddleware<GlobalExceptionsFile>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -80,6 +77,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseRouting();

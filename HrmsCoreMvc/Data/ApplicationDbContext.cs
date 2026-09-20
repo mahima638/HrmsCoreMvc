@@ -76,7 +76,7 @@ namespace HrmsCoreMvc.Data
 
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
+                .WithMany()
                 .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 

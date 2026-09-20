@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260918043755_hrms")]
+    [Migration("20260918173332_hrms")]
     partial class hrms
     {
         /// <inheritdoc />
@@ -690,6 +690,9 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -705,7 +708,7 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskBoardId")
+                    b.Property<int?>("TaskBoardId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -739,7 +742,6 @@ namespace HrmsCoreMvc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TaskBoardName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
@@ -748,7 +750,7 @@ namespace HrmsCoreMvc.Migrations
                     b.Property<string>("TaskName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("tasksTaskId")
+                    b.Property<int?>("tasksTaskId")
                         .HasColumnType("int");
 
                     b.HasKey("TaskBoardId");
@@ -1010,6 +1012,8 @@ namespace HrmsCoreMvc.Migrations
                     b.HasIndex("TrainerId");
 
                     b.HasIndex("TrainingTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Training");
                 });
@@ -1334,8 +1338,7 @@ namespace HrmsCoreMvc.Migrations
                     b.HasOne("HrmsCoreMvc.Models.Projects.TaskBoard", "TaskBoard")
                         .WithMany("Tasks")
                         .HasForeignKey("TaskBoardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Project");
 
@@ -1352,9 +1355,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
                         .WithMany()
-                        .HasForeignKey("tasksTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("tasksTaskId");
 
                     b.Navigation("Project");
 
@@ -1435,9 +1436,17 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HrmsCoreMvc.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Trainer");
 
                     b.Navigation("TrainingType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
