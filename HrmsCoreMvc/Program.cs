@@ -3,38 +3,56 @@ using HrmsCoreMvc.Repositories.Promotions;
 using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services.Promotions;
 using HrmsCoreMvc.Repositories;
-using HrmsCoreMvc.Repositories.Reports;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
+using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
+using HrmsCoreMvc.Repositories.Terminations;
+using HrmsCoreMvc.Services.Terminations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
+
+builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
-
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
+builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
-
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-
-builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
-
+//builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+
 builder.Services.AddScoped<IEarningService, EarningService>();
 builder.Services.AddScoped<IDeductionService, DeductionService>();
 builder.Services.AddScoped<ITimesheetService, TimesheetService>();
 
+builder.Services.AddScoped<IEmpBankDetails, EmpBankDetailService>();
+builder.Services.AddScoped<IEmpEducation, EmpEducationService>();
+builder.Services.AddScoped<IEmpExperience, EmpExperienceService>();
+builder.Services.AddScoped<IEmpFamilyInfo, EmpFamilyService>();
+
+
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationFormats.Insert(0, "/Views/{0}.cshtml");
+    });
 
+builder.Services.AddSession();
 
 //builder.Services
 //    .AddAuthentication(options =>
@@ -64,8 +82,7 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
-//app.UseMiddleware<GlobalExceptionsFile>();
-
+app.UseMiddleware<GlobalExceptionsFile>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -74,15 +91,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseDeveloperExceptionPage();
+//}
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 
@@ -93,6 +113,5 @@ app.MapControllerRoute(
 
     //pattern: "{controller=Account}/{action=Login}/{id?}")
     //.WithStaticAssets();
-
 
 app.Run();

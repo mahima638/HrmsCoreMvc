@@ -64,6 +64,12 @@ namespace HrmsCoreMvc.Data
         public DbSet<AddEmpDocName> AddEmpDocName { get; set; }
         public DbSet<AddAdminDocName> AddAdminDocName { get; set; }
 
+        public DbSet<EmpEducation> EmpEducation { get; set; }
+        public DbSet<EmpExperience> EmpExperience { get; set; }
+        public DbSet<EmpBankDetails> EmpBankDetails { get; set; }
+        public DbSet<EmpFamilyInfo> EmpFamily{ get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,16 +81,20 @@ namespace HrmsCoreMvc.Data
                 .Property(x => x.Status)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Trainer>()
+                .Property(x => x.Status)
+                .HasConversion<string>();
+
             // Configure the relationships and constraints for TaskMembers
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.tasks)
+                .WithMany(p => p.Tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
+                .WithMany()
                 .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -92,12 +102,6 @@ namespace HrmsCoreMvc.Data
                 .HasOne(tm => tm.User)
                 .WithMany()
                 .HasForeignKey(tm => tm.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Task>()
-                .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
-                .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Event>()
@@ -236,6 +240,8 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+
         }
         
         

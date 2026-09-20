@@ -12,6 +12,7 @@ namespace HrmsCoreMvc.Repositories.Reports
 
         Task<IEnumerable<AttendanceReportViewModel>> sortAttendances(string? datefilter, string? statusfilter, string? sortType);
 
+        Task<AttendanceChartDto> GetAttendanceChartDataAsync();
 
     }
 }
