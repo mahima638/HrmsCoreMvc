@@ -1,0 +1,157 @@
+﻿@model HrmsCoreMvc.Models.AdminDocuments
+
+@{
+    ViewData["Title"] = "Admin File Upload";
+}
+
+<div class="container-fluid">
+
+    <div class="page-title">
+        <h2>Admin File Upload</h2>
+
+        <div class="breadcrumb">
+            <span>Admin</span>
+            <span>/</span>
+            <span>Admin File Upload</span>
+        </div>
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+            <h4>Admin File Upload</h4>
+        </div>
+
+
+        <div class="card-body">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Success"]
+                </div>
+            }
+
+
+            <form asp-controller="Document"
+                  asp-action="AdminFileUpload"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+
+                <!-- USER EMAIL -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        User
+                    </label>
+
+                    <select asp-for="Email"
+                            class="form-control">
+
+                        <option value="">
+                            -- Select User Email --
+                        </option>
+
+                        @foreach (var user in ViewBag.Users)
+                        {
+                            <option value="@user.Email">
+                                @user.Email
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- MASTER DOCUMENT -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Letter / Document
+                    </label>
+
+                    <select asp-for="DocName"
+                            class="form-control">
+
+                        <option value="">
+                            -- Select Letter / Document --
+                        </option>
+
+                        @foreach (var doc in ViewBag.Documents)
+                        {
+                            <option value="@doc.AddDocName">
+                                @doc.AddDocName
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="DocName"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- PDF FILE -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Upload PDF
+                    </label>
+
+                    <input type="file"
+                           name="pdfFile"
+                           class="form-control"
+                           accept=".pdf,application/pdf" />
+
+                    <small class="text-muted">
+                        Only PDF files are allowed.
+                    </small>
+
+                    <span asp-validation-for="DocFile"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- SAVE BUTTON -->
+
+                <div>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
+                    
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+}

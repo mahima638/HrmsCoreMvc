@@ -36,7 +36,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("DocId");
 
-                    b.ToTable("AddAdminDocName");
+                    b.ToTable("AddAdminDocName", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.AddEmpDocName", b =>
@@ -53,7 +53,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("DocId");
 
-                    b.ToTable("AddEmpDocName");
+                    b.ToTable("AddEmpDocName", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.AdminDocuments", b =>
@@ -78,7 +78,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("ADocId");
 
-                    b.ToTable("AdminDocuments");
+                    b.ToTable("AdminDocuments", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
@@ -130,7 +130,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendance", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Departments", b =>
@@ -167,7 +167,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("DepartmentId");
 
-                    b.ToTable("department");
+                    b.ToTable("department", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Designation", b =>
@@ -209,7 +209,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("designation");
+                    b.ToTable("designation", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.EmpBankDetails", b =>
@@ -354,7 +354,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("events");
+                    b.ToTable("events", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Events.EventType", b =>
@@ -375,7 +375,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("EventTypeId");
 
-                    b.ToTable("eventtypes");
+                    b.ToTable("eventtypes", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.DepartmentLeaves", b =>
@@ -404,7 +404,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("DepartmentLeaves");
+                    b.ToTable("DepartmentLeaves", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.LeaveBalance", b =>
@@ -443,7 +443,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LeaveBalances");
+                    b.ToTable("LeaveBalances", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.LeaveRequest", b =>
@@ -494,7 +494,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Leave.MasterLeaveType", b =>
@@ -515,7 +515,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("LeaveTypeId");
 
-                    b.ToTable("MasterLeaveTypes");
+                    b.ToTable("MasterLeaveTypes", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Deduction", b =>
@@ -558,7 +558,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("DesignationId");
 
-                    b.ToTable("Deduction");
+                    b.ToTable("Deduction", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.DeductionType", b =>
@@ -575,7 +575,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("DeductionTypeId");
 
-                    b.ToTable("DeductionType");
+                    b.ToTable("DeductionType", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Earning", b =>
@@ -621,7 +621,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("EarningTypeEarntypeId");
 
-                    b.ToTable("Earning");
+                    b.ToTable("Earning", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.EarningType", b =>
@@ -638,7 +638,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("EarntypeId");
 
-                    b.ToTable("EarningType");
+                    b.ToTable("EarningType", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Payslips", b =>
@@ -670,7 +670,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payslips");
+                    b.ToTable("Payslips", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.PayRoll.Timesheet", b =>
@@ -716,7 +716,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Timesheets");
+                    b.ToTable("Timesheets", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.AllProjects", b =>
@@ -774,7 +774,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.ToTable("AllProjects");
+                    b.ToTable("AllProjects", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.ProjectsUser", b =>
@@ -789,7 +789,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UsersUserId");
 
-                    b.ToTable("ProjectsUser");
+                    b.ToTable("ProjectsUser", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.Task", b =>
@@ -832,7 +832,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("TaskBoardId");
 
-                    b.ToTable("tasks");
+                    b.ToTable("tasks", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskBoard", b =>
@@ -863,6 +863,9 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("tasksTaskId");
+
+                    b.ToTable("taskboards", (string)null);
                     b.ToTable("taskboards");
                 });
 
@@ -889,7 +892,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("taskmembers");
+                    b.ToTable("taskmembers", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Promotion.Promotion", b =>
@@ -918,7 +921,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("promotion");
+                    b.ToTable("promotion", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Resignation.Resignation", b =>
@@ -951,7 +954,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("resignations");
+                    b.ToTable("resignations", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Role", b =>
@@ -985,7 +988,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("role");
+                    b.ToTable("role", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Termination.Termination", b =>
@@ -1017,7 +1020,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("terminations");
+                    b.ToTable("terminations", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Trainer", b =>
@@ -1060,7 +1063,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("TrainerId");
 
-                    b.ToTable("Trainer");
+                    b.ToTable("Trainer", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Training", b =>
@@ -1117,6 +1120,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("TrainingTypeId");
 
+                    b.ToTable("Training", (string)null);
                     b.HasIndex("UserId");
 
                     b.ToTable("Training");
@@ -1144,7 +1148,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasKey("TrainingTypeId");
 
-                    b.ToTable("TraningType");
+                    b.ToTable("TraningType", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.User", b =>
@@ -1224,7 +1228,7 @@ namespace HrmsCoreMvc.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("user");
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Attendance.Attendance", b =>
