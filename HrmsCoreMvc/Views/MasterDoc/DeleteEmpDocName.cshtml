@@ -1,0 +1,46 @@
+﻿@model HrmsCoreMvc.Models.AddEmpDocName
+
+@{
+    ViewData["Title"] = "Delete Employee Document Name";
+}
+
+<h4>Delete Employee Document Name</h4>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete this document?
+</div>
+
+<div class="mb-3">
+
+    <p>
+        <strong>Document ID:</strong>
+        @Model.DocId
+    </p>
+
+    <p>
+        <strong>Document Name:</strong>
+        @Model.AddDocName
+    </p>
+
+</div>
+
+<form asp-controller="MasterDoc"
+      asp-action="DeleteEmpDocName"
+      method="post">
+
+    <input type="hidden"
+           asp-for="DocId" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Delete
+    </button>
+
+    <a asp-controller="MasterDoc"
+       asp-action="EmpDocNameIndex"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

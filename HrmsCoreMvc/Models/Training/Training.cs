@@ -10,17 +10,17 @@ namespace HrmsCoreMvc.Models
         public int TrainerId { get; set; }
 
         [ForeignKey(nameof(TrainerId))]
-        public Trainer Trainer { get; set; }
+        public Trainer? Trainer { get; set; }
 
         public int TrainingTypeId { get; set; }
 
         [ForeignKey(nameof(TrainingTypeId))]
-        public TrainingType TrainingType { get; set; }
+        public TrainingType? TrainingType { get; set; }
 
         public int UserId { get; set; }
 
-     //   [ForeignKey(nameof(UserId))]
-       // public User User { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User? User { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
@@ -38,16 +38,12 @@ namespace HrmsCoreMvc.Models
         [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
         public DateTime CreatedAt { get; set; }
 
-        [Required]
         public string CreatedBy { get; set; }
 
-        [Required]
         public string ModifiedBy { get; set; }
 
-        [Required]
         public DateTime ModifiedAt { get; set; }
 
         [NotMapped]

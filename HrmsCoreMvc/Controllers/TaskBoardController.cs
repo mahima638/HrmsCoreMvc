@@ -9,56 +9,72 @@ namespace HrmsCoreMvc.Controllers
     public class TaskBoardController : Controller
     {
         private readonly ITaskBoardService cs;
-        public TaskBoardController(ITaskBoardService tbs)
+        private readonly ApplicationDbContext db;
+        public TaskBoardController(ITaskBoardService tbs, ApplicationDbContext db)
         {
             cs = tbs;
+            this.db = db;
         }
 
-        public IActionResult GetAllTaskBoards()
+        public async Task<IActionResult> GetAllTaskBoards()
         {
-            var taskBoards = cs.GetAllTaskBoards();
-            return View(taskBoards);
+            var taskBoards = await cs.GetAllTaskBoards();
+            return View("GetAllTaskBoards", taskBoards);
         }
 
-        public IActionResult AddTaskBoard(TaskBoard taskBoard)
+        [HttpGet]
+        public IActionResult AddTaskBoard()
+        {
+            ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.Tasks = db.tasks.ToList();
+            return View("AddTaskBoard");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
             {
-                cs.AddTaskBoard(taskBoard);
+                await cs.AddTaskBoard(taskBoard);
                 TempData["SuccessMessage"] = "Task Board Added Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
-            return View(taskBoard);
+            ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.Tasks = db.tasks.ToList();
+            return View("AddTaskBoard", taskBoard);
         }
 
-        public IActionResult UpdateTaskBoard(TaskBoard taskBoard)
+        [HttpGet]
+        public async Task<IActionResult> UpdateTaskBoard(int taskBoardId)
+        {
+            var board = (await cs.GetAllTaskBoards()).FirstOrDefault(x => x.TaskBoardId == taskBoardId);
+            return View("UpdateTaskBoard", board);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
             {
-                cs.UpdateTaskBoard(taskBoard);
+                await cs.UpdateTaskBoard(taskBoard);
                 TempData["SuccessMessage"] = "Task Board Updated Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
-            return View(taskBoard);
+            return View("UpdateTaskBoard", taskBoard);
         }
 
-        public IActionResult DeleteTaskBoard(int taskBoardId)
+        public async Task<IActionResult> DeleteTaskBoard(int taskBoardId)
         {
-            cs.DeleteTaskBoard(taskBoardId);
+            await cs.DeleteTaskBoard(taskBoardId);
             TempData["SuccessMessage"] = "Task Board Deleted Successfully!";
             return RedirectToAction("GetAllTaskBoards");
         }
 
-        public IActionResult SearchTaskBoards(string searchtaskboard)
+        public async Task<IActionResult> SearchTaskBoards(string searchtaskboard)
         {
-            var taskBoards = cs.SearchTaskBoards(searchtaskboard);
+            var taskBoards = await cs.SearchTaskBoards(searchtaskboard);
             return View("GetAllTaskBoards", taskBoards);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
+        
     }
 }

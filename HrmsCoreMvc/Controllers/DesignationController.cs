@@ -45,6 +45,8 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> GetDesignation() {
             var des = await desService.GetAllDesignations();
+            var departments = await deptService.GetDepartments();
+            ViewBag.Departments = departments;
             return View(des);
         
         }
@@ -52,6 +54,7 @@ namespace HrmsCoreMvc.Controllers
         public async Task<IActionResult> EditDesignation(int id) { 
         
         var des = await desService.getDesignationById(id);
+          
             return View(des);
           
         }

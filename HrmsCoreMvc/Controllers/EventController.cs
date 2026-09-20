@@ -3,61 +3,87 @@ using Microsoft.AspNetCore.Mvc;
 using HrmsCoreMvc.Models.Events;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Data;
+using System.Threading.Tasks;
 
 namespace HrmsCoreMvc.Controllers
 {
     public class EventController : Controller
     {
         private readonly IEventService cs;
+        private readonly IEventTypeService ets;
 
-        public EventController(IEventService es)
+        public EventController(IEventService cs, IEventTypeService ets)
         {
-            cs = es;
+            this.cs = cs;
+            this.ets = ets;
         }
 
-        public IActionResult GetAllEvents()
+        public async Task<IActionResult> GetAllEvents()
         {
-            var events = cs.GetAllEvents();
-            return View(events);
+            var events = await cs.GetAllEvents();
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View("GetAllEvents", events);
         }
 
-        public IActionResult AddEvent(Event eventObj)
+        [HttpPost]
+        public async Task<IActionResult> AddEvent(Event eventObj)
         {
-            if (ModelState.IsValid)
-            {
-                cs.AddEvent(eventObj);
-                TempData["SuccessMessage"] = "Event Added Successfully!";
-                return RedirectToAction("GetAllEvents");
-            }
-            return View(eventObj);
-        }
-
-        public IActionResult UpdateEvent(Event eventObj)
-        {
-            if (ModelState.IsValid)
-            {
-                cs.UpdateEvent(eventObj);
-                TempData["SuccessMessage"] = "Event Updated Successfully!";
-                return RedirectToAction("GetAllEvents");
-            }
-            return View(eventObj);
-        }
-
-        public IActionResult DeleteEvent(int eventId)
-        {
-            cs.DeleteEvent(eventId);
-            TempData["SuccessMessage"] = "Event Deleted Successfully!";
+            await cs.AddEvent(eventObj);
+            TempData["SuccessMessage"] = "Event added successfully!";
             return RedirectToAction("GetAllEvents");
         }
 
-        public IActionResult SearchEvents(string searchevent)
+        [HttpGet]
+        public async Task<IActionResult> UpdateEvent(int eventId)
         {
-            var events = cs.SearchEvents(searchevent);
+            var eventObj = (await cs.GetAllEvents()).FirstOrDefault(x => x.EventId == eventId);
+            if (eventObj == null)
+            {
+                return NotFound();
+            }
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View(eventObj);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateEvent(Event eventObj)
+        {
+            if (ModelState.IsValid)
+            {
+                await cs.UpdateEvent(eventObj);
+                TempData["SuccessMessage"] = "Event Updated Successfully!";
+                return RedirectToAction("Holidays");
+            }
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View("UpdateEvent", eventObj);
+        }
+
+        public async Task<IActionResult> DeleteEvent(int eventId)
+        {
+            await cs.DeleteEvent(eventId);
+            TempData["SuccessMessage"] = "Event Deleted Successfully!";
+            return RedirectToAction("Holidays");
+        }
+
+        public async Task<IActionResult> Holidays()
+        {
+            var events = await cs.GetAllEvents();
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View("Holidays", events);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddHoliday(Event eventObj)
+        {
+            await cs.AddEvent(eventObj);
+            TempData["SuccessMessage"] = "Holiday added successfully!";
+            return RedirectToAction("Holidays");
+        }
+        public async Task<IActionResult> SearchEvents(string searchevent)
+        {
+            var events = await cs.SearchEvents(searchevent);
             return View("GetAllEvents", events);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }

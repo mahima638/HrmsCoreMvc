@@ -1,17 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HrmsCoreMvc.Models;
 
-namespace HrmsCoreMvc.Models
+public class Employee
 {
-    public class Employee
-    {
-        [Key]
-        public int id { get; set; }
+    public User? User { get; set; }
 
-        public string ename { get; set; }
+    public EmpBankDetails? BankDetails { get; set; }
 
-        public double salary { get; set; }
-        public double pf { get; set; }
-        public double netsal { get; set; }
-        public string eprofile { get; set; }
-    }
+    public List<EmpFamilyInfo>? FamilyDetails { get; set; }
+
+    public List<EmpEducation>? EducationDetails { get; set; }
+
+    public List<EmpExperience>? ExperienceDetails { get; set; }
 }
