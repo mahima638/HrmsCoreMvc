@@ -16,7 +16,7 @@ namespace HrmsCoreMvc.Services
 
         public async Task<List<Task>> GetAllTasks()
         {
-            return await db.tasks.ToListAsync();
+            return await db.tasks.Include(t => t.Project).ToListAsync();
         }
 
         public async Task<string> AddTask(Task task)

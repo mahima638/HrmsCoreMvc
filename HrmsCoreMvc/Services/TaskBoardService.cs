@@ -15,7 +15,7 @@ namespace HrmsCoreMvc.Services
         }
         public async Task<List<TaskBoard>> GetAllTaskBoards()
         {
-            return await db.taskboards.ToListAsync();
+            return await db.taskboards.Include(t => t.Project).Include(t => t.Task).ToListAsync();
         }
 
         public async Task<string> AddTaskBoard(TaskBoard taskBoard)

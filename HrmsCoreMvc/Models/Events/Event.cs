@@ -9,9 +9,10 @@ namespace HrmsCoreMvc.Models.Events
         public int EventId { get; set; }
         public string? Title { get; set; }
         public DateTime Date { get; set; }
+
         [ForeignKey("EventType")]
-        public int EventTypeId { get; set; }
         [Required(ErrorMessage = "Event Type is required.")]
+        public int EventTypeId { get; set; }
         public EventType? EventType { get; set; }
         [Required(ErrorMessage = "Event Color is required.")]
         public string? EventColor { get; set; }
