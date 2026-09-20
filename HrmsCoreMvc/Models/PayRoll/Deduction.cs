@@ -30,7 +30,6 @@ namespace HrmsCoreMvc.Models.PayRoll
 
         public string? ModifiedBy { get; set; } 
 
-        
         public  DeductionType DeductionType { get; set; }
         public  Departments Department { get; set; }
         public  Designation Designation { get; set; }

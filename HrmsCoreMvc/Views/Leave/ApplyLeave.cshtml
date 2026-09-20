@@ -1,5 +1,13 @@
 ﻿
-@model HrmsCoreMvc.Models.Leave.LeaveRequest
+@model HrmsCoreMvc.Models.ViewModel.LeaveRequestViewModel
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
 
 <button type="button" class="btn btn-primary"
         data-bs-toggle="modal"
@@ -26,28 +34,33 @@
 
                     <div class="mb-3">
                         <label>Select Leave Type</label>
-                        <select asp-for="LeaveTypeId" class="form-select" asp-items="ViewBag.LeaveTypeList">
+                        <select asp-for="LeaveRequest.LeaveTypeId"
+                                asp-items="ViewBag.LeaveTypeList"
+                                class="form-select">
                             <option value="">Select Leave Type</option>
                         </select>
-                        <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+
+                        <span asp-validation-for="LeaveRequest.LeaveTypeId" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="StartDate" class="form-label"></label>
-                        <input asp-for="StartDate" type="date" class="form-control" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    <div class="col-md-6">
+                        <label asp-for="LeaveRequest.StartDate" class="form-label"></label>
+                        <input asp-for="LeaveRequest.StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="LeaveRequest.StartDate" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="EndDate" class="form-label"></label>
-                        <input asp-for="EndDate" type="date" class="form-control" />
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    <div class="col-md-6">
+                        <label asp-for="LeaveRequest.EndDate" class="form-label"></label>
+                        <input asp-for="LeaveRequest.EndDate" type="date" class="form-control" />
+                        <span asp-validation-for="LeaveRequest.EndDate" class="text-danger"></span>
                     </div>
 
+                    
+
                     <div class="mb-3">
-                        <label asp-for="Reason" class="form-label"></label>
-                        <textarea asp-for="Reason" class="form-control" rows="4"></textarea>
-                        <span asp-validation-for="Reason" class="text-danger"></span>
+                        <label asp-for="LeaveRequest.Reason" class="form-label"></label>
+                        <textarea asp-for="LeaveRequest.Reason" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="LeaveRequest.Reason" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -68,3 +81,80 @@
         </div>
     </div>
 </div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>My Leave Requests</h4>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered table-hover" id="leaveRequestTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Leave ID</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>No Of Days</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.LeaveRequests)
+                {
+                    <tr>
+                        <td>@item.LeaveRequestId</td>
+
+                        <td>@item.MasterLeaveType?.LeaveType</td>
+
+                        <td>@item.StartDate.ToString("dd-MM-yyyy")</td>
+
+                        <td>@item.EndDate.ToString("dd-MM-yyyy")</td>
+
+                        <td>@item.Reason</td>
+
+                        <td>@item.NumberOfDays</td>
+
+                        <td>
+                            @if (item.Status == "Approved")
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else if (item.Status == "Rejected")
+                            {
+                                <span class="badge bg-danger">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+@section Scripts
+{
+   
+
+    <script>
+        $(document).ready(function () {
+
+            $('#leaveRequestTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
+                ordering: true,
+                searching: true,
+                info: true
+            });
+
+        });
+    </script>
+}

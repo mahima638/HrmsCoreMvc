@@ -27,28 +27,31 @@ builder.Services.AddScoped<ITaskReportService, TaskReportService>();
 builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+builder.Services.AddScoped<IEarningService, EarningService>();
+builder.Services.AddScoped<IDeductionService, DeductionService>();
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    })
-    .AddCookie()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    });
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//    })
+//    .AddCookie()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    });
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 
 builder.Services.AddScoped<IDepartmentService, Departmentservice>();
 
@@ -56,16 +59,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionsFile>();
+//app.UseMiddleware<GlobalExceptionsFile>();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -78,7 +88,7 @@ app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",
 
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Attendance}/{action=Index}/{id?}");
 
     //pattern: "{controller=Account}/{action=Login}/{id?}")
     //.WithStaticAssets();

@@ -13,7 +13,7 @@ namespace HrmsCoreMvc.Models.Leave
         public int UserId { get; set; }
         public User User { get; set; }
 
-        [ForeignKey("LeaveTypeId")]
+        [ForeignKey("MasterLeaveType")]
         public int LeaveTypeId { get; set; }
         public MasterLeaveType MasterLeaveType { get; set; }
 
@@ -24,10 +24,10 @@ namespace HrmsCoreMvc.Models.Leave
 
         public string Reason { get; set; }
 
-        public string ApprovedBy { get; set; }
+        public string? ApprovedBy { get; set; }
 
         public string Status { get; set; }
-        public string StatusHistory { get; set; }
+        public string? StatusHistory { get; set; }
     
     }
 }
