@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrmsCoreMvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.Designer.cs
     [Migration("20260918085500_EmpDetails")]
     partial class EmpDetails
+========
+    [Migration("20260919200553_Initial Phase")]
+    partial class InitialPhase
+>>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -859,20 +864,12 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TaskName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("tasksTaskId")
-                        .HasColumnType("int");
 
                     b.HasKey("TaskBoardId");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("tasksTaskId");
 
                     b.ToTable("taskboards");
                 });
@@ -1511,15 +1508,7 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
-                        .WithMany()
-                        .HasForeignKey("tasksTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Project");
-
-                    b.Navigation("tasks");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskMembers", b =>

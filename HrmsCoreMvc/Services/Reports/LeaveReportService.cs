@@ -22,6 +22,34 @@ namespace HrmsCoreMvc.Services.Reports
             return data;
         }
 
+        public async Task<LeaveChartDto> fetchChart()
+        {
+            var groupedData = await db.LeaveRequests.Where(x => x.Status == "Approved" && x.StartDate != null)
+            .GroupBy(x => new
+             {
+                 Year = x.StartDate.Year,
+                 Month = x.StartDate.Month
+             })
+             .Select(g => new
+             {
+                 Year = g.Key.Year,
+                 Month= g.Key.Month,
+                 countPaid = g.Count(x => x.MasterLeaveType!=null && x.MasterLeaveType.LeaveType == "Paid Leave")
+             })
+             .OrderBy(x => x.Year)
+             .ThenBy(x => x.Month)
+             .ToListAsync();
+
+            var result = new LeaveChartDto();
+            foreach (var item in groupedData) {
+                result.Labels.Add($"{item.Year}-{item.Month:D2}");
+                result.PaidLeaves.Add(item.countPaid);
+            }
+
+            return result;
+
+        }
+
         public async Task<IEnumerable<LeavesReportViewModel>> fetchLeaves()
         {
             return await db.LeaveRequests.Include(lr => lr.MasterLeaveType).Include(lr => lr.User).Select(lr => new LeavesReportViewModel

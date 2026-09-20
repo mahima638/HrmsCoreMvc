@@ -8,11 +8,6 @@ namespace HrmsCoreMvc.Models.Projects
         [Key]
         public int TaskBoardId { get; set; }
 
-        [ForeignKey("Task")]
-        public int TaskId { get; set; }
-
-        public Task tasks { get; set; }
-
 
         [ForeignKey("Project")]
         public int ProjectId { get; set; }

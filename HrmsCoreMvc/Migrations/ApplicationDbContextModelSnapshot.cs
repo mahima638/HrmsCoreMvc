@@ -856,20 +856,12 @@ namespace HrmsCoreMvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TaskName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("tasksTaskId")
-                        .HasColumnType("int");
 
                     b.HasKey("TaskBoardId");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("tasksTaskId");
 
                     b.ToTable("taskboards");
                 });
@@ -1508,15 +1500,7 @@ namespace HrmsCoreMvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrmsCoreMvc.Models.Projects.Task", "tasks")
-                        .WithMany()
-                        .HasForeignKey("tasksTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Project");
-
-                    b.Navigation("tasks");
                 });
 
             modelBuilder.Entity("HrmsCoreMvc.Models.Projects.TaskMembers", b =>
