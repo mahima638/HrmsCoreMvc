@@ -3,213 +3,176 @@ using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Models.Projects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.NativeInterop;
+using System.Security.Cryptography;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HrmsCoreMvc.Controllers
 {
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext db;
+
         public AdminController(ApplicationDbContext db)
         {
             this.db = db;
-            
         }
-        public  async Task<IActionResult> Dashboard()
-        {
 
+        public async Task<IActionResult> Dashboard()
+        {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null) {
+
+            if (userId == null)
+            {
                 return RedirectToAction("Login", "Account");
             }
 
             var allUsers = await db.user.ToListAsync();
 
-            User admin = null;
-            foreach (var user in allUsers)
+           
+            User admin = allUsers.FirstOrDefault(u => u.UserId == userId.Value);
+
+            if (admin == null)
             {
-
-                if (user.UserId == userId.Value)
-                {
-
-                    admin = user;
-                }
+                return NotFound();
             }
 
-                if (admin == null)
-                {
-                    return NotFound();
-                }
+          
+            int totalEmployees = allUsers.Count();
 
-                int totalEmployees = 0;
-                foreach (var u in allUsers) {
+            DateTime today = DateTime.Today;
+            DateTime StartOfMonth = new DateTime(today.Year, today.Month, 1);
 
-                    totalEmployees = totalEmployees + 1;
-                }
+            int newHireThisMonth = allUsers.Count(u =>
+                u.DateOfJoining.HasValue &&
+                u.DateOfJoining >= StartOfMonth &&
+                u.DateOfJoining <= today
+            );
 
-                DateTime today = DateTime.Today;
-                DateTime StartOfMonth = new DateTime(today.Year, today.Month, 1);
+            var allAttendance = await db.Attendance.ToListAsync();
 
-                int newHireThisMonth = 0;
+            int presentToday = allAttendance.Count(at =>
+                at.Date.Date == today &&
+                at.Status == "Present"
+            );
 
-                foreach (var u in allUsers) {
+          
+            var allProjects = await db.AllProjects.ToListAsync();
+            var allTasks = await db.tasks.ToListAsync();
 
-                    if (u.DateOfJoining.HasValue && u.DateOfJoining >= StartOfMonth && u.DateOfJoining <= today) {
+          
+            int totalProjects = allProjects.Count();
 
-                        newHireThisMonth = newHireThisMonth + 1;
-                    
-                    }
-                }
-                var allAttendance = await db.Attendance.ToListAsync();
+           
+            List<string> uniqueClients = allProjects
+                .Where(p => !string.IsNullOrEmpty(p.ClientName))
+                .Select(p => p.ClientName)
+                .Distinct()
+                .ToList();
 
-                int presentToday = 0;
+            int totalClients = uniqueClients.Count();
 
-                foreach (var at in allAttendance) {
+            int totalTasks = allTasks.Count();
 
-                    if (at.Date.Date == today && at.Status == "Present")
-                    {
-                        presentToday = presentToday + 1;
-                    }
-
-                }
-
-                var allProjects = await db.AllProjects.ToListAsync();
-                var allTasks = await db.tasks.ToListAsync();
-
-                int totalProjects = 0;
-                foreach (var p in allProjects) {
-                    totalProjects = totalProjects + 1;
-                }
-
-                List<string> uniqueClients = new List<string>();
-                foreach (var p in allProjects) {
-
-                    if (!string.IsNullOrEmpty(p.ClientName) && !uniqueClients.Contains(p.ClientName)) {
-                        uniqueClients.Add(p.ClientName);
-                    }
-                }
-
-                int totalClients = uniqueClients.Count;
-                int totalTasks = 0;
-                foreach (var t in allTasks)
-                {
-                    totalTasks = totalTasks + 1;
-                }
-
+           
             var allDepartments = await db.department.ToListAsync();
+
             List<DepartmentCount> departmentCounts = new List<DepartmentCount>();
-            foreach (var d in allDepartments) {
-                int countInDepartment = 0;
-                foreach (var u in allUsers) {
-                    if (u.DepartmentId == d.DepartmentId) {
 
-                        countInDepartment = countInDepartment + 1;
-                     
-                    }
-                  }
-                if (countInDepartment > 0) {
+            foreach (var d in allDepartments)
+            {
+                int countInDepartment = allUsers.Count(u =>
+                    u.DepartmentId == d.DepartmentId
+                );
 
+                if (countInDepartment > 0)
+                {
                     var item = new DepartmentCount();
                     item.DepartmentName = d.Name;
                     item.Count = countInDepartment;
+
                     departmentCounts.Add(item);
                 }
-             
             }
+
+         
             List<ClockInEntry> todayClockIns = new List<ClockInEntry>();
 
-            foreach (var at in allAttendance)
+            var todayAttendance = allAttendance.Where(at =>
+                at.Date.Date == today &&
+                at.CheckIn != null
+            );
+
+            foreach (var at in todayAttendance)
             {
-                if (at.Date.Date == today && at.CheckIn != null)
+                User matchedUser = allUsers.FirstOrDefault(u =>
+                    u.UserId == at.UserId
+                );
+
+                if (matchedUser != null)
                 {
+                    var entry = new ClockInEntry();
 
-                    User matchedUser = null;
-                    foreach (var u in allUsers)
+                    entry.FullName = matchedUser.FirstName + " " + matchedUser.LastName;
+                    entry.DesignationName = matchedUser.ProfilePicture;
+                    entry.CheckInTime = at.CheckIn.Value.ToString("hh:mm tt");
+
+                    if (at.CheckOut != null)
                     {
-
-                        if (u.UserId == at.UserId)
-                        {
-
-                            matchedUser = u;
-                        }
+                        entry.CheckOutTime = at.CheckOut.Value.ToString("hh:mm tt");
                     }
-                    if (matchedUser != null)
+                    else
                     {
-
-
-                        var entry = new ClockInEntry();
-                        entry.FullName = matchedUser.FirstName + " " + matchedUser.LastName;
-                        entry.DesignationName = matchedUser.ProfilePicture;
-                        entry.CheckInTime = at.CheckIn.Value.ToString("hh:mm tt");
-
-                        if (at.CheckOut != null)
-                        {
-
-                            entry.CheckOutTime = at.CheckOut.Value.ToString("hh:mm tt");
-                        }
-                        else
-                        {
-
-                            entry.CheckOutTime = "Not Checked out!";
-                        }
-                        entry.ProductionHoursDisplay = at.ProductionHours.ToString("0.00") + "Hrs";
-
-                        if (at.Late > 0)
-                        {
-
-                            entry.IsLate = true;
-                            entry.LateMinutes = at.Late;
-                        }
-                        else
-                        {
-                            entry.IsLate = false;
-                        }
-
-
-
-
-                        todayClockIns.Add(entry);
+                        entry.CheckOutTime = "Not Checked out!";
                     }
+
+                    entry.ProductionHoursDisplay =
+                        at.ProductionHours.ToString("0.00") + "Hrs";
+
+                    if (at.Late > 0)
+                    {
+                        entry.IsLate = true;
+                        entry.LateMinutes = at.Late;
+                    }
+                    else
+                    {
+                        entry.IsLate = false;
+                    }
+
+                    todayClockIns.Add(entry);
                 }
             }
 
-                    
-                    List<AllProjects> recentProjects = allProjects;
-                    List<string> uniqueTaskStatuses = new List<string>();
-                    foreach (var t in allTasks)
-                    {
-                        if (!string.IsNullOrEmpty(t.Status) && !uniqueTaskStatuses.Contains(t.Status))
-                        {
-                            uniqueTaskStatuses.Add(t.Status);
-                        }
-                    }
+            List<AllProjects> recentProjects = allProjects;
 
-                    List<StatusCount> taskStatusBreakdown = new List<StatusCount>();
-                    foreach (var status in uniqueTaskStatuses)
-                    {
-                        int countForThisStatus = 0;
-                        foreach (var t in allTasks)
-                        {
-                            if (t.Status == status)
-                            {
-                                countForThisStatus = countForThisStatus + 1;
-                            }
-                        }
+            
+            List<string> uniqueTaskStatuses = allTasks
+                .Where(t => !string.IsNullOrEmpty(t.Status))
+                .Select(t => t.Status)
+                .Distinct()
+                .ToList();
 
-                        var sc = new StatusCount();
-                        sc.StatusName = status;
-                        sc.Count = countForThisStatus;
-                        taskStatusBreakdown.Add(sc);
-                    }
+            List<StatusCount> taskStatusBreakdown = new List<StatusCount>();
 
-                  
-                    int totalTasksCompleted = 0;
-                    foreach (var t in allTasks)
-                    {
-                        if (t.Status == "Completed")
-                        {
-                            totalTasksCompleted = totalTasksCompleted + 1;
-                        }
-                    }
+            foreach (var status in uniqueTaskStatuses)
+            {
+                int countForThisStatus = allTasks.Count(t =>
+                    t.Status == status
+                );
+
+                var sc = new StatusCount();
+
+                sc.StatusName = status;
+                sc.Count = countForThisStatus;
+
+                taskStatusBreakdown.Add(sc);
+            }
+
+         
+            int totalTasksCompleted = allTasks.Count(t =>
+                t.Status == "Completed"
+            );
+
           
             List<EmployeeListItem> employeeList = new List<EmployeeListItem>();
 
@@ -217,42 +180,42 @@ namespace HrmsCoreMvc.Controllers
             {
                 string deptName = "Not Assigned";
 
-                foreach (var d in allDepartments)
+                var department = allDepartments.FirstOrDefault(d =>
+                    d.DepartmentId == u.DepartmentId
+                );
+
+                if (department != null)
                 {
-                    if (d.DepartmentId == u.DepartmentId)
-                    {
-                        deptName = d.Name;
-                    }
+                    deptName = department.Name;
                 }
 
                 var item = new EmployeeListItem();
+
                 item.FullName = u.FirstName + " " + u.LastName;
                 item.ProfilePicture = u.ProfilePicture;
                 item.DepartmentName = deptName;
+
                 employeeList.Add(item);
             }
 
+         
             var obj = new AdminDashboardViewModel();
-                    obj.Admin = admin;
-                    obj.TotalEmployees = totalEmployees;
-                    obj.NewHireThisMonth = newHireThisMonth;
-                    obj.PresentToday = presentToday;
-                    obj.TotalProjects = totalProjects;
-                    obj.TotalClients = totalClients;
-                    obj.TotalTasks = totalTasks;
-                    obj.DepartmentCounts = departmentCounts;
-                    obj.TodayClockIns = todayClockIns;
-                    obj.RecentProjects = recentProjects;
-                    obj.TaskStatusBreakdown = taskStatusBreakdown;
-                    obj.TotalTasksCompleted = totalTasksCompleted;
-                    obj.AllEmployeesList = employeeList;
+
+            obj.Admin = admin;
+            obj.TotalEmployees = totalEmployees;
+            obj.NewHireThisMonth = newHireThisMonth;
+            obj.PresentToday = presentToday;
+            obj.TotalProjects = totalProjects;
+            obj.TotalClients = totalClients;
+            obj.TotalTasks = totalTasks;
+            obj.DepartmentCounts = departmentCounts;
+            obj.TodayClockIns = todayClockIns;
+            obj.RecentProjects = recentProjects;
+            obj.TaskStatusBreakdown = taskStatusBreakdown;
+            obj.TotalTasksCompleted = totalTasksCompleted;
+            obj.AllEmployeesList = employeeList;
+
             return View(obj);
-
-                }
-            }
-
-               
-            }
-
-
-   
+        }
+    }
+}

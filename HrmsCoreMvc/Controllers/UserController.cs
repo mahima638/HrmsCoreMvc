@@ -2,7 +2,9 @@
 using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Linq;
+using HrmsCoreMvc.Data;
+using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Controllers
 {
     public class UserController : Controller
@@ -30,13 +32,18 @@ namespace HrmsCoreMvc.Controllers
             var des = await desService.GetAllDesignations();
             ViewBag.Designation = des;
             ViewBag.Departments = depts;
-            ViewBag.Role= roles;
+            ViewBag.Role = roles;
+            var allEmployeesForManager = await userService.getEmployees();
+            var managerRole = roles.FirstOrDefault(r => r.RoleName == "Manager");
+            int managerRoleId = managerRole != null ? managerRole.RoleId : 0;
+            ViewBag.Managers = allEmployeesForManager.Where(u => u.RoleId == managerRoleId).ToList();
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> AddEmployee(User us, IFormFile profilePicture)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 if (profilePicture != null)
                 {
                     var fileName = profilePicture.FileName;
@@ -53,36 +60,51 @@ namespace HrmsCoreMvc.Controllers
                 await userService.AddEmployee(us);
                 return RedirectToAction("GetEmployee");
             }
-            var roles =await  roleService.GetAllRole();
-            var depts =await  deptService.GetDepartments();
+            var roles = await roleService.GetAllRole();
+            var depts = await deptService.GetDepartments();
             var des = await desService.GetAllDesignations();
             ViewBag.Designation = des;
             ViewBag.Departments = depts;
             ViewBag.Roles = roles;
+            var allEmployeesForManager = await userService.getEmployees();
+            var managerRole = roles.FirstOrDefault(r => r.RoleName == "Manager");
+            int managerRoleId = managerRole != null ? managerRole.RoleId : 0;
+            ViewBag.Managers = allEmployeesForManager.Where(u => u.RoleId == managerRoleId).ToList();
             return View(us);
         }
 
-        public async Task<IActionResult> DeleteEmployee(int id) {
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
 
             await userService.DeleteEmployee(id);
             return RedirectToAction("GetEmployee");
         }
 
-        public async Task<IActionResult> GetEmployee() {
+        public async Task<IActionResult> GetEmployee()
+        {
 
             var users = await userService.getEmployees();
-            ViewBag.Role = await roleService.GetAllRole();
+            var roles = await roleService.GetAllRole();
+
+            ViewBag.Role = roles;
             ViewBag.Departments = await deptService.GetDepartments();
             ViewBag.Designation = await desService.GetAllDesignations();
+
+            var managerRole = roles.FirstOrDefault(r => r.RoleName == "Manager");
+            int managerRoleId = managerRole != null ? managerRole.RoleId : 0;
+            ViewBag.Managers = users.Where(u => u.RoleId == managerRoleId).ToList();
+
             return View(users);
         }
 
-        public async Task<IActionResult> EditEmployee(int id) {
-            var us =await userService.GetEmpById(id);
+        public async Task<IActionResult> EditEmployee(int id)
+        {
+            var us = await userService.GetEmpById(id);
             return View(us);
         }
         [HttpPost]
-        public async Task<IActionResult> EditEmployee(User us) {
+        public async Task<IActionResult> EditEmployee(User us)
+        {
             if (ModelState.IsValid)
             {
                 await userService.UpdateEmployee(us);
@@ -98,7 +120,8 @@ namespace HrmsCoreMvc.Controllers
 
             var UserId = HttpContext.Session.GetInt32("UserId");
 
-            if (UserId == null) {
+            if (UserId == null)
+            {
                 return RedirectToAction("Login", "Account");
             }
             us.UserId = UserId.Value;
@@ -110,7 +133,7 @@ namespace HrmsCoreMvc.Controllers
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                   await profilepicture.CopyToAsync(stream);
+                    await profilepicture.CopyToAsync(stream);
                 }
 
                 us.ProfilePicture = "/uploads/" + fileName;
