@@ -57,7 +57,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<ProjectReportsViewModel>> fetchProjectReports()
         {
-            var data = await db.AllProjects.Include(ap => ap.projectusers).Select(ap => new ProjectReportsViewModel
+            var data = await db.AllProjects.Include(ap => ap.projectusers).ThenInclude(pu => pu.user).Select(ap => new ProjectReportsViewModel
             {
                 ProjectId = ap.ProjectId,
                 ProjectName = ap.ProjectName,
@@ -72,7 +72,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<ProjectReportsViewModel>> sortProjectReports(string? priorityType, string? statusType, string? sortType)
         {
-            var query = db.AllProjects.Include(ap => ap.projectusers).AsQueryable();
+            var query = db.AllProjects.Include(ap => ap.projectusers).ThenInclude(pu => pu.user).AsQueryable();
             if (!string.IsNullOrEmpty(statusType))
             {
                 query = query.Where(ap => ap.Status == statusType);

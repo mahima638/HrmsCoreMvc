@@ -2,11 +2,15 @@
 
 namespace HrmsCoreMvc.Repositories.Reports
 {
-    public interface IAttendanceReports
+   public interface IAttendanceReports
     {
         Task<int> fetchTotalLeavesTaken();
 
         Task<int> fetchTotalHolidaysTaken();
+
+        Task<int> fetchTotalHalfDays();
+
+        Task<int> fetchTotalWorkingDays();
 
         Task<IEnumerable<AttendanceReportViewModel>> getAttendancesAsync();
 

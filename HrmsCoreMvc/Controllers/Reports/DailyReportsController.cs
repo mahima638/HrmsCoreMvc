@@ -26,8 +26,9 @@ namespace HrmsCoreMvc.Controllers.Reports
                  DailyTasks = await Ir.sortDailyTasks(status, sortType);
             }
             ViewBag.ChartLabels = dailyChart.ChartLabels;
-            ViewBag.ChartPresent = dailyChart.Chartpresent;
-            ViewBag.ChartAbsent = dailyChart.Chartabsent;
+            ViewBag.ChartData = dailyChart.Chartdata;
+            ViewBag.SelectedSortStatus = status;
+            ViewBag.SelectedSortType = sortType;
             ViewBag.TotalAbsent = TotalAbsent;
             ViewBag.TotalPresent = TotalPresent;
             ViewBag.CompletedTasks = CompletedTasks;

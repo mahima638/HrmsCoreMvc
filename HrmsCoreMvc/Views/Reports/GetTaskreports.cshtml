@@ -48,12 +48,12 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="exportDropdown">
             <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" href="#" id="exportCsvBtn">
                     <i class="bi bi-file-earmark-excel text-success me-2"></i>Export to Excel
                 </a>
             </li>
             <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" href="#" id="exportPdfBtn">
                     <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Export to PDF
                 </a>
             </li>
@@ -191,7 +191,7 @@
             </div>
         </form>
         <div class="table-responsive">
-            <table id="AllProjectsTable" class="table align-middle table-hover w-100">
+            <table id="AllTasksTable" class="table align-middle table-hover w-100">
                 <thead class="table-light">
                     <tr>
                         <th>Task Id</th>
@@ -295,7 +295,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#AllProjectsTable').DataTable({
+            $('#AllTasksTable').DataTable({
                 "dom": 'frtip'
             });
             $('.dropdown-toggle').dropdown();
@@ -303,3 +303,39 @@
 
     </script>
 }
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+ <script>
+     document.getElementById('exportPdfBtn').onclick = (e) => {
+         e.preventDefault();
+         const doc = new jspdf.jsPDF('l');
+         doc.autoTable({ 
+            html: '#AllTasksTable',
+            didParseCell: (d) => { if (d.column.index === 1) d.cell.text = [d.cell.raw.innerText.trim()]; }
+        });
+        doc.save('Tasks_Report.pdf');
+    };
+</script>
+
+<script>
+    document.getElementById('exportCsvBtn').onclick = function(e) {
+    e.preventDefault();
+    const rows = document.querySelectorAll('#AllTasksTable tr'); 
+    const cvrows = Array.from(rows).map(row => {
+        const cells = row.querySelectorAll('th,td');
+        const cellTexts = Array.from(cells).map(cell => `"${cell.innerText.trim()}"`);
+        return cellTexts.join(',');
+    });
+
+    const csvContent = cvrows.join('\n');
+    const link = document.createElement('a');
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+    link.download = 'Tasks_Report.csv';
+    link.click();
+    };
+
+</script>
+     

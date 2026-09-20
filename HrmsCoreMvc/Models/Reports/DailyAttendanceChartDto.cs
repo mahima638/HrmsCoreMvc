@@ -4,8 +4,6 @@
     {
         public List<string> ChartLabels { get; set; } = new List<string>();
 
-        public int Chartpresent {  get; set; } 
-
-        public int Chartabsent { get; set; } 
+        public List<int> Chartdata { get; set; } = new List<int>();
     }
 }

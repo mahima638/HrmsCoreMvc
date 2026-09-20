@@ -153,5 +153,18 @@ namespace HrmsCoreMvc.Services.Reports
             return result;
 
         }
+
+        public async Task<int> fetchTotalHalfDays()
+        {
+            var data = await db.Attendance.Where(x => x.Status == "Half Day").CountAsync();
+            return data;
+        }
+
+        public async Task<int> fetchTotalWorkingDays()
+        {
+            return await db.Attendance.CountAsync();
+
+
+        }
     }
 }
