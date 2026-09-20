@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HrmsCoreMvc.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.cs
     public partial class EmpDetails : Migration
-========
-    public partial class InitialPhase : Migration
->>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -207,29 +203,6 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "taskboards",
-                columns: table => new
-                {
-                    TaskBoardId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    TaskName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TaskBoardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Duedate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_taskboards", x => x.TaskBoardId);
-                    table.ForeignKey(
-                        name: "FK_taskboards_AllProjects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "AllProjects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "designation",
                 columns: table => new
                 {
@@ -306,40 +279,6 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.cs
-========
-                name: "tasks",
-                columns: table => new
-                {
-                    TaskId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Priority = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaskBoardId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tasks", x => x.TaskId);
-                    table.ForeignKey(
-                        name: "FK_tasks_AllProjects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "AllProjects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_tasks_taskboards_TaskBoardId",
-                        column: x => x.TaskBoardId,
-                        principalTable: "taskboards",
-                        principalColumn: "TaskBoardId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
->>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.cs
                 name: "Deduction",
                 columns: table => new
                 {
@@ -755,33 +694,6 @@ namespace HrmsCoreMvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "taskmembers",
-                columns: table => new
-                {
-                    TaskMembersId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TaskMemberName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TaskId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_taskmembers", x => x.TaskMembersId);
-                    table.ForeignKey(
-                        name: "FK_taskmembers_tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "tasks",
-                        principalColumn: "TaskId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_taskmembers_user_UserId",
-                        column: x => x.UserId,
-                        principalTable: "user",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "terminations",
                 columns: table => new
                 {
@@ -839,7 +751,6 @@ namespace HrmsCoreMvc.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Training",
-<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.cs
                 columns: table => new
                 {
                     TrainingId = table.Column<int>(type: "int", nullable: false)
@@ -882,13 +793,10 @@ namespace HrmsCoreMvc.Migrations
 
             migrationBuilder.CreateTable(
                 name: "taskboards",
-========
->>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.cs
                 columns: table => new
                 {
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
+                    TaskBoardId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.cs
                     TaskId = table.Column<int>(type: "int", nullable: false),
                     tasksTaskId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
@@ -915,42 +823,55 @@ namespace HrmsCoreMvc.Migrations
                     TaskId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-========
-                    TrainerId = table.Column<int>(type: "int", nullable: false),
-                    TrainingTypeId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    TrainingCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
->>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.cs
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Priority = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaskBoardId = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Training", x => x.TrainingId);
+                    table.PrimaryKey("PK_tasks", x => x.TaskId);
                     table.ForeignKey(
-                        name: "FK_Training_Trainer_TrainerId",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainer",
-                        principalColumn: "TrainerId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_tasks_AllProjects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "AllProjects",
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Training_TraningType_TrainingTypeId",
-                        column: x => x.TrainingTypeId,
-                        principalTable: "TraningType",
-                        principalColumn: "TrainingTypeId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_tasks_taskboards_TaskBoardId",
+                        column: x => x.TaskBoardId,
+                        principalTable: "taskboards",
+                        principalColumn: "TaskBoardId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "taskmembers",
+                columns: table => new
+                {
+                    TaskMembersId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaskMemberName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TaskId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_taskmembers", x => x.TaskMembersId);
                     table.ForeignKey(
-                        name: "FK_Training_user_UserId",
+                        name: "FK_taskmembers_tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "tasks",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_taskmembers_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -1089,6 +1010,11 @@ namespace HrmsCoreMvc.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_taskboards_tasksTaskId",
+                table: "taskboards",
+                column: "tasksTaskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_taskmembers_TaskId",
                 table: "taskmembers",
                 column: "TaskId");
@@ -1152,11 +1078,31 @@ namespace HrmsCoreMvc.Migrations
                 name: "IX_user_RoleId",
                 table: "user",
                 column: "RoleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_taskboards_tasks_tasksTaskId",
+                table: "taskboards",
+                column: "tasksTaskId",
+                principalTable: "tasks",
+                principalColumn: "TaskId",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_taskboards_AllProjects_ProjectId",
+                table: "taskboards");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_tasks_AllProjects_ProjectId",
+                table: "tasks");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_taskboards_tasks_tasksTaskId",
+                table: "taskboards");
+
             migrationBuilder.DropTable(
                 name: "AddAdminDocName");
 
@@ -1233,12 +1179,6 @@ namespace HrmsCoreMvc.Migrations
                 name: "DepartmentLeaves");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:HrmsCoreMvc/Migrations/20260918085500_EmpDetails.cs
-========
-                name: "tasks");
-
-            migrationBuilder.DropTable(
->>>>>>>> eec977ce5b7df0204dbcea1eb535298467ae0f36:HrmsCoreMvc/Migrations/20260919200553_Initial Phase.cs
                 name: "Trainer");
 
             migrationBuilder.DropTable(
@@ -1251,19 +1191,22 @@ namespace HrmsCoreMvc.Migrations
                 name: "MasterLeaveTypes");
 
             migrationBuilder.DropTable(
-                name: "taskboards");
-
-            migrationBuilder.DropTable(
                 name: "designation");
 
             migrationBuilder.DropTable(
                 name: "role");
 
             migrationBuilder.DropTable(
+                name: "department");
+
+            migrationBuilder.DropTable(
                 name: "AllProjects");
 
             migrationBuilder.DropTable(
-                name: "department");
+                name: "tasks");
+
+            migrationBuilder.DropTable(
+                name: "taskboards");
         }
     }
 }
