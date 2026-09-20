@@ -1,0 +1,82 @@
+﻿@model List<HrmsCoreMvc.Models.Tickets.Ticket>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h3>Ticket Assignment</h3>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (Model?.Any() == true)
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Ticket No</th>
+                        <th>Raised By</th>
+                        <th>Subject</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TicketNo</td>
+                            <td>@item.RaisedByUser?.FirstName @item.RaisedByUser?.LastName</td>
+                            <td>@item.Subject</td>
+                            <td>
+                                <span class="priority @(item.Priority == "High" ? "high" : item.Priority == "Medium" ? "medium" : "low")">
+                                    @item.Priority
+                                </span>
+                            </td>
+                            <td>@item.Status</td>
+                            <td>@item.CreatedDate.ToString("dd-MM-yyyy HH:mm")</td>
+                            <td>
+                                <a asp-action="Assign"
+                                   asp-route-id="@item.TicketId"
+                                   class="btn btn-sm btn-primary">
+                                    Assign
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No open tickets found.</div>
+    }
+</div>
+
+<style>
+    .priority {
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .priority.high {
+        background: #dc3545;
+        color: white;
+    }
+
+    .priority.medium {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .priority.low {
+        background: #198754;
+        color: white;
+    }
+</style>

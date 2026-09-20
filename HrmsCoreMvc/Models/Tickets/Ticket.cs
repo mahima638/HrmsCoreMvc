@@ -2,14 +2,15 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 using HrmsCoreMvc.Models;
+using HrmsCoreMvc.Models.Ticketing;
 
-namespace HrmsCoreMvc.Models.Ticketing
+namespace HrmsCoreMvc.Models.Tickets
 {
     public class Ticket
     {
         [Key]
         public int TicketId { get; set; }
-        [Required]
+       
         [StringLength(30)]
         public string? TicketNo { get; set; } 
         [Required]
@@ -36,6 +37,13 @@ namespace HrmsCoreMvc.Models.Ticketing
         public User? AssignedToUser { get; set; }
         [ForeignKey("AssignedBy")]
         public User? AssignedByUser { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string? TicketTitle { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string? EventCategory { get; set; }
         public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
         public ICollection<TicketAttachment> Attachments { get; set; } = new List<TicketAttachment>();
         public TicketResolution? Resolution { get; set; }

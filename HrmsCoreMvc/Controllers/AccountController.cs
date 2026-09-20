@@ -19,32 +19,38 @@ namespace HrmsCoreMvc.Controllers
             return View();
         }
 
-       
+
 
         public IActionResult Login()
         {
             return View();
         }
-      
-        [HttpPost]
-        public IActionResult Login(Login lg) { 
-        
 
-            if(!ModelState.IsValid)
+        [HttpPost]
+        public IActionResult Login(Login lg)
+        {
+
+
+            if (!ModelState.IsValid)
             {
                 return View(lg);
             }
-            if (lg.Email == "Admin@gmail.com" && lg.Password == "admin123") {
+            if (lg.Email == "Admin@gmail.com" && lg.Password == "admin123")
+            {
                 HttpContext.Session.SetString("Role", "Admin");
                 return RedirectToAction("Dashboard", "Admin");
-            
+
             }
+
+
+
 
             var user = db.user.FirstOrDefault(u => u.Email == lg.Email && u.PasswordHash == lg.Password);
 
-            if (user == null) {
+            if (user == null)
+            {
 
-                ModelState.AddModelError("","Invalid email or password");
+                ModelState.AddModelError("", "Invalid email or password");
                 return View(lg);
             }
             HttpContext.Session.SetInt32("UserId", user.UserId);
@@ -57,11 +63,11 @@ namespace HrmsCoreMvc.Controllers
                 ModelState.AddModelError("", "Role not found");
                 return View(lg);
             }
-           
+
 
             HttpContext.Session.SetString("Role", role.RoleName);
 
-            
+
 
             if (role?.RoleName == "Manager")
             {

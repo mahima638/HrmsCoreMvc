@@ -6,7 +6,7 @@ namespace HrmsCoreMvc.Repositories.Resignations
     {
         Task<List<Resignation>> GetResignationsAsync();
         Task<Resignation> GetResignationByIdAsync(int resignationId);
-        Task<string> AddResignationAsync(Resignation resignation);
+        Task<string> AddResignationAsync(Resignation resignations);
         Task<string> UpdateResignationAsync(Resignation resignation);
         Task<string> DeleteResignationAsync(int resignationId);
         Task<List<User>> GetUsersAsync();

@@ -1,0 +1,37 @@
+﻿@model HrmsCoreMvc.Models.Tickets.Ticket
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Ticket Resolution</h5>
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Ticket No:</strong> @Model.TicketNo</p>
+
+            <p><strong>Subject:</strong> @Model.Subject</p>
+
+            <p><strong>Description:</strong> @Model.Description</p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="badge bg-primary">@Model.Status</span>
+            </p>
+
+            <a asp-controller="TicketResolution"
+               asp-action="UpdateStatus"
+               asp-route-id="@Model.TicketId"
+               class="btn btn-success">
+                Resolve Ticket
+            </a>
+
+            <a asp-controller="Ticket"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+    </div>
+</div>
