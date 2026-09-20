@@ -97,23 +97,16 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<ProjectReportsViewModel>> fetchProjectReports()
         {
-            var data = await db.AllProjects
-                .Include(ap => ap.projectusers)
-                .Select(ap => new ProjectReportsViewModel
-                {
-                    ProjectId = ap.ProjectId,
-                    ProjectName = ap.ProjectName,
-                    Leader = ap.ManagerName,
-                    Members = ap.projectusers
-                        .Where(pu => pu.user != null)
-                        .Select(pu => pu.user.ProfilePicture)
-                        .ToList(),
-                    Deadline = ap.EndDate,
-                    Priority = ap.Priority,
-                    Status = ap.Status
-                })
-                .ToListAsync();
-
+            var data = await db.AllProjects.Include(ap => ap.projectusers).ThenInclude(pu => pu.user).Select(ap => new ProjectReportsViewModel
+            {
+                ProjectId = ap.ProjectId,
+                ProjectName = ap.ProjectName,
+                Leader = ap.ManagerName,
+                Members = ap.projectusers.Where(pu => pu.user !=null).Select(pu => pu.user.ProfilePicture).ToList(),
+                Deadline = ap.EndDate,
+                Priority = ap.Priority,
+                Status = ap.Status
+            }).ToListAsync();
             return data;
         }
 
@@ -122,10 +115,7 @@ namespace HrmsCoreMvc.Services.Reports
             string? statusType,
             string? sortType)
         {
-            var query = db.AllProjects
-                .Include(ap => ap.projectusers)
-                .AsQueryable();
-
+            var query = db.AllProjects.Include(ap => ap.projectusers).ThenInclude(pu => pu.user).AsQueryable();
             if (!string.IsNullOrEmpty(statusType))
             {
                 query = query.Where(ap => ap.Status == statusType);

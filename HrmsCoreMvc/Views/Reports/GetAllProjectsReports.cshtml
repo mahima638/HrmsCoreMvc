@@ -49,12 +49,12 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="exportDropdown">
             <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" href="#" id="exportCsvBtn">
                     <i class="bi bi-file-earmark-excel text-success me-2"></i>Export to Excel
                 </a>
             </li>
             <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" href="#" id="exportPdfBtn">
                     <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Export to PDF
                 </a>
             </li>
@@ -207,7 +207,10 @@
                             <td>@gap.ProjectName</td>
                             <td>@gap.Leader</td>
                             <td>
-                               Members
+                                @foreach (var photo in gap.Members)
+                                {
+                                    <img src="@photo" class="rounded-circle" width="30" height="30" alt="" />
+                                }
                             </td>
                             <td>@gap.Deadline</td>
                             <td>
@@ -301,3 +304,38 @@
 
     </script>
 }
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+ <script>
+     document.getElementById('exportPdfBtn').onclick = (e) => {
+         e.preventDefault();
+         const doc = new jspdf.jsPDF('l');
+         doc.autoTable({ 
+            html: '#AllProjectsTable',
+            didParseCell: (d) => { if (d.column.index === 1) d.cell.text = [d.cell.raw.innerText.trim()]; }
+        });
+        doc.save('AllProjects_Report.pdf');
+    };
+</script>
+
+<script>
+    document.getElementById('exportCsvBtn').onclick = function(e) {
+    e.preventDefault();
+    const rows = document.querySelectorAll('#AllProjectsTable tr'); 
+    const cvrows = Array.from(rows).map(row => {
+        const cells = row.querySelectorAll('th,td');
+        const cellTexts = Array.from(cells).map(cell => `"${cell.innerText.trim()}"`);
+        return cellTexts.join(',');
+    });
+
+    const csvContent = cvrows.join('\n');
+    const link = document.createElement('a');
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+    link.download = 'AllProjects_Report.csv';
+    link.click();
+    };
+
+</script>
+     
