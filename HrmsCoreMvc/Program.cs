@@ -31,12 +31,14 @@ builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
 builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-//builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
+builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddScoped<IEmpBankDetails, EmpBankDetailService>();
 builder.Services.AddScoped<IEmpEducation, EmpEducationService>();
 builder.Services.AddScoped<IEmpExperience, EmpExperienceService>();
 builder.Services.AddScoped<IEmpFamilyInfo, EmpFamilyService>();
+
+builder.Services.AddScoped<IPayslipService,PayrollReportService>();
 
 
 // Add services to the container.

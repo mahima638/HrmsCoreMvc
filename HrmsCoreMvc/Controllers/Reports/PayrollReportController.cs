@@ -21,8 +21,10 @@ namespace HrmsCoreMvc.Controllers.Reports
             {
                 fetchPayslips = await ps.sortPayslips(sortMonth, sortType);
             }
+            ViewBag.SelectedSortStatus = sortMonth;
+            ViewBag.SelectedSortType = sortType;
 
-            return View(fetchPayslips);
+            return View("Views/Reports/GetPayrollReports.cshtml", fetchPayslips);
         }
 
     }

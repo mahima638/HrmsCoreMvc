@@ -57,12 +57,12 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<TaskReportViewModel>> fetchTasks()
         {
-            var data = await db.tasks.Include(t => t.Project).Include(t => t.TaskBoard).Select(t => new TaskReportViewModel()
+            var data = await db.tasks.Include(t => t.Project).Select(t => new TaskReportViewModel()
             {
                 TaskId = t.TaskId,
                 TaskName = t.Title,
                 ProjectName = t.Project.ProjectName,
-                DueDate = t.TaskBoard.Duedate,
+                DueDate = (DateTime)t.DueDate,
                 Priority = t.Priority,
                 Status = t.Status
             }).ToListAsync();
@@ -78,7 +78,7 @@ namespace HrmsCoreMvc.Services.Reports
 
         public async Task<IEnumerable<TaskReportViewModel>> sortTasks(string? priority, string? status, string? sortType)
         {
-            var query = db.tasks.Include(t => t.Project).Include(t => t.TaskBoard).AsQueryable();
+            var query = db.tasks.Include(t => t.Project).AsQueryable();
             if (!string.IsNullOrEmpty(priority))
             {
                 query = query.Where(t => t.Priority == priority);
@@ -89,24 +89,24 @@ namespace HrmsCoreMvc.Services.Reports
             }
             if (sortType == "Ascending")
             {
-                query = query.OrderBy(t => t.TaskBoard.Duedate);
+                query = query.OrderBy(t => t.DueDate);
             }
             else if (sortType == "Descending")
             {
-                query = query.OrderByDescending(t => t.TaskBoard.Duedate);
+                query = query.OrderByDescending(t => t.DueDate);
 
             }
             else if (sortType == "Last Month")
             {
-                query = query.Where(t => t.TaskBoard.Duedate >= DateTime.Now.AddMonths(-1));
+                query = query.Where(t => t.DueDate >= DateTime.Now.AddMonths(-1));
             }
             else if(sortType == "Last 7 Days")
             {
-                query = query.Where(t => t.TaskBoard.Duedate >= DateTime.Now.AddDays(-7));
+                query = query.Where(t => t.DueDate >= DateTime.Now.AddDays(-7));
             }
             else if (sortType == "Recently Added")
             {
-                query = query.Where(t => t.TaskBoard.Duedate >= DateTime.Now.AddDays(-1));
+                query = query.Where(t => t.DueDate >= DateTime.Now.AddDays(-1));
 
             }
 
@@ -116,7 +116,7 @@ namespace HrmsCoreMvc.Services.Reports
                 TaskId = t.TaskId,
                 TaskName = t.Title,
                 ProjectName = t.Project.ProjectName,
-                DueDate = t.TaskBoard.Duedate,
+                DueDate = (DateTime)t.DueDate,
                 Priority = t.Priority,
                 Status = t.Status
             }).ToListAsync();
