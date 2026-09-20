@@ -8,7 +8,7 @@
 
         public string ProjectName { get; set; }
 
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
 
         public string Priority { get; set; }
 
