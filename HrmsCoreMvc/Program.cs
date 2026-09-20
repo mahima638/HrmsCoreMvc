@@ -33,12 +33,18 @@ builder.Services.AddScoped<IDailyReportService, DailyReportService>();
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
 builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+
+builder.Services.AddScoped<IEarningService, EarningService>();
+builder.Services.AddScoped<IDeductionService, DeductionService>();
+builder.Services.AddScoped<ITimesheetService, TimesheetService>();
+
 builder.Services.AddScoped<IEmpBankDetails, EmpBankDetailService>();
 builder.Services.AddScoped<IEmpEducation, EmpEducationService>();
 builder.Services.AddScoped<IEmpExperience, EmpExperienceService>();
 builder.Services.AddScoped<IEmpFamilyInfo, EmpFamilyService>();
 
 builder.Services.AddScoped<IPayslipService,PayrollReportService>();
+
 
 
 // Add services to the container.
@@ -78,7 +84,7 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
-//app.UseMiddleware<GlobalExceptionsFile>();
+app.UseMiddleware<GlobalExceptionsFile>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -87,10 +93,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseDeveloperExceptionPage();
+//}
 
 app.UseSession();
 app.UseHttpsRedirection();

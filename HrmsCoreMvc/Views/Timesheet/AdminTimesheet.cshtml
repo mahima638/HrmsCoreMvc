@@ -1,0 +1,177 @@
+﻿@model List<HrmsCoreMvc.Models.PayRoll.Timesheet>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Timesheet Approval</h3>
+
+    <div class="d-flex gap-2">
+        <button class="btn btn-success" id="approveBtn">
+            <i class="bi bi-check-circle"></i> Approve Selected
+        </button>
+
+        <button class="btn btn-danger" id="rejectBtn">
+            <i class="bi bi-x-circle"></i> Reject Selected
+        </button>
+    </div>
+</div>
+
+<table class="table table-bordered table-hover" id="timesheetTable">
+
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="selectAll"/>
+            </th>
+            <th>Employee Name</th>
+            <th>Project Name</th>
+            <th>Date</th>
+            <th>Work Hours</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    
+                        <input type="checkbox"
+                               class="timesheetCheck"
+                               value="@item.TimesheetId"/>
+                    
+                </td>
+
+                <td>@item.User.FirstName @item.User.LastName</td>
+
+                <td>@item.Project.ProjectName</td>
+
+                <td>@item.Date.ToString("dd/MM/yyyy")</td>
+
+                <td>@item.WorkHours</td>
+
+                <td>
+                    @if(item.Status == "Approved")
+                    {
+                        <span class="badge bg-success">Approved</span>
+                    }
+                    else if(item.Status == "Rejected")
+                    {
+                        <span class="badge bg-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section Scripts{
+
+<script>
+
+$(document).ready(function () {
+
+    $('#timesheetTable').DataTable({
+        pageLength: 5,
+        lengthMenu: [5,10,25,50],
+        ordering: true,
+        searching: true
+    });
+
+
+    $("#selectAll").change(function () {
+        $(".timesheetCheck").prop("checked", $(this).is(":checked"));
+    });
+
+    function getSelectedIds() {
+
+        var ids = [];
+
+        $(".timesheetCheck:checked").each(function () {
+            ids.push($(this).val());
+        });
+
+        return ids;
+    }
+
+
+    $("#approveBtn").click(function () {
+
+        var ids = getSelectedIds();
+
+        if (ids.length === 0) {
+            alert("Please select at least one pending timesheet.");
+            return;
+        }
+
+        $.ajax({
+            url: "/Timesheet/ApproveSelected",
+            type: "POST",
+            traditional: true,
+            data: { ids: ids },
+
+            success: function () {
+                alert("Selected timesheets approved successfully.");
+                location.reload();
+            },
+
+            error: function () {
+                alert("Error while approving timesheets.");
+            }
+        });
+
+    });
+
+
+    $("#rejectBtn").click(function () {
+
+        var ids = getSelectedIds();
+
+        if (ids.length === 0) {
+            alert("Please select at least one pending timesheet.");
+            return;
+        }
+
+        $.ajax({
+            url: "/Timesheet/RejectSelected",
+            type: "POST",
+            traditional: true,
+            data: { ids: ids },
+
+            success: function () {
+                alert("Selected timesheets rejected successfully.");
+                location.reload();
+            },
+
+            error: function () {
+                alert("Error while rejecting timesheets.");
+            }
+        });
+
+    });
+
+});
+
+</script>
+
+}
