@@ -13,5 +13,7 @@ namespace HrmsCoreMvc.Repositories
         public Task UpdateEmployee(User us);
 
         public Task<User>GetEmpById(int id);
+
+        Task UpdateMyProfile(User us);
     }
 }

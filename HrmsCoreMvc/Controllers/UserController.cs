@@ -90,5 +90,34 @@ namespace HrmsCoreMvc.Controllers
             }
             return View();
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMyProfile(User us, IFormFile? profilepicture)
+        {
+
+            var UserId = HttpContext.Session.GetInt32("UserId");
+
+            if (UserId == null) {
+                return RedirectToAction("Login", "Account");
+            }
+            us.UserId = UserId.Value;
+            if (profilepicture != null)
+            {
+                var fileName = profilepicture.FileName;
+
+                var filePath = Path.Combine("wwwroot/uploads", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                   await profilepicture.CopyToAsync(stream);
+                }
+
+                us.ProfilePicture = "/uploads/" + fileName;
+            }
+            await userService.UpdateMyProfile(us);
+            return RedirectToAction("Details", "Employee");
+
+        }
     }
 }

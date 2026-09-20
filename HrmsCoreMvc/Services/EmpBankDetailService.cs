@@ -34,9 +34,10 @@ namespace HrmsCoreMvc.Services
             await db.SaveChangesAsync();
         }
 
-        public Task<EmpBankDetails?> GetBankDetailsByUserId(int userId)
+        public async Task<EmpBankDetails?> GetBankDetailsByUserId(int userId)
         {
-            throw new NotImplementedException();
+            return await db.EmpBankDetails
+                .FirstOrDefaultAsync(x => x.UserId == userId);
         }
 
         public async Task<List<EmpBankDetails>> GetEmpBankDetails()
@@ -48,8 +49,6 @@ namespace HrmsCoreMvc.Services
         {
             return await db.EmpBankDetails.FindAsync(id);
         }
-
-
     }
 }
 

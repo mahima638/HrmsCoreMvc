@@ -16,7 +16,7 @@ namespace HrmsCoreMvc.Controllers
         public async Task<IActionResult> GetAllEventTypes()
         {
             var eventTypes = await cs.GetAllEventTypes();
-            return View("~/Views/Event/GetAllEventTypes.cshtml", eventTypes);
+            return View("GetAllEventTypes", eventTypes);
         }
 
         public async Task<IActionResult> AddEventType(EventType eventType)

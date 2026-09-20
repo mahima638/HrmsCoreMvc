@@ -30,32 +30,46 @@ namespace HrmsCoreMvc.Controllers
         {
             await cs.AddEvent(eventObj);
             TempData["SuccessMessage"] = "Event added successfully!";
-            return RedirectToAction(nameof(GetAllEvents));
+            return RedirectToAction("GetAllEvents");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateEvent(int eventId)
+        {
+            var eventObj = (await cs.GetAllEvents()).FirstOrDefault(x => x.EventId == eventId);
+            if (eventObj == null)
+            {
+                return NotFound();
+            }
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View(eventObj);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateEvent(Event eventObj)
         {
             if (ModelState.IsValid)
             {
                 await cs.UpdateEvent(eventObj);
                 TempData["SuccessMessage"] = "Event Updated Successfully!";
-                return RedirectToAction("GetAllEvents");
+                return RedirectToAction("Holidays");
             }
-            return View(eventObj);
+            ViewBag.EventTypes = await ets.GetAllEventTypes();
+            return View("UpdateEvent", eventObj);
         }
 
         public async Task<IActionResult> DeleteEvent(int eventId)
         {
             await cs.DeleteEvent(eventId);
             TempData["SuccessMessage"] = "Event Deleted Successfully!";
-            return RedirectToAction("GetAllEvents");
+            return RedirectToAction("Holidays");
         }
 
         public async Task<IActionResult> Holidays()
         {
             var events = await cs.GetAllEvents();
             ViewBag.EventTypes = await ets.GetAllEventTypes();
-            return View("~/Views/Event/Holidays.cshtml", events);
+            return View("Holidays", events);
         }
 
         [HttpPost]
@@ -63,7 +77,7 @@ namespace HrmsCoreMvc.Controllers
         {
             await cs.AddEvent(eventObj);
             TempData["SuccessMessage"] = "Holiday added successfully!";
-            return RedirectToAction(nameof(Holidays));
+            return RedirectToAction("Holidays");
         }
         public async Task<IActionResult> SearchEvents(string searchevent)
         {

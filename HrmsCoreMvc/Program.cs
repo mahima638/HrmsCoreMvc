@@ -6,11 +6,9 @@ using HrmsCoreMvc.Repositories;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Services.Reports;
 using Microsoft.EntityFrameworkCore;
-
 using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-
 using HrmsCoreMvc.Exceptions;
 using HrmsCoreMvc.Repositories.Resignations;
 using HrmsCoreMvc.Services.Resignations;
@@ -22,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAttendanceReports, AttendanceReportService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
-builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReports, LeaveReportService>();
 builder.Services.AddScoped<IEventService, EventService>();
@@ -33,14 +31,22 @@ builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
 builder.Services.AddScoped<ITaskMembersService, TaskMembersService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
 builder.Services.AddScoped<ITaskReportService, TaskReportService>();
-builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
+//builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
+builder.Services.AddScoped<IEmpBankDetails, EmpBankDetailService>();
+builder.Services.AddScoped<IEmpEducation, EmpEducationService>();
+builder.Services.AddScoped<IEmpExperience, EmpExperienceService>();
+builder.Services.AddScoped<IEmpFamilyInfo, EmpFamilyService>();
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
+builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationFormats.Insert(0, "/Views/{0}.cshtml");
+    });
 
+builder.Services.AddSession();
 
 //builder.Services
 //    .AddAuthentication(options =>
@@ -59,16 +65,18 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+
 builder.Services.AddScoped<IDepartmentService, Departmentservice>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionsFile>();
+//app.UseMiddleware<GlobalExceptionsFile>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -76,6 +84,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -88,7 +102,10 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}")
-    .WithStaticAssets();
+
+    pattern: "{controller=Attendance}/{action=Index}/{id?}");
+
+    //pattern: "{controller=Account}/{action=Login}/{id?}")
+    //.WithStaticAssets();
 
 app.Run();

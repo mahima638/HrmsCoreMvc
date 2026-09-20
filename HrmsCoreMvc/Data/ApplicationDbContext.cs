@@ -9,7 +9,18 @@ using HrmsCoreMvc.Models.Promotion;
 using HrmsCoreMvc.Models.Resignation;
 using HrmsCoreMvc.Models.Termination;
 
+
+using HrmsCoreMvc.Models.Promotion;
+using HrmsCoreMvc.Models.Resignation;
+using HrmsCoreMvc.Models.Termination;
+using Microsoft.EntityFrameworkCore;
+//using Task = HrmsCoreMvc.Models.Projects.Task;
+using HrmsCoreMvc.Models.PayRoll;
+using HrmsCoreMvc.Models.Leave;
+using HrmsCoreMvc.Models.Attendance;
+
 using Task = HrmsCoreMvc.Models.Projects.Task;
+
 
 
 namespace HrmsCoreMvc.Data
@@ -28,6 +39,7 @@ namespace HrmsCoreMvc.Data
         public DbSet<Departments> department { get; set; }
         public DbSet<Designation> designation { get; set; }
         public DbSet<User> user { get; set; }
+
         public DbSet<EventType> eventtypes { get; set; }
         public DbSet<Event> events { get; set; }
         public DbSet<AllProjects> AllProjects { get; set; }
@@ -82,7 +94,7 @@ namespace HrmsCoreMvc.Data
 
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskBoard)
-                .WithMany(tb => tb.Tasks)
+                .WithMany()
                 .HasForeignKey(t => t.TaskBoardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
