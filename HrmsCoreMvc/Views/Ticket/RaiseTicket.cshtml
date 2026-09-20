@@ -1,0 +1,196 @@
+﻿@model HrmsCoreMvc.Models.Tickets.Ticket
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Create Ticket</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-controller="Ticket" asp-action="Create" method="post">
+
+                <div class="row">
+
+                    <!-- Ticket Title -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="TicketTitle"
+                               class="form-label">
+                            Ticket Title
+                        </label>
+
+                        <input asp-for="TicketTitle"
+                               class="form-control"
+                               placeholder="Enter ticket title" />
+
+                        <span asp-validation-for="TicketTitle"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Event Category -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="EventCategory"
+                               class="form-label">
+                            Event Category
+                        </label>
+
+                        <select asp-for="EventCategory"
+                                class="form-select">
+
+                            <option value="">Select Category</option>
+                            <option value="Test">Test</option>
+                            <option value="Technical">Technical</option>
+                            <option value="HR">HR</option>
+                            <option value="Payroll">Payroll</option>
+                            <option value="Attendance">Attendance</option>
+
+                        </select>
+
+                        <span asp-validation-for="EventCategory"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Subject -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Subject"
+                               class="form-label">
+                            Subject
+                        </label>
+
+                        <input asp-for="Subject"
+                               class="form-control"
+                               placeholder="Enter subject" />
+
+                        <span asp-validation-for="Subject"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Assign To -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="AssignedTo"
+                               class="form-label">
+                            Assign To
+                        </label>
+
+                        <select asp-for="AssignedTo"
+                                class="form-select"
+                                asp-items="@(new SelectList(ViewBag.Users, "UserId", "FirstName"))">
+
+                            <option value="">
+                                Select Employee
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="AssignedTo"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Priority -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Priority"
+                               class="form-label">
+                            Priority
+                        </label>
+
+                        <select asp-for="Priority"
+                                class="form-select">
+
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Status"
+                               class="form-label">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            <option value="Open" selected>Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Hold">Hold</option>
+                            <option value="Closed">Closed</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="col-12 mb-3">
+
+                        <label asp-for="Description"
+                               class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Enter description"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="btn btn-success">Add Ticket</button>
+
+                <a asp-controller="Ticket"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -25,6 +25,7 @@
                 <option value="lastmonth">Last Month</option>
             </select>
         </div>
+
         <div class="col-md-4">
             <label>Sort Order</label>
             <select id="order" class="form-select">
@@ -37,28 +38,34 @@
     <table id="promotionTable" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Employee</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>ID</th><th>Employee</th><th>From</th><th>To</th>
+                <th>Date</th><th>Action</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var x in Model)
             {
                 <tr>
                     <td>@x.PId</td>
-                    <td>@x.User.FirstName @x.User.LastName</td>
+                    <td>@x.User?.FirstName @x.User?.LastName</td>
                     <td>@x.DesignationFrom</td>
                     <td>@x.DesignationTo</td>
-                    <td data-order="@x.Date.ToString("yyyy-MM-dd")">@x.Date.ToString("dd-MM-yyyy")</td>
+                    <td data-order="@x.Date.ToString("yyyy-MM-dd")">
+                        @x.Date.ToString("dd-MM-yyyy")
+                    </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@x.PId" class="btn btn-sm btn-warning">Edit</a>
-                        <form asp-action="DeletePromotion" asp-route-id="@x.PId" method="post" style="display:inline">
+                        <a asp-action="Edit" asp-route-id="@x.PId"
+                           class="btn btn-sm btn-warning">Edit</a>
+
+                        <form asp-action="DeletePromotion"
+                              asp-route-id="@x.PId"
+                              method="post" style="display:inline">
                             @Html.AntiForgeryToken()
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure?')">
+                                Delete
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -69,32 +76,67 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-<script>
-    var t = $('#promotionTable').DataTable({ pageLength: 10, lengthMenu: [10, 25, 50, 100], order: [[4, 'desc']] });
 
-    $('#filter,#order').change(function() {
-        var f = $('#filter').val(), o = $('#order').val();
-        t.order([4, o]).draw();
-        t.search('').draw();
+<script>
+    function getDate(value) {
+        const p = value.split('-');
+        return new Date(+p[0], +p[1] - 1, +p[2]);
+    }
+
+    $.fn.dataTable.ext.search.push(function (settings, data, index) {
+        if (settings.nTable.id !== 'promotionTable') return true;
+
+        const f = $('#filter').val();
+        if (f === 'all') return true;
+
+        const value = settings.aoData[index].anCells[4]
+            .getAttribute('data-order');
+
+        if (!value) return false;
+
+        const date = getDate(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+
+        if (f === 'today')
+            return date.getTime() === today.getTime();
+
+        if (f === 'tomorrow') {
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            return date.getTime() === tomorrow.getTime();
+        }
+
+        if (f === 'last7') {
+            const start = new Date(today);
+            start.setDate(start.getDate() - 6);
+            return date >= start && date <= today;
+        }
+
+        if (f === 'lastmonth') {
+            const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            const end = new Date(today.getFullYear(), today.getMonth(), 0);
+            return date >= start && date <= end;
+        }
+
+        return true;
     });
 
-    $.fn.dataTable.ext.search.push(function(s, d) {
-        var f = $('#filter').val();
-        if (f == 'all') return true;
+    const table = $('#promotionTable').DataTable({
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
 
-        var p = d[4].split('-'), date = new Date(p[2], p[1] - 1, p[0]), now = new Date();
-        now.setHours(0, 0, 0, 0); date.setHours(0, 0, 0, 0);
+        // ASC/DESC = ID
+        order: [[0, 'asc']]
+    });
 
-        if (f == 'today') return date.getTime() == now.getTime();
+    $('#filter').change(function () {
+        table.draw();
+    });
 
-        if (f == 'tomorrow') { now.setDate(now.getDate() + 1); return date.getTime() == now.getTime(); }
-
-        if (f == 'last7') { var x = new Date(now); x.setDate(x.getDate() - 6); return date >= x && date <= now; }
-
-        if (f == 'lastmonth') {
-            var x = new Date(now.getFullYear(), now.getMonth() - 1, 1), y = new Date(now.getFullYear(), now.getMonth(), 0);
-            return date >= x && date <= y;
-        }
-        return true;
+    // ASC/DESC = ID column
+    $('#order').change(function () {
+        table.order([0, $(this).val()]).draw();
     });
 </script>

@@ -31,9 +31,9 @@ namespace HrmsCoreMvc.Services.Resignations
                 .FirstOrDefaultAsync(r => r.RId == resignationId);
         }
 
-        public async Task<string> AddResignationAsync(Resignation resignation)
+        public async Task<string> AddResignationAsync(Resignation resignations)
         {
-            await _context.resignations.AddAsync(resignation);
+            await _context.resignations.AddAsync(resignations);
             await _context.SaveChangesAsync();
             return "Added Successfully";
         }
@@ -49,7 +49,7 @@ namespace HrmsCoreMvc.Services.Resignations
         public async Task<string> DeleteResignationAsync(int resignationId)
         {
             var resignation = await _context.resignations.FirstOrDefaultAsync(r => r.RId == resignationId);
-            if (resignationId != null)
+            if (resignation != null)
             {
                 _context.resignations.Remove(resignation);
                 await _context.SaveChangesAsync();

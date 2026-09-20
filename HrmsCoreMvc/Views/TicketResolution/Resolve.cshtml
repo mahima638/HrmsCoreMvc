@@ -1,0 +1,55 @@
+﻿@model HrmsCoreMvc.Models.Tickets.Ticket
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Update Ticket Status</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+                <label class="form-label">Ticket No</label>
+                <input value="@Model.TicketNo"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Subject</label>
+                <input value="@Model.Subject"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <form asp-action="UpdateStatus" method="post">
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.TicketId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+
+                    <select name="status" class="form-select">
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Update Status
+                </button>
+
+                <a asp-controller="Ticket"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+</div>
