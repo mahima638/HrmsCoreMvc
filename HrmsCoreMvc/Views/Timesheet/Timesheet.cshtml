@@ -1,0 +1,284 @@
+﻿@model List<HrmsCoreMvc.Models.PayRoll.Timesheet>
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Employee Timesheets</h3>
+
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#timesheetModal">
+        + Add Timesheet
+    </button>
+</div>
+
+<div class="d-flex gap-2 mb-3 flex-wrap">
+
+    <button class="btn btn-outline-primary filterBtn active" data-filter="all">
+        All
+    </button>
+
+    <button class="btn btn-outline-success filterBtn" data-filter="weekly">
+        Weekly
+    </button>
+
+    <button class="btn btn-outline-info filterBtn" data-filter="monthly">
+        Monthly
+    </button>
+
+    <button class="btn btn-warning" id="sendApprovalBtn">
+        Send for Approval
+    </button>
+
+</div>
+
+
+<div class="modal fade" id="timesheetModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form asp-action="AddTimesheet" method="post">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Today's Work</h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Project</label>
+
+                        <select name="ProjectId"
+                                class="form-select"
+                                asp-items="ViewBag.ProjectList"
+                                required>
+                            <option value="">Select Project</option>
+                        </select>
+                    </div>
+
+                 
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+
+                        <input type="date"
+                               name="Date"
+                               class="form-control"
+                               value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                               required />
+                    </div>
+
+                  
+                    <div class="mb-3">
+                        <label class="form-label">Work Hours</label>
+
+                        <input type="number"
+                               name="WorkHours"
+                               class="form-control"
+                               min="0"
+                               max="24"
+                               step="0.5"
+                               placeholder="Enter work hours"
+                               required />
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Timesheet
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-bordered table-hover" id="timesheetTable">
+
+    <thead >
+        <tr>
+            <th>
+            <input type="checkbox" id="selectAll"/>
+            </th>
+            <th>Employee Name</th>
+            <th>Project Name</th>
+            <th>Date</th>
+            <th>Work Hours</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+@foreach (var item in Model)
+{
+    <tr data-date="@item.Date.ToString("yyyy-MM-dd")">
+
+        <td>
+            
+                <input type="checkbox"
+                       class="timesheetCheck"
+                       value="@item.TimesheetId"/>
+            
+        </td>
+
+        <td>@item.User.FirstName @item.User.LastName</td>
+
+        <td>@item.Project.ProjectName</td>
+
+        <td>@item.Date.ToString("dd/MM/yyyy")</td>
+
+        <td>@item.WorkHours</td>
+
+        <td>
+    @if (item.Status == "Approved")
+    {
+        <span class="badge bg-success">Approved</span>
+    }
+    else if (item.Status == "Rejected")
+    {
+        <span class="badge bg-danger">Rejected</span>
+    }
+    else
+    {
+        <span class="badge bg-warning text-dark">Pending</span>
+    }
+</td>
+
+    </tr>
+}
+</tbody>
+</table>
+
+@section Scripts{
+
+<script>
+
+$(document).ready(function () {
+
+    var table = $('#timesheetTable').DataTable({
+        pageLength: 5,
+        lengthMenu: [5,10,25,50]
+    });
+
+   
+    $(".filterBtn").click(function () {
+
+        $(".filterBtn").removeClass("active btn-primary")
+                       .addClass("btn-outline-primary");
+
+        $(this).removeClass("btn-outline-primary")
+               .addClass("btn-primary active");
+
+        var filter = $(this).data("filter");
+
+        $.fn.dataTable.ext.search.pop();
+
+        $.fn.dataTable.ext.search.push(function(settings, data, index){
+
+            if(filter === "all")
+                return true;
+
+            var row = table.row(index).node();
+            var date = new Date($(row).attr("data-date"));
+
+            var today = new Date();
+
+            if(filter === "weekly"){
+
+                var start = new Date(today);
+                start.setDate(today.getDate()-today.getDay());
+
+                var end = new Date(start);
+                end.setDate(start.getDate()+6);
+
+                return date >= start && date <= end;
+            }
+
+            if(filter === "monthly"){
+
+                return date.getMonth() === today.getMonth() &&
+                       date.getFullYear() === today.getFullYear();
+            }
+
+            return true;
+
+        });
+
+        table.draw();
+
+    });
+
+
+    $("#selectAll").change(function(){
+        $(".timesheetCheck").prop("checked", $(this).is(":checked"));
+    });
+
+  
+    $("#sendApprovalBtn").click(function(){
+
+        var ids = [];
+
+        $(".timesheetCheck:checked").each(function(){
+            ids.push($(this).val());
+        });
+
+        if(ids.length === 0){
+            alert("Please select at least one pending timesheet.");
+            return;
+        }
+
+        $.ajax({
+            url: "/Timesheet/SendForApproval",
+            type: "POST",
+            traditional: true,
+            data: { ids: ids },
+
+            success: function () {
+                alert("Timesheets sent for approval.");
+                location.reload();
+            },
+
+            error: function () {
+                alert("Error sending timesheets.");
+            }
+        });
+
+    });
+
+});
+
+</script>
+
+}

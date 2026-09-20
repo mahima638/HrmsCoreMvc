@@ -29,6 +29,7 @@ builder.Services.AddScoped<IAllProjectsService,AllProjectsReportService>();
 builder.Services.AddScoped<IEmployeeReportService, EmployeeReportService>();
 builder.Services.AddScoped<IEarningService, EarningService>();
 builder.Services.AddScoped<IDeductionService, DeductionService>();
+builder.Services.AddScoped<ITimesheetService, TimesheetService>();
 
 
 // Add services to the container.
