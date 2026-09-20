@@ -1,0 +1,579 @@
+﻿@model Employee
+
+@{
+    var u = Model.User;
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
+
+<style>
+    body { background-color: #f4f5f9; }
+    .profile-banner {
+        height: 100px;
+        background: linear-gradient(90deg, #ff8a00, #ff3d00);
+        border-radius: .5rem .5rem 0 0;
+    }
+    .profile-avatar {
+        width: 90px; height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        margin-top: -50px;
+    }
+    .section-card { border: none; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-radius: .6rem; }
+    .section-card .card-header { background: #fff; border-bottom: 1px solid #eee; font-weight: 600; }
+    .info-row { display: flex; justify-content: space-between; padding: .5rem 0; border-bottom: 1px solid #f0f0f0; color: #333; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #888; }
+</style>
+
+<div class="container-fluid py-4">
+    <h5 class="mb-3">Employee Details</h5>
+
+    <div class="row g-4">
+
+        <!-- LEFT: Profile card -->
+        <div class="col-lg-4">
+            <div class="card section-card mb-3">
+                <div class="profile-banner"></div>
+                <div class="text-center">
+                    <img src="@(string.IsNullOrEmpty(u.ProfilePicture) ? "/images/default-avatar.png" : u.ProfilePicture)"
+                         class="profile-avatar" />
+                    <h5 class="mt-2 mb-0">@u.FirstName @u.LastName <i class="bi bi-patch-check-fill text-success"></i></h5>
+                    <span class="badge bg-light text-dark border mb-3">Software Developer</span>
+                </div>
+
+                <div class="card-body pt-0">
+                    <div class="info-row"><span class="info-label"><i class="bi bi-person-badge"></i> Client ID</span><span>@u.UserId</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-diagram-3"></i> Department</span><span>@(u.departments?.Name ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-calendar-event"></i> Date Of Join</span><span>@(u.DateOfJoining?.ToString("dd-MM-yyyy") ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-person-lines-fill"></i> Report Office</span><span>@(u.ReportingManager ?? "-")</span></div>
+
+                    <button type="button" class="btn btn-dark w-100 mt-3" data-bs-toggle="modal" data-bs-target="#editAboutModal">
+                        <i class="bi bi-pencil-square"></i> Edit Info
+                    </button>
+                </div>
+            </div>
+
+            <!-- Basic Information -->
+            <div class="card section-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Basic information</span>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#editAboutModal"><i class="bi bi-pencil-square"></i></a>
+                </div>
+                <div class="card-body">
+                    <div class="info-row"><span class="info-label"><i class="bi bi-telephone"></i> Phone</span><span>@(u.PhoneNumber ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-envelope"></i> Email</span><span>@(u.Email ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-gender-ambiguous"></i> Gender</span><span>@(u.Gender ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-cake"></i> Birthday</span><span>@(u.DateOfBirth?.ToString("dd-MM-yyyy") ?? "-")</span></div>
+                    <div class="info-row"><span class="info-label"><i class="bi bi-geo-alt"></i> Address</span><span>@(u.Address ?? "-")</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Info panels -->
+        <div class="col-lg-8">
+
+            <!-- About -->
+            <div class="card section-card mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>About Employee</span>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#editAboutModal"><i class="bi bi-pencil-square"></i></a>
+                </div>
+                <div class="card-body text-muted">@(u.AboutEmployee ?? "No information added.")</div>
+            </div>
+
+            <!-- BANK -->
+            <div class="card section-card mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Bank Information</span>
+                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addBankModal">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    @if (Model.BankDetails != null)
+                    {
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>@Model.BankDetails.BankName | IFSC: @Model.BankDetails.IFSCode | Branch: @Model.BankDetails.BranchName</span>
+                            <span>
+                                <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#editBankModal"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-action="DeleteEmpBankDetail" asp-route-id="@Model.BankDetails.BankDetailId" onclick="return confirm('Delete this bank detail?')" class="text-danger"><i class="bi bi-trash"></i></a>
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No bank details added.</span>
+                    }
+                </div>
+
+                @if (Model.BankDetails != null)
+                {
+                    <div class="modal fade" id="editBankModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form asp-action="EditEmpBankDetails" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Bank Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="BankDetailId" value="@Model.BankDetails.BankDetailId" />
+                                        <input type="hidden" name="UserId" value="@u.UserId" />
+                                        <div class="mb-3">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="BankName" class="form-control" value="@Model.BankDetails.BankName" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">IFSC Code</label>
+                                            <input type="text" name="IFSCode" class="form-control" value="@Model.BankDetails.IFSCode" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Branch Address</label>
+                                            <input type="text" name="BranchName" class="form-control" value="@Model.BankDetails.BranchName" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- FAMILY -->
+            <div class="card section-card mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Family Information</span>
+                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addFamilyModal">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    @if (Model.FamilyDetails != null && Model.FamilyDetails.Count > 0)
+                    {
+                        @foreach (var f in Model.FamilyDetails)
+                        {
+                            <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                                <span>@f.Name - @f.Relation - @f.phone</span>
+                                <span>
+                                    <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#editFamilyModal-@f.FamilyDetailId"><i class="bi bi-pencil-square"></i></a>
+                                    <a asp-action="DeleteEmpFamilyInfo" asp-route-id="@f.FamilyDetailId" onclick="return confirm('Delete this family record?')" class="text-danger"><i class="bi bi-trash"></i></a>
+                                </span>
+                            </div>
+
+                            <div class="modal fade" id="editFamilyModal-@f.FamilyDetailId" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form asp-action="EditEmpFamilyInfo" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Edit Family Info</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" name="FamilyDetailId" value="@f.FamilyDetailId" />
+                                                <input type="hidden" name="UserId" value="@u.UserId" />
+                                                <div class="mb-3">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" name="Name" class="form-control" value="@f.Name" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Relation</label>
+                                                    <input type="text" name="Relation" class="form-control" value="@f.Relation" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Date of Birth</label>
+                                                    <input type="date" name="DateOfBirth" class="form-control" value="@f.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Phone</label>
+                                                    <input type="text" name="phone" class="form-control" value="@f.phone" />
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No family info added.</span>
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- EDUCATION -->
+                <div class="col-md-6">
+                    <div class="card section-card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Education Details</span>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addEducationModal">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.EducationDetails != null && Model.EducationDetails.Count > 0)
+                            {
+                                @foreach (var e in Model.EducationDetails)
+                                {
+                                    <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                                        <span>@e.EducationType - @e.UniversityName</span>
+                                        <span>
+                                            <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#editEducationModal-@e.EducationDetailsId"><i class="bi bi-pencil-square"></i></a>
+                                            <a asp-action="DeleteEmpEducation" asp-route-id="@e.EducationDetailsId" onclick="return confirm('Delete this education record?')" class="text-danger"><i class="bi bi-trash"></i></a>
+                                        </span>
+                                    </div>
+
+                                    <div class="modal fade" id="editEducationModal-@e.EducationDetailsId" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form asp-action="EditEmpEducation" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Education</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="EducationDetailsId" value="@e.EducationDetailsId" />
+                                                        <input type="hidden" name="UserId" value="@u.UserId" />
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Education Type</label>
+                                                            <input type="text" name="EducationType" class="form-control" value="@e.EducationType" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">University Name</label>
+                                                            <input type="text" name="UniversityName" class="form-control" value="@e.UniversityName" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Start Date</label>
+                                                            <input type="date" name="startdate" class="form-control" value="@e.startdate?.ToString("yyyy-MM-dd")" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">End Date</label>
+                                                            <input type="date" name="enddate" class="form-control" value="@e.enddate?.ToString("yyyy-MM-dd")" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">No education records.</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPERIENCE -->
+                <div class="col-md-6">
+                    <div class="card section-card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Experience</span>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addExperienceModal">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.ExperienceDetails != null && Model.ExperienceDetails.Count > 0)
+                            {
+                                @foreach (var x in Model.ExperienceDetails)
+                                {
+                                    <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                                        <span>@x.DesignationName at @x.CompanyName</span>
+                                        <span>
+                                            <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#editExperienceModal-@x.ExperienceId"><i class="bi bi-pencil-square"></i></a>
+                                            <a asp-action="DeleteEmpExperience" asp-route-id="@x.ExperienceId" onclick="return confirm('Delete this experience record?')" class="text-danger"><i class="bi bi-trash"></i></a>
+                                        </span>
+                                    </div>
+
+                                    <div class="modal fade" id="editExperienceModal-@x.ExperienceId" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form asp-action="EditEmpExperience" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Experience</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="ExperienceId" value="@x.ExperienceId" />
+                                                        <input type="hidden" name="UserId" value="@u.UserId" />
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Designation</label>
+                                                            <input type="text" name="DesignationName" class="form-control" value="@x.DesignationName" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Company Name</label>
+                                                            <input type="text" name="CompanyName" class="form-control" value="@x.CompanyName" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">From Date</label>
+                                                            <input type="date" name="FromDate" class="form-control" value="@x.FromDate?.ToString("yyyy-MM-dd")" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">To Date</label>
+                                                            <input type="date" name="ToDate" class="form-control" value="@x.ToDate?.ToString("yyyy-MM-dd")" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">No experience records.</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= ADD MODALS ================= -->
+<!-- Bank Modal -->
+<div class="modal fade" id="addBankModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddEmpBankDetails" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bank Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+                    <div class="mb-3">
+                        <label class="form-label">Bank Name <span class="text-danger">*</span></label>
+                        <input type="text" name="BankName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">IFSC Code</label>
+                        <input type="text" name="IFSCode" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Branch Address</label>
+                        <input type="text" name="BranchName" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Family Modal -->
+<div class="modal fade" id="addFamilyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddEmpFamilyInfo" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Family Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+                    <div class="mb-3">
+                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="Name" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Relation</label>
+                        <input type="text" name="Relation" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" name="DateOfBirth" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Education Modal -->
+<div class="modal fade" id="addEducationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddEmpEducation" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Education Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+                    <div class="mb-3">
+                        <label class="form-label">Education Type <span class="text-danger">*</span></label>
+                        <input type="text" name="EducationType" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">University Name</label>
+                        <input type="text" name="UniversityName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" name="startdate" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">End Date</label>
+                        <input type="date" name="enddate" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Experience Modal -->
+<div class="modal fade" id="addExperienceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddEmpExperience" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Experience</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+                    <div class="mb-3">
+                        <label class="form-label">Designation <span class="text-danger">*</span></label>
+                        <input type="text" name="DesignationName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" name="CompanyName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">From Date</label>
+                        <input type="date" name="FromDate" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">To Date</label>
+                        <input type="date" name="ToDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Employee Modal -->
+<div class="modal fade" id="editAboutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form asp-controller="User"
+                  asp-action="UpdateMyProfile"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload Profile Image</label><br />
+                        <input type="file" name="profilepicture" class="form-control" accept="image/*" />
+                        <small class="text-muted">Image should be below 4 MB</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" name="FirstName" class="form-control" value="@u.FirstName" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" name="LastName" class="form-control" value="@u.LastName" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" name="DateOfBirth" class="form-control" value="@u.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="Email" class="form-control" value="@u.Email" required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" name="PhoneNumber" class="form-control" value="@u.PhoneNumber" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" name="Address" class="form-control" value="@u.Address" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">About</label>
+                        <textarea name="AboutEmployee" class="form-control" rows="4">@u.AboutEmployee</textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>

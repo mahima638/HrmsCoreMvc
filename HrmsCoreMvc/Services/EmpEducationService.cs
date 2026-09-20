@@ -32,9 +32,11 @@ namespace HrmsCoreMvc.Services
             await db.SaveChangesAsync();
         }
 
-        public Task<List<EmpEducation?>> GetEducationByUserId(int userId)
+        public async Task<List<EmpEducation>> GetEducationByUserId(int userId)
         {
-            throw new NotImplementedException();
+            return await db.EmpEducation
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<List<EmpEducation>> GetEmpEducation()

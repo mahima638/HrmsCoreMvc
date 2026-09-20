@@ -2,6 +2,7 @@
 using HrmsCoreMvc.Models;
 using HrmsCoreMvc.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrmsCoreMvc.Controllers
 {
@@ -11,14 +12,16 @@ namespace HrmsCoreMvc.Controllers
         private readonly IEmpEducation Ed;
         private readonly IEmpExperience Ex;
 
+        private readonly ApplicationDbContext db;
         private readonly IEmpFamilyInfo Fam;
 
-        public EmployeeController(IEmpFamilyInfo Fam,IEmpExperience Ex, IEmpEducation Ed, IEmpBankDetails Bd)
+        public EmployeeController(IEmpFamilyInfo Fam,IEmpExperience Ex, IEmpEducation Ed, IEmpBankDetails Bd, ApplicationDbContext db)
         {
             this.Bd = Bd;
             this.Ed = Ed;
             this.Ex = Ex;
             this.Fam = Fam;
+            this.db = db;
         }
         public IActionResult AddEmpBankDetails()
         {
@@ -31,7 +34,7 @@ namespace HrmsCoreMvc.Controllers
             if (ModelState.IsValid) {
 
                 await Bd.AddEmpBankDetails(emp);
-                return RedirectToAction("GetEmpBankDetails");
+                return RedirectToAction("Details");
             }
             return View();
         
@@ -43,15 +46,15 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> DeleteEmpBankDetail(int id) {
 
-           
-           await Bd.DeleteEmpBankDetails(id);
-            return RedirectToAction("GetEmpBankDetails");
+            var emp = await Bd.GetEmpBankDetailsById(id);
+            await Bd.DeleteEmpBankDetails(id);
+            return RedirectToAction("Details");
         }
 
         public async Task<IActionResult> EditEmpBankDetails(int id)
         {
 
-            var emp = Bd.GetEmpBankDetailsById(id);
+            var emp = await Bd.GetEmpBankDetailsById(id);
             return View(emp);
         }
 
@@ -62,7 +65,7 @@ namespace HrmsCoreMvc.Controllers
             if (ModelState.IsValid)
             {
                 await Bd.EditEmpBankDetails(emp);
-                return RedirectToAction("GetEmpBankDetails");
+                return RedirectToAction("Details");
             }
             else
             {
@@ -71,12 +74,25 @@ namespace HrmsCoreMvc.Controllers
 
 
         }
-        //public async Task<EmpBankDetails?> GetBankDetailsByUserId(int userId)
-        //{
-        //    return await db.EmpBankDetails
-        //        .FirstOrDefaultAsync(x => x.UserId == userId);
-        //}
-        //education
+        public async Task<IActionResult> Details() {
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null) {
+                return RedirectToAction("Login", "Account");
+            }
+            var user = await db.user.FirstOrDefaultAsync(u => u.UserId == userId);
+            var emp = new Employee
+            {
+                User = user,
+                BankDetails = await Bd.GetBankDetailsByUserId(userId.Value),
+                EducationDetails = await Ed.GetEducationByUserId(userId.Value),
+                ExperienceDetails = await Ex.GetExperienceByUserId(userId.Value),
+                FamilyDetails = await Fam.GetFamilyInfoByUserId(userId.Value)
+            };
+            return View(emp);
+
+        }
         public IActionResult AddEmpEducation()
           {
             return View();
@@ -90,7 +106,7 @@ namespace HrmsCoreMvc.Controllers
             {
 
                 await Ed.AddEmpEducation(emp);
-                return RedirectToAction("GetEmpEducation");
+                return RedirectToAction("Details");
             }
             return View();
 
@@ -103,16 +119,16 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> DeleteEmpEducation(int id)
         {
-
+            var emp = await Bd.GetEmpBankDetailsById(id);
 
             await Ed.DeleteEmpEducation(id);
-            return RedirectToAction("GetEmpEducation");
+            return RedirectToAction("Details");
         }
 
         public async Task<IActionResult> EditEmpEducation(int id)
         {
 
-            var emp = Ed.GetEmpEducationById(id);
+            var emp = await Ed.GetEmpEducationById(id);
             return View(emp);
         }
 
@@ -123,7 +139,7 @@ namespace HrmsCoreMvc.Controllers
             if (ModelState.IsValid)
             {
                 await Ed.EditEmpEducation(emp);
-                return RedirectToAction("GetEmpEducation");
+                return RedirectToAction("Details");
             }
             else
             {
@@ -146,7 +162,7 @@ namespace HrmsCoreMvc.Controllers
             {
 
                 await Ex.AddEmpExperience(emp);
-                return RedirectToAction("GetEmpExperience");
+                return RedirectToAction("Details");
             }
             return View();
 
@@ -159,27 +175,27 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> DeleteEmpExperience(int id)
         {
-
+            var emp = await Bd.GetEmpBankDetailsById(id);
 
             await Ex.DeleteEmpExperience(id);
-            return RedirectToAction("GetEmpExperience");
+            return RedirectToAction("Details");
         }
 
         public async Task<IActionResult> EditEmpExperience(int id)
         {
 
-            var emp = Ex.GetEmpExperienceById(id);
+            var emp = await  Ex.GetEmpExperienceById(id);
             return View(emp);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExperience(EmpExperience emp)
+        public async Task<IActionResult> EditEmpExperience(EmpExperience emp)
         {
 
             if (ModelState.IsValid)
             { 
                 await Ex.EditEmpExperience(emp);
-                return RedirectToAction("GetEmpExperience");
+                return RedirectToAction("Details");
             }
             else
             {
@@ -199,14 +215,14 @@ namespace HrmsCoreMvc.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmpFamiltInfo(EmpFamilyInfo emp)
+        public async Task<IActionResult> AddEmpFamilyInfo(EmpFamilyInfo emp)
         {
 
             if (ModelState.IsValid)
             {
 
                 await Fam.AddEmpFamilyInfo(emp);
-                return RedirectToAction("GetEmpFamilyInfo");
+                return RedirectToAction("Details");
             }
             return View();
 
@@ -219,16 +235,16 @@ namespace HrmsCoreMvc.Controllers
         }
         public async Task<IActionResult> DeleteEmpFamilyInfo(int id)
         {
-
+            var emp = await Bd.GetEmpBankDetailsById(id);
 
             await Fam.DeleteEmpFamilyInfo(id);
-            return RedirectToAction("GetEmpFamilyInfo");
+            return RedirectToAction("Details");
         }
 
         public async Task<IActionResult> EditEmpFamilyInfo(int id)
         {
 
-            var emp = Fam.GetEmpFamilyInfoById(id);
+            var emp = await  Fam.GetEmpFamilyInfoById(id);
             return View(emp);
         }
 
@@ -239,7 +255,7 @@ namespace HrmsCoreMvc.Controllers
             if (ModelState.IsValid)
             {
                 await Fam.EditEmpFamilyInfo(emp);
-                return RedirectToAction("GetEmpFamilyInfo");
+                return RedirectToAction("Details");
             }
             else
             {
