@@ -1,1 +1,339 @@
-﻿<p>hello admin</p>
+﻿@model HrmsCoreMvc.Models.AdminDashboardViewModel
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="card shadow-sm border-0 p-3 mb-3 d-flex flex-row justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-3">
+        <img src="@Model.Admin.ProfilePicture" width="50" height="50" class="rounded-circle" />
+        <h4 class="mb-0">Welcome Back, @Model.Admin.FirstName @Model.Admin.LastName</h4>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Add Project</button>
+        <button class="btn btn-warning"><i class="bi bi-plus-circle"></i> Add Requests</button>
+    </div>
+</div>
+
+<!-- 8 stat cards -->
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            <p class="text-muted mb-1">Attendance Overview</p>
+            <h4>@Model.PresentToday/@Model.TotalEmployees</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-secondary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-kanban"></i>
+            </div>
+            <p class="text-muted mb-1">Total No of Project's</p>
+            <h4>@Model.TotalProjects</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-people"></i>
+            </div>
+            <p class="text-muted mb-1">Total No of Clients</p>
+            <h4>@Model.TotalClients</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-danger-subtle text-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-list-check"></i>
+            </div>
+            <p class="text-muted mb-1">Total No of Tasks</p>
+            <h4>@Model.TotalTasks</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;background-color:#8e44ad;">
+                <i class="bi bi-cash-coin"></i>
+            </div>
+            <p class="text-muted mb-1">Earnings</p>
+            <h4>$@Model.Earnings</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-graph-up"></i>
+            </div>
+            <p class="text-muted mb-1">Profit This Week</p>
+            <h4>$@Model.ProfitThisWeek</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-person-plus"></i>
+            </div>
+            <p class="text-muted mb-1">Job Applicants</p>
+            <h4>@Model.JobApplicants</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <p class="text-muted mb-1">New Hire</p>
+            <h4>@Model.NewHireThisMonth/@Model.TotalEmployees</h4>
+            <a href="#" class="small">View Details</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Employee Status</h5>
+                <button class="btn btn-sm btn-outline-secondary">This Week</button>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Total Employee</span>
+                <b>@Model.TotalEmployees</b>
+            </div>
+
+            <canvas id="employeeStatusChart" height="40"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Clock-In/Out</h5>
+                <button class="btn btn-sm btn-outline-secondary">Today</button>
+            </div>
+
+            @foreach (var entry in Model.TodayClockIns)
+            {
+                if (!entry.IsLate)
+                {
+                    <div class="border rounded p-2 mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="@entry.ProfilePicture" width="40" height="40" class="rounded-circle" />
+                                <div>@entry.FullName</div>
+                            </div>
+                            <span class="badge bg-success">@entry.CheckInTime</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 small text-muted">
+                            <div>Clock In<br /><b class="text-dark">@entry.CheckInTime</b></div>
+                            <div>Clock Out<br /><b class="text-dark">@entry.CheckOutTime</b></div>
+                            <div>Production<br /><b class="text-dark">@entry.ProductionHoursDisplay</b></div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <h6 class="mt-3">Late</h6>
+            @foreach (var entry in Model.TodayClockIns)
+            {
+                if (entry.IsLate)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="@entry.ProfilePicture" width="40" height="40" class="rounded-circle" />
+                            <div>
+                                @entry.FullName
+                                <span class="badge bg-success ms-1">@entry.LateMinutes Min</span>
+                            </div>
+                        </div>
+                        <span class="badge bg-danger">@entry.CheckInTime</span>
+                    </div>
+                }
+            }
+
+            <button class="btn btn-light w-100 mt-2">View All Attendance</button>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Projects</h5>
+                <a asp-controller="Project" asp-action="GetAllProjects" class="btn btn-sm btn-outline-secondary">View All</a>
+            </div>
+
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Deadline</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.RecentProjects.Take(6))
+                    {
+                        <tr>
+                            <td>@p.ProjectId</td>
+                            <td>@p.ProjectName</td>
+                            <td>@p.EndDate.ToString("dd-MM-yyyy")</td>
+                            <td>
+                                @if (p.Priority == "High")
+                                {
+                                    <span class="badge bg-danger-subtle text-danger">@p.Priority</span>
+                                }
+                                else if (p.Priority == "Medium")
+                                {
+                                    <span class="badge bg-warning-subtle text-warning">@p.Priority</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success-subtle text-success">@p.Priority</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0 p-3">
+            <h5 class="mb-3">Tasks Statistics</h5>
+
+            <canvas id="taskDonutChart" height="200"></canvas>
+
+            <div class="text-center mt-2">
+                <span class="text-muted">Total Tasks</span>
+                <h4>@Model.TotalTasksCompleted / @Model.TotalTasks</h4>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                @foreach (var s in Model.TaskStatusBreakdown)
+                {
+                    <div class="text-center">
+                        <div>@s.StatusName</div>
+                        <b>@s.Count</b>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Employees</h5>
+                    <a asp-controller="User" asp-action="GetEmployee" class="btn btn-sm btn-outline-secondary">View All</a>
+                </div>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model.AllEmployeesList.Take(6))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="@e.ProfilePicture" width="35" height="35" class="rounded-circle" />
+                                        <span>@e.FullName</span>
+                                    </div>
+                                </td>
+                                <td>@e.DepartmentName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            var deptData = @Html.Raw(Json.Serialize(Model.DepartmentCounts));
+
+            var labels = [];
+            var counts = [];
+            for (var i = 0; i < deptData.length; i++) {
+                labels.push(deptData[i].departmentName);
+                counts.push(deptData[i].count);
+            }
+
+            new Chart(document.getElementById('employeeStatusChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Employees'],
+                    datasets: labels.map(function(label, index) {
+                        return {
+                            label: label,
+                            data: [counts[index]],
+                            backgroundColor: ['#ffc107', '#6c757d', '#dc3545', '#e83e8c', '#0d6efd', '#198754'][index % 6]
+                        };
+                    })
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    scales: {
+                        x: { stacked: true, display: false },
+                        y: { stacked: true, display: false }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            var taskStatusData = @Html.Raw(Json.Serialize(Model.TaskStatusBreakdown));
+
+            var taskLabels = [];
+            var taskCounts = [];
+            for (var i = 0; i < taskStatusData.length; i++) {
+                taskLabels.push(taskStatusData[i].statusName);
+                taskCounts.push(taskStatusData[i].count);
+            }
+
+            new Chart(document.getElementById('taskDonutChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: taskLabels,
+                    datasets: [{
+                        data: taskCounts,
+                        backgroundColor: ['#ffc107', '#0d6efd', '#dc3545', '#198754']
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+}
