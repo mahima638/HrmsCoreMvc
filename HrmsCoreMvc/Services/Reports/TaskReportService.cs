@@ -21,7 +21,7 @@ namespace HrmsCoreMvc.Services.Reports
             if (tasks == null || !tasks.Any()) return new TaskChartDto();
             int completedTasks = tasks.Count(x => x.Status == "Completed");
             int pendingTasks = tasks.Count(x => x.Status == "Pending");
-            int inprogressTasks = tasks.Count(x => x.Status == "Inprogress");
+            int inprogressTasks = tasks.Count(x => x.Status == "In Progress");
             int onholdTasks = tasks.Count(x => x.Status == "Onhold");
 
             double totaltasks = completedTasks + pendingTasks + inprogressTasks + onholdTasks;

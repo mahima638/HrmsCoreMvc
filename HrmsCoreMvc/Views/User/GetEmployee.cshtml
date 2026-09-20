@@ -1,20 +1,52 @@
 ﻿@model List<HrmsCoreMvc.Models.User>
+<html>
+    <head>
 <link rel="stylesheet"
       href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
 
-<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-<html>
 <body>
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
         + Add Employee
     </button>
 
     <h2>All Users</h2>
+    <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
+        <div>
+            <label class="form-label mb-0">Designation</label>
+            <select id="filterDesignation" class="form-control">
+                <option value="">All</option>
+                @foreach (var des in ViewBag.Designation)
+                {
+                    <option value="@des.Name">@des.Name</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label class="form-label mb-0">Status</label>
+            <select id="filterStatus" class="form-control">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label mb-0">Sort By</label>
+            <select id="sortBy" class="form-control">
+                <option value="">Default</option>
+                <option value="2-asc">Ascending</option>
+                <option value="2-desc">Descending</option>
+                <option value="6-asc">DOJ Oldest first</option>
+                <option value="6-desc">DOJ Newest first</option>
+            </select>
+        </div>
+    </div>
+   
 
-    <table class="table table-bordered">
-
+    <table id="userTable" class="table table-bordered">
         <thead>
             <tr>
                 <th>User Id</th>
@@ -73,7 +105,7 @@
                     <td>@user.departments.Name</td>
 
                     
-
+                    <td>@user.designation.Name</td>
                     <td>@user.Status</td>
 
                     <td>
@@ -306,12 +338,39 @@
 
         </div>
 
-    </div>
+    </div> <!-- end modal -->
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
+
+    <script>
+            $(document).ready(function() {
+                var table = $('#userTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: ['excel', 'pdf']
+                });
+
+                $('#filterDesignation').on('change', function() {
+                    table.column(14).search(this.value).draw();
+                });
+
+                $('#filterStatus').on('change', function() {
+                    table.column(15).search(this.value).draw();
+                });
+
+                $('#sortBy').on('change', function() {
+                    var val = this.value;
+                    if (!val) { table.order([]).draw(); return; }
+                    var parts = val.split('-');
+                    table.order([parseInt(parts[0]), parts[1]]).draw();
+                });
+            });
+    </script>
 </body>
-<script>
-    $(document).ready(function() {
-        $('#employeeTable').DataTable();
-    });
-</script>
 </html>

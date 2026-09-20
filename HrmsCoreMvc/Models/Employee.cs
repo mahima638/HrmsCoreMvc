@@ -1,6 +1,6 @@
 ﻿using HrmsCoreMvc.Models;
 
-public class EmployeeProfileViewModel
+public class Employee
 {
     public User? User { get; set; }
 

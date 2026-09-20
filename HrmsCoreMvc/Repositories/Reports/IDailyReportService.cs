@@ -15,5 +15,7 @@ namespace HrmsCoreMvc.Repositories.Reports
         Task<IEnumerable<DailyAttendanceViewModel>> fetchDailyTasks();
 
         Task<IEnumerable<DailyAttendanceViewModel>> sortDailyTasks(string? status, string? sortType);
+
+        Task<DailyAttendanceChartDto> getDailyTasksChart();
     }
 }
