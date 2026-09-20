@@ -291,5 +291,174 @@ namespace HrmsCoreHRMSCORE.Controllers
                 "FetchEmpDoc",
                 "Document");
         }
+
+        // =========================
+        // USER DOCUMENT UPLOAD
+        // =========================
+
+        // GET: Document/UserFileUpload
+        public IActionResult UserFileUpload()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = documentDb.user
+                .FirstOrDefault(x => x.UserId == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            ViewBag.UserEmail = user.Email;
+
+            ViewBag.Documents = documentDb.AddAdminDocName
+                .ToList();
+
+            return View();
+        }
+
+
+        // POST: Document/UserFileUpload
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserFileUpload(
+            AdminDocuments document,
+            IFormFile pdfFile)
+        {
+            // Get logged-in UserId
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            // Get logged-in user
+            var user = documentDb.user
+                .FirstOrDefault(x => x.UserId == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            // Get user's email
+            var userEmail = user.Email;
+
+            // Always use logged-in user's email
+            document.Email = userEmail;
+
+            // Remove DocFile validation
+            ModelState.Remove("DocFile");
+
+            // Master Documents
+            ViewBag.Documents = documentDb.AddAdminDocName
+                .ToList();
+
+            // Check PDF
+            if (pdfFile == null || pdfFile.Length == 0)
+            {
+                ModelState.AddModelError(
+                    "DocFile",
+                    "Please upload a PDF file.");
+            }
+            else
+            {
+                string extension =
+                    Path.GetExtension(pdfFile.FileName)
+                    .ToLower();
+
+                if (extension != ".pdf")
+                {
+                    ModelState.AddModelError(
+                        "DocFile",
+                        "Only PDF files are allowed.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.UserEmail = userEmail;
+                return View(document);
+            }
+
+            // Upload folder
+            string uploadFolder = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "user-documents"
+            );
+
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            // Unique file name
+            string fileName =
+                Guid.NewGuid().ToString() + ".pdf";
+
+            string filePath =
+                Path.Combine(uploadFolder, fileName);
+
+            // Save PDF
+            using (var stream = new FileStream(
+                filePath,
+                FileMode.Create))
+            {
+                await pdfFile.CopyToAsync(stream);
+            }
+
+            // Save file name
+            document.DocFile = fileName;
+
+            // Save database record
+            documentDb.AdminDocuments.Add(document);
+
+            await documentDb.SaveChangesAsync();
+
+            TempData["Success"] =
+                "Document uploaded successfully.";
+
+            return RedirectToAction(
+                "UserFileUpload",
+                "Document");
+        }
+
+        // =========================
+        // USER DOCUMENT LIST
+        // =========================
+
+        // GET: Document/FetchUserDoc
+        // GET: Document/FetchUserDoc
+        public IActionResult FetchUserDoc()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = documentDb.user
+                .FirstOrDefault(x => x.UserId == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var documentData = documentDb.AdminDocuments
+                .Where(x => x.Email == user.Email)
+                .ToList();
+
+            return View(documentData);
+        }
     }
-}
+}   

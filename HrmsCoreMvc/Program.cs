@@ -68,7 +68,7 @@ builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionsFile>();
+//app.UseMiddleware<GlobalExceptionsFile>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
