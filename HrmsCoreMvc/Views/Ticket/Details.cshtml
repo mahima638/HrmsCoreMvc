@@ -1,0 +1,62 @@
+﻿@model List<HrmsCoreMvc.Models.Tickets.Ticket>
+
+<div class="container-fluid mt-4">
+    @* <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Ticket Details</h3>
+        <a asp-controller="Ticket" asp-action="Create" class="btn btn-primary">Raise Ticket</a>
+    </div> *@
+
+    @if (Model?.Any() == true)
+    {
+        foreach (var item in Model)
+        {
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Ticket No:</strong> @item.TicketNo</p>
+                            <p><strong>Ticket Title:</strong> @item.TicketTitle</p>
+                            <p><strong>Subject:</strong> @item.Subject</p>
+                            <p><strong>Event Category:</strong> @item.EventCategory</p>
+                            <p><strong>Description:</strong> @item.Description</p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <p><strong>Priority:</strong> @item.Priority</p>
+                            <p><strong>Status:</strong> <span class="badge bg-primary">@item.Status</span></p>
+
+                            <p>
+                                <strong>Raised By:</strong>
+                                @item.RaisedByUser?.FirstName @item.RaisedByUser?.LastName
+                            </p>
+
+                            <p>
+                                <strong>Assigned To:</strong>
+                                @(item.AssignedToUser == null
+                                    ? "Not Assigned"
+                                    : item.AssignedToUser.FirstName + " " + item.AssignedToUser.LastName)
+                            </p>
+
+                            <p>
+                                <strong>Assigned By:</strong>
+                                @(item.AssignedByUser == null
+                                    ? "Not Assigned"
+                                    : item.AssignedByUser.FirstName + " " + item.AssignedByUser.LastName)
+                            </p>
+
+                            <p><strong>Created:</strong> @item.CreatedDate.ToString("dd-MM-yyyy HH:mm")</p>
+                            <p><strong>Assigned:</strong> @(item.AssignedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                            <p><strong>Started:</strong> @(item.StartedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                            <p><strong>Resolved:</strong> @(item.ResolvedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                            <p><strong>Closed:</strong> @(item.ClosedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">No tickets found.</div>
+    }
+</div>

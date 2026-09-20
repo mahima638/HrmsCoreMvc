@@ -13,7 +13,6 @@ namespace HrmsCoreMvc.Controllers
         {
             _resignationRepository = resignationRepository;
         }
-
         public async Task<IActionResult> Index()
         {
             var resignation =await _resignationRepository.GetResignationsAsync();
@@ -28,21 +27,21 @@ namespace HrmsCoreMvc.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddResignation(Resignation resignation)
+        public async Task<IActionResult> AddResignation(Resignation resignations)
         {
-            var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
-            if (user != null)
+            var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignations.UserId);
+            if (user != null && user.DepartmentId.HasValue)
             {
-                resignation.DepartmentId = user.DepartmentId ?? 0;
+                resignations.DepartmentId = user.DepartmentId.Value;
             }
             if (ModelState.IsValid)
             {
-                await _resignationRepository.AddResignationAsync(resignation);
+                await _resignationRepository.AddResignationAsync(resignations);
                 TempData["SuccessMessage"] = "Resignation added successfully.";
                 return RedirectToAction("Index");
             }
             await LoadDropdowns();
-            return View(resignation);
+            return View(resignations);
         }
 
         [HttpGet]
@@ -64,7 +63,7 @@ namespace HrmsCoreMvc.Controllers
             var user = (await _resignationRepository.GetUsersAsync()).FirstOrDefault(u => u.UserId == resignation.UserId);
             if (user != null)
             {
-                resignation.DepartmentId = user.DepartmentId ?? 0;
+                resignation.DepartmentId = user.DepartmentId.Value;
             }
             if (ModelState.IsValid)
             {

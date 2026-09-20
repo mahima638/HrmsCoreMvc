@@ -1,0 +1,64 @@
+﻿@model HrmsCoreMvc.Models.Tickets.Ticket
+
+<div class="container-fluid mt-4">
+    <h3>Assign Ticket</h3>
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><b>Ticket No:</b> @Model.TicketNo</p>
+                    <p><b>Raised By:</b> @Model.RaisedByUser?.FirstName @Model.RaisedByUser?.LastName</p>
+                    <p><b>Subject:</b> @Model.Subject</p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Priority:</b> @Model.Priority</p>
+                    <p><b>Status:</b> @Model.Status</p>
+                    <p><b>Created:</b> @Model.CreatedDate.ToString("dd-MM-yyyy HH:mm")</p>
+                </div>
+            </div>
+            <hr>
+            <p><b>Description:</b></p>
+            <p class="text-muted">@Model.Description</p>
+
+            <form asp-action="Assign" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="TicketId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Assign To</label>
+                    <select asp-for="AssignedTo" class="form-select" required>
+                        <option value="">Select Employee</option>
+                        @foreach (var user in ViewBag.Users)
+                        {
+                            <option value="@user.UserId">@user.FirstName @user.LastName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Assignment Comment</label>
+                    <textarea name="AssignmentComment"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Enter assignment comment"
+                              required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Assign Ticket
+                </button>
+
+                <button type="submit"
+                        formaction="@Url.Action("Reject", "TicketAssignment")"
+                        formmethod="post"
+                        class="btn btn-danger ms-2"
+                        onclick="return confirm('Are you sure you want to reject this ticket?');">
+                    Reject
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

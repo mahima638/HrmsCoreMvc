@@ -1,0 +1,124 @@
+﻿
+@model HrmsCoreMvc.Models.Tickets.Ticket
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Ticket Details</h3>
+        <a asp-controller="Ticket" asp-action="Create" class="btn btn-primary">Raise Ticket</a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Ticket No:</strong> @Model.TicketNo</p>
+                    <p><strong>Ticket Title:</strong> @Model.TicketTitle</p>
+                    <p><strong>Subject:</strong> @Model.Subject</p>
+                    <p><strong>Event Category:</strong> @Model.EventCategory</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Priority:</strong> @Model.Priority</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="badge bg-primary">@Model.Status</span>
+                    </p>
+                    <p>
+                        <strong>Raised By:</strong>
+                        @Model.RaisedByUser?.FirstName @Model.RaisedByUser?.LastName
+                    </p>
+                    <p>
+                        <strong>Assigned To:</strong>
+                        @(Model.AssignedToUser == null
+                            ? "Not Assigned"
+                            : Model.AssignedToUser.FirstName + " " + Model.AssignedToUser.LastName)
+                    </p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Description</h6>
+                    <p class="text-muted">@Model.Description</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Assigned By</strong>
+                    <p>
+                        @(Model.AssignedByUser == null
+                            ? "Not Assigned"
+                            : Model.AssignedByUser.FirstName + " " + Model.AssignedByUser.LastName)
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Created Date</strong>
+                    <p>@Model.CreatedDate.ToString("dd-MM-yyyy HH:mm")</p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Assigned Date</strong>
+                    <p>@(Model.AssignedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <strong>Started Date</strong>
+                    <p>@(Model.StartedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Resolved Date</strong>
+                    <p>@(Model.ResolvedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Closed Date</strong>
+                    <p>@(Model.ClosedDate?.ToString("dd-MM-yyyy HH:mm") ?? "-")</p>
+                </div>
+            </div>
+
+            @if (Model.Resolution != null)
+            {
+                <hr />
+                <div class="alert alert-success">
+                    <h6>Resolution</h6>
+                    <p class="mb-1"><strong>Solution:</strong> @Model.Resolution.Solution</p>
+                    <p class="mb-0"><strong>Resolved Date:</strong> @Model.Resolution.ResolvedDate.ToString("dd-MM-yyyy HH:mm")</p>
+                </div>
+            }
+
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                <hr />
+                <h6>Comments</h6>
+
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="border rounded p-2 mb-2">
+                        <strong>
+                            @comment.User?.FirstName @comment.User?.LastName
+                        </strong>
+                        <small class="text-muted">
+                            @comment.CommentDate.ToString("dd-MM-yyyy HH:mm")
+                        </small>
+                        <p class="mb-0 mt-1">@comment.CommentText</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <a asp-controller="Ticket" asp-action="Index" class="btn btn-secondary">
+        Back
+    </a>
+</div>
+

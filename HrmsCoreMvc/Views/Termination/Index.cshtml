@@ -1,5 +1,4 @@
-﻿
-@using HrmsCoreMvc.Models.Termination
+﻿@using HrmsCoreMvc.Models.Termination
 @model IEnumerable<Termination>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css" />
@@ -36,14 +35,11 @@
     </div>
 
     <table id="terminationTable" class="table table-bordered table-striped">
-        <thead><tr><th>ID</th>
-            <th>Employee Name</th>
-            <th>Termination Type</th>
-            <th>Notice Date</th>
-            <th>Resign Date</th>
-            <th>Reason</th>
-            <th>Action</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th><th>Employee Name</th><th>Termination Type</th>
+                <th>Notice Date</th><th>Resign Date</th><th>Reason</th><th>Action</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
@@ -52,14 +48,21 @@
                     <td>@item.TId</td>
                     <td>@item.User?.FirstName @item.User?.LastName</td>
                     <td>@item.TerminationType</td>
-                    <td>@item.NoticeDate.ToString("dd-MM-yyyy")</td>
-                    <td>@item.ResignDate.ToString("dd-MM-yyyy")</td>
+                    <td data-order="@item.NoticeDate.ToString("yyyy-MM-dd")">
+                        @item.NoticeDate.ToString("dd-MM-yyyy")
+                    </td>
+                    <td data-order="@item.ResignDate.ToString("yyyy-MM-dd")">
+                        @item.ResignDate.ToString("dd-MM-yyyy")
+                    </td>
                     <td>@item.Reason</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.TId" class="btn btn-sm btn-warning">Edit</a>
-                        <form asp-action="DeleteTermination" asp-route-id="@item.TId" method="post" style="display:inline">
+                        <a asp-action="Edit" asp-route-id="@item.TId"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        <form asp-action="DeleteTermination" asp-route-id="@item.TId"
+                              method="post" style="display:inline">
                             @Html.AntiForgeryToken()
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            <button class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -70,18 +73,54 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
 <script>
-var t=$('#terminationTable').DataTable({pageLength:10,lengthMenu:[10,25,50,100],order:[[4,'desc']]});
-$('#filter,#order').change(function(){var f=$('#filter').val(),o=$('#order').val();t.order([4,o]).draw();});
-$.fn.dataTable.ext.search.push(function(s,d){
-    var f=$('#filter').val();if(f=='all')return true;
-    var p=d[4].split('-'),date=new Date(p[2],p[1]-1,p[0]),now=new Date();
-    now.setHours(0,0,0,0);date.setHours(0,0,0,0);
-    if(f=='today')return date.getTime()==now.getTime();
-    if(f=='tomorrow'){now.setDate(now.getDate()+1);return date.getTime()==now.getTime();}
-    if(f=='last7'){var x=new Date(now);x.setDate(x.getDate()-6);return date>=x&&date<=now;}
-    if(f=='lastmonth'){var x=new Date(now.getFullYear(),now.getMonth()-1,1),y=new Date(now.getFullYear(),now.getMonth(),0);return date>=x&&date<=y;}
+const table = $('#terminationTable').DataTable({
+    pageLength: 10,
+    lengthMenu: [10,25,50,100],
+    order: [[0,'asc']]
+});
+
+$.fn.dataTable.ext.search.push(function(settings,data) {
+    if (settings.nTable.id !== 'terminationTable') return true;
+
+    const f = $('#filter').val();
+    if (f === 'all') return true;
+
+    const p = data[4].split('-');
+    if (p.length !== 3) return false;
+
+    const d = new Date(p[2],p[1]-1,p[0]);
+    const t = new Date();
+    d.setHours(0,0,0,0);
+    t.setHours(0,0,0,0);
+
+    if (f === 'today')
+        return d.getTime() === t.getTime();
+
+    if (f === 'tomorrow') {
+        t.setDate(t.getDate()+1);
+        return d.getTime() === t.getTime();
+    }
+
+    if (f === 'last7') {
+        const s = new Date(t);
+        s.setDate(s.getDate()-6);
+        return d >= s && d <= t;
+    }
+
+    if (f === 'lastmonth') {
+        const s = new Date(t.getFullYear(),t.getMonth()-1,1);
+        const e = new Date(t.getFullYear(),t.getMonth(),0);
+        return d >= s && d <= e;
+    }
+
     return true;
 });
-</script>
 
+$('#filter').change(() => table.draw());
+
+$('#order').change(function() {
+    table.order([0,$(this).val()]).draw();
+});
+</script>
