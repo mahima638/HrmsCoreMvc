@@ -15,5 +15,7 @@ namespace HrmsCoreMvc.Repositories
         public Task LunchOut(int userId);
 
         public Task CheckOut(int userId);
+
+        Task<AttendanceViewModel> GetAdminAttendanceDashboard();
     }
 }

@@ -72,5 +72,14 @@ namespace HrmsCoreMvc.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> AdminAttendanceList()
+        {
+            var data = await service.GetAdminAttendanceDashboard();
+            return View(data);
+
+           
+        }
     }
+    
 }

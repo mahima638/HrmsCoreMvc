@@ -43,30 +43,30 @@ namespace HrmsCoreMvc.Controllers
             //    return RedirectToAction("Dashboard", "Manager");
             //}
 
-            HttpContext.Session.SetInt32("UserId", user.UserId);
+            //HttpContext.Session.SetInt32("UserId", user.UserId);
 
 
-            var role = db.role.FirstOrDefault(r => r.RoleId == user.RoleId);
+            //var role = db.role.FirstOrDefault(r => r.RoleId == user.RoleId);
 
-            if (role == null)
-            {
+            //if (role == null)
+            //{
 
-                ModelState.AddModelError("", "Role not found");
-                return View(lg);
-            }
+            //    ModelState.AddModelError("", "Role not found");
+            //    return View(lg);
+            //}
 
-            HttpContext.Session.SetString("Role", role.RoleName);
+            //HttpContext.Session.SetString("Role", role.RoleName);
 
 
-            if (role.RoleName == "Admin")
-            {
-                return RedirectToAction("Dashboard", "Admin");
-            }
+            //if (role.RoleName == "Admin")
+            //{
+            //    return RedirectToAction("Dashboard", "Admin");
+            //}
 
-            if (role.RoleName == "Manager")
-            {
-                return RedirectToAction("Dashboard", "Manager");
-            }
+            //if (role.RoleName == "Manager")
+            //{
+            //    return RedirectToAction("Dashboard", "Manager");
+            //}
 
 
 

@@ -129,5 +129,28 @@ namespace HrmsCoreMvc.Services
             };
         }
 
+
+        public async Task<AttendanceViewModel> GetAdminAttendanceDashboard()
+        {
+            var today = DateTime.Today;
+
+            var attendanceToday = await db.Attendance
+                .Include(a => a.User)
+                .Where(a => a.Date.Date == today)
+                .ToListAsync();
+
+            return new AttendanceViewModel
+            {
+                TotalEmployees = await db.user.CountAsync(),
+
+                PresentCount = attendanceToday.Count(a => a.Status == "Present"),
+                LateLoginCount = attendanceToday.Count(a => a.Late > 0),
+                UninformedCount = attendanceToday.Count(a => a.Status == "Uninformed"),
+                PermissionCount = attendanceToday.Count(a => a.Status == "Permission"),
+                AbsentCount = attendanceToday.Count(a => a.Status == "Absent"),
+                AttendanceHistory = attendanceToday
+            };
+        }
+
     }
 }
