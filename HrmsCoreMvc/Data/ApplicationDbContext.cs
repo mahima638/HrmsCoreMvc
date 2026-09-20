@@ -60,7 +60,6 @@ namespace HrmsCoreMvc.Data
 
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -229,6 +228,8 @@ namespace HrmsCoreMvc.Data
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+
         }
         
         

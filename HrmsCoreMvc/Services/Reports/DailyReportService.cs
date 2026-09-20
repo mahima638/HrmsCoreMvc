@@ -92,5 +92,21 @@ namespace HrmsCoreMvc.Services.Reports
             }).ToListAsync();
             return result;
         }
+
+        public async Task<DailyAttendanceChartDto> getDailyTasksChart()
+        {
+            var dailyData = await db.Attendance.Where(x => x.Status != null).ToListAsync();
+            if (dailyData == null || !dailyData.Any()) return new DailyAttendanceChartDto();
+            int present = dailyData.Where(x => x.Date.Date == DateTime.Now.Date).Count(x => x.Status == "Present");
+            int absent = dailyData.Where(x => x.Date.Date == DateTime.Now.Date).Count(x => x.Status == "Absent");
+
+            return new DailyAttendanceChartDto
+            {
+                ChartLabels = new List<string> { "Present", "Absent" },
+                Chartpresent = present,
+                Chartabsent = absent
+
+            };
+        }
     }
 }
