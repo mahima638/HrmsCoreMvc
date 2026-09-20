@@ -41,7 +41,7 @@
 
                     <div class="col-md-6"><label asp-for="Status" class="form-label">Status</label><select asp-for="Status" class="form-select"><option value="">Select Status</option><option>Active</option><option>Inactive</option></select><span asp-validation-for="Status" class="text-danger"></span></div>
 
-                    <div class="col-md-6"><label class="form-label">Team Members</label><select name="selectedTeamMembers" class="form-select" multiple>@foreach (var member in ViewBag.TeamMembers){<option value="@member.UserId">@member.FullName</option>}</select><small class="text-muted">Hold Ctrl and select multiple members.</small></div>
+                    <div class="col-md-6"><label class="form-label">Team Members</label><div class="dropdown"><button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">Select Team Members</button><div class="dropdown-menu w-100 p-2">@foreach (var member in ViewBag.TeamMembers){<div class="form-check"><input class="form-check-input team-member" type="checkbox" name="selectedTeamMembers" value="@member.UserId" id="member_@member.UserId" /><label class="form-check-label" for="member_@member.UserId">@member.FullName</label></div>}</div></div></div>
 
                     <div class="col-md-6"><label asp-for="ManagerName" class="form-label">Manager Name</label><input asp-for="ManagerName" class="form-control" /><span asp-validation-for="ManagerName" class="text-danger"></span></div>
 
@@ -59,4 +59,19 @@
     </div>
 </div>
 
+<script>
+    document.querySelectorAll('.team-member').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            var selected = document.querySelectorAll('.team-member:checked').length;
+            var button = this.closest('.dropdown').querySelector('button');
+
+            if (selected == 0) {
+                button.innerText = 'Select Team Members';
+            }
+            else {
+                button.innerText = selected + ' members selected';
+            }
+        });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
