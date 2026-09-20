@@ -1,8 +1,19 @@
 ﻿@model List<HrmsCoreMvc.Models.Departments>
 
-<h2>All Departments</h2>
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
 
-<table class="table table-bordered">
+
+<h2>All Departments</h2>
+<button type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addDepartmentModal">
+    + Add Department
+</button>
+<table id="departmentTable" class="table table-bordered">
     <thead>
         <tr>
             <th>Department Id</th>
@@ -36,3 +47,93 @@
         }
     </tbody>
 </table>
+<div class="modal fade" id="addDepartmentModal" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add Department</h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form asp-controller="Department"
+                      asp-action="AddDepartment"
+                      method="post">
+
+                    <div class="mb-3">
+                        <label>Department Name</label>
+
+                        <input type="text"
+                               name="Name"
+                               class="form-control" />
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label>Status</label>
+
+                        <select name="Status"
+                                class="form-control">
+
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+
+                        </select>
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Add Department
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/3.2.4/js/dataTables.buttons.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#departmentTable').DataTable({
+
+            dom: 'Bfrtip',
+
+            buttons: [
+                'excel',
+                'pdf'
+            ]
+
+        });
+
+    });
+
+</script>

@@ -16,5 +16,7 @@ namespace HrmsCoreMvc.Repositories.Reports
         Task<IEnumerable<LeavesReportViewModel>> fetchLeaves();
 
         Task<IEnumerable<LeavesReportViewModel>> sortLeaves(string? datefilter, string? statusfilter, string? sortType);
+
+        Task <LeaveChartDto> fetchChart();
     }
 }

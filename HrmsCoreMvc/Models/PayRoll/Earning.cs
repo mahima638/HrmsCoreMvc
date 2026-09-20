@@ -9,7 +9,7 @@ namespace HrmsCoreMvc.Models.PayRoll
         public int EarningsId { get; set; }
 
         
-        [ForeignKey("EarntypeId")]
+        [ForeignKey("EarningType")]
         public int EarntypeId { get; set; }
         public EarningType EarningType { get; set; }
 

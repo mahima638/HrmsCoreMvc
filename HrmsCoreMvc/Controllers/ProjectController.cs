@@ -4,6 +4,7 @@ using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Services;
 using HrmsCoreMvc.Data;
 
+
 namespace HrmsCoreMvc.Controllers
 {
     public class ProjectController : Controller
@@ -45,6 +46,13 @@ namespace HrmsCoreMvc.Controllers
             return View(project);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateProject(int projectId)
+        {
+            var project = (await cs.GetAllProjects()).FirstOrDefault(p => p.ProjectId == projectId);
+            return View("UpdateProject", project);
+        }
+
         [HttpPost]
         public async Task<IActionResult> UpdateProject(AllProjects project)
         {
@@ -54,7 +62,7 @@ namespace HrmsCoreMvc.Controllers
                 TempData["SuccessMessage"] = "Project Updated Successfully!";
                 return RedirectToAction("GetAllProjects");
             }
-            return View(project);
+            return View("UpdateProject", project);
         }
 
         [HttpPost]

@@ -1,0 +1,240 @@
+﻿@using HrmsCoreMvc.Models.Projects
+@model IEnumerable<TaskBoard>
+
+@{
+    ViewData["Title"] = "Task Board";
+    var boards = Model?.ToList() ?? new List<TaskBoard>();
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-1"><h2 class="mb-0">Task Board</h2><div class="d-flex gap-2"><div class="dropdown position-relative"><button type="button" class="btn btn-outline-secondary" id="exportButton">Export ▼</button><ul class="dropdown-menu dropdown-menu-end" id="exportMenu" style="display:none;"><li><button type="button" class="dropdown-item" id="exportPdf">Export as PDF</button></li><li><button type="button" class="dropdown-item" id="exportExcel">Export as Excel</button></li></ul></div><a asp-controller="TaskBoard" asp-action="AddTaskBoard" class="btn btn-primary">+ Add New Board</a></div></div>
+
+    <p class="text-secondary mb-4">Projects &gt; Task Board</p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @foreach (var projectGroup in boards.GroupBy(x => x.Project?.ProjectName ?? "No Project"))
+    {
+        var projectBoards = projectGroup.ToList();
+        var pendingCount = projectBoards.Count(x => (x.Task?.Status ?? "Pending") == "Pending");
+        var completedCount = projectBoards.Count(x => (x.Task?.Status ?? "") == "Completed");
+
+        <div class="project-group card mb-4" data-project="@projectGroup.Key.ToLower()">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="mb-0">@projectGroup.Key</h3><div class="d-flex align-items-center gap-2"><strong>Total Task: @projectBoards.Count</strong><span>|</span><strong>Pending: @pendingCount</strong><span>|</span><strong>Completed: @completedCount</strong><input type="text" class="form-control project-search ms-3" style="width:195px;" placeholder="Search Project" /></div></div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3"><div class="d-flex align-items-center gap-2"><strong>Priority</strong><button type="button" class="btn btn-sm btn-primary priority-btn active" data-priority="">All</button><button type="button" class="btn btn-sm btn-outline-secondary priority-btn" data-priority="High">High</button><button type="button" class="btn btn-sm btn-outline-secondary priority-btn" data-priority="Medium">Medium</button><button type="button" class="btn btn-sm btn-outline-secondary priority-btn" data-priority="Low">Low</button></div><select class="form-select project-status" style="width:160px;"><option value="">Select Status</option><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="On Hold">On Hold</option><option value="Completed">Completed</option></select></div>
+
+                <div class="row g-3">
+                    @foreach (var status in new[] { "Pending", "In Progress", "On Hold", "Completed" })
+                    {
+                        <div class="col-lg-3 board-column">
+                            <div class="card h-100">
+                                <div class="card-header text-center fw-bold">@status</div>
+                                <div class="card-body">
+                                    @foreach (var board in projectBoards.Where(x => (x.Task?.Status ?? "Pending") == status))
+                                    {
+                                        var priority = board.Task?.Priority ?? "";
+
+                                        <div class="task-card card mb-3" data-priority="@priority" data-status="@status" data-search="@((board.Task?.Title ?? board.TaskName ?? "").ToLower())">
+                                            <div class="card-body">
+                                                <div class="mb-2"><span class="badge @(priority == "High" ? "bg-danger" : priority == "Medium" ? "bg-warning text-dark" : "bg-success")">@(string.IsNullOrEmpty(priority) ? "No Priority" : priority)</span></div>
+                                                <h5 class="mb-2">@(board.Task?.Title ?? board.TaskName ?? "No Task")</h5>
+                                                <div class="progress mb-3" style="height:8px;"><div class="progress-bar" style="width:@board.Percentage%"></div></div>
+                                                <div class="text-secondary mb-3">Due on: @board.Duedate.ToString("dd/MM/yyyy")</div>
+                                                <hr />
+                                                <div><a asp-controller="TaskBoard" asp-action="UpdateTaskBoard" asp-route-taskBoardId="@board.TaskBoardId" class="btn btn-sm btn-primary">Edit</a><form asp-controller="TaskBoard" asp-action="DeleteTaskBoard" method="post" class="d-inline"><input type="hidden" name="taskBoardId" value="@board.TaskBoardId" /><button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this task board?')">Delete</button></form></div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!boards.Any())
+    {
+        <div class="text-center text-muted py-5">No task boards found.</div>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    $('#exportButton').on('click', function (e) {
+        e.stopPropagation();
+        $('#exportMenu').toggle();
+    });
+
+    $('#exportExcel').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var data = [];
+
+        data.push([
+            'Task Board ID',
+            'Project',
+            'Task',
+            'Priority',
+            'Status',
+            'Percentage',
+            'Due Date'
+        ]);
+
+        @foreach (var board in boards)
+        {
+            var projectName = board.Project?.ProjectName ?? "No Project";
+            var taskName = board.Task?.Title ?? board.TaskName ?? "No Task";
+            var priority = board.Task?.Priority ?? "No Priority";
+            var status = board.Task?.Status ?? "Pending";
+            var percentage = board.Percentage + "%";
+            var dueDate = board.Duedate.ToString("dd/MM/yyyy");
+
+            <text>
+            data.push([
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(board.TaskBoardId.ToString()))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(projectName))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(taskName))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(priority))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(status))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(percentage))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(dueDate))'
+            ]);
+            </text>
+        }
+
+        var worksheet = XLSX.utils.aoa_to_sheet(data);
+        var workbook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Task Board');
+
+        XLSX.writeFile(workbook, 'Task_Board.xlsx');
+
+        $('#exportMenu').hide();
+    });
+
+    $('#exportPdf').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var { jsPDF } = window.jspdf;
+        var doc = new jsPDF('landscape', 'mm', 'a4');
+
+        var data = [];
+
+        @foreach (var board in boards)
+        {
+            var projectName = board.Project?.ProjectName ?? "No Project";
+            var taskName = board.Task?.Title ?? board.TaskName ?? "No Task";
+            var priority = board.Task?.Priority ?? "No Priority";
+            var status = board.Task?.Status ?? "Pending";
+            var percentage = board.Percentage + "%";
+            var dueDate = board.Duedate.ToString("dd/MM/yyyy");
+
+            <text>
+            data.push([
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(board.TaskBoardId.ToString()))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(projectName))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(taskName))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(priority))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(status))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(percentage))',
+                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(dueDate))'
+            ]);
+            </text>
+        }
+
+        doc.setFontSize(18);
+        doc.text('Task Board', 14, 15);
+
+        doc.autoTable({
+            head: [[
+                'Task Board ID',
+                'Project',
+                'Task',
+                'Priority',
+                'Status',
+                'Percentage',
+                'Due Date'
+            ]],
+            body: data,
+            startY: 22,
+            theme: 'grid',
+            styles: {
+                fontSize: 8
+            },
+            headStyles: {
+                fontSize: 8
+            }
+        });
+
+        doc.save('Task_Board.pdf');
+
+        $('#exportMenu').hide();
+    });
+
+    $(document).on('click', function () {
+        $('#exportMenu').hide();
+    });
+
+    document.querySelectorAll(".project-group").forEach(function (project) {
+        var searchBox = project.querySelector(".project-search");
+        var statusSelect = project.querySelector(".project-status");
+        var priorityButtons = project.querySelectorAll(".priority-btn");
+
+        function filterTasks() {
+            var search = searchBox.value.toLowerCase();
+            var status = statusSelect.value.toLowerCase();
+            var activePriority = project.querySelector(".priority-btn.active");
+            var priority = activePriority ? activePriority.getAttribute("data-priority").toLowerCase() : "";
+
+            project.querySelectorAll(".task-card").forEach(function (card) {
+                var cardPriority = card.getAttribute("data-priority").toLowerCase();
+                var cardStatus = card.getAttribute("data-status").toLowerCase();
+                var cardSearch = card.getAttribute("data-search");
+
+                var searchMatch = search === "" || cardSearch.includes(search) || project.getAttribute("data-project").includes(search);
+                var priorityMatch = priority === "" || cardPriority === priority;
+                var statusMatch = status === "" || cardStatus === status;
+
+                card.style.display = searchMatch && priorityMatch && statusMatch ? "" : "none";
+            });
+        }
+
+        searchBox.addEventListener("keyup", filterTasks);
+        statusSelect.addEventListener("change", filterTasks);
+
+        priorityButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                priorityButtons.forEach(function (btn) {
+                    btn.classList.remove("active", "btn-primary");
+                    btn.classList.add("btn-outline-secondary");
+                });
+
+                this.classList.add("active", "btn-primary");
+                this.classList.remove("btn-outline-secondary");
+
+                filterTasks();
+            });
+        });
+    });
+
+});
+</script>

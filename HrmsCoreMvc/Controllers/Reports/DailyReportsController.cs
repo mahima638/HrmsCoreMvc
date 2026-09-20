@@ -20,15 +20,20 @@ namespace HrmsCoreMvc.Controllers.Reports
             var CompletedTasks = await Ir.fetchCompletedTasks();
             var PendingTasks = await Ir.fetchPendingTasks();
             var DailyTasks = await Ir.fetchDailyTasks();
+            var dailyChart = await Ir.getDailyTasksChart();
             if(!string.IsNullOrEmpty(status) || !string.IsNullOrEmpty(sortType)) 
             {
                  DailyTasks = await Ir.sortDailyTasks(status, sortType);
             }
+            ViewBag.ChartLabels = dailyChart.ChartLabels;
+            ViewBag.ChartData = dailyChart.Chartdata;
+            ViewBag.SelectedSortStatus = status;
+            ViewBag.SelectedSortType = sortType;
             ViewBag.TotalAbsent = TotalAbsent;
             ViewBag.TotalPresent = TotalPresent;
             ViewBag.CompletedTasks = CompletedTasks;
             ViewBag.PendingTasks = PendingTasks;
-            return View(DailyTasks);
+            return View("~/Views/Reports/fetchDailyReports.cshtml",DailyTasks);
 
         }
     }

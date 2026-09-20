@@ -22,10 +22,11 @@ namespace HrmsCoreMvc.Models.Projects
 
         [Required(ErrorMessage = "File Path is required.")]
         public string? FilePath { get; set; }
-        public int TaskBoardId { get; set; }
+        public int? TaskBoardId { get; set; }
         public TaskBoard? TaskBoard { get; set; }
         public int ProjectId { get; set; }
 
         public List<TaskMembers>? TaskMembers { get; set; } 
+        public DateTime? DueDate { get; set; }
     }
 }

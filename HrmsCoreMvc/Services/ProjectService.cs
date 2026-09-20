@@ -1,7 +1,8 @@
-﻿using HrmsCoreMvc.Models.Projects;
-using Microsoft.EntityFrameworkCore;
-using HrmsCoreMvc.Data;
+﻿using HrmsCoreMvc.Data;
+using HrmsCoreMvc.Models.Projects;
 using HrmsCoreMvc.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrmsCoreMvc.Services
 
@@ -39,6 +40,8 @@ namespace HrmsCoreMvc.Services
             var project = await db.AllProjects.FindAsync(projectId);
             if (project != null)
             {
+                var tasks = await db.tasks.Where(t => t.ProjectId == projectId).ToListAsync();
+                db.tasks.RemoveRange(tasks);
                 db.AllProjects.Remove(project);
                 await db.SaveChangesAsync();
                 return "Project deleted successfully";

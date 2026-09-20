@@ -15,5 +15,7 @@ namespace HrmsCoreMvc.Repositories.Reports
         Task<IEnumerable<TaskReportViewModel>> fetchTasks();
 
         Task<IEnumerable<TaskReportViewModel>> sortTasks(string? priority, string? status, string? sortType);
+
+        Task<TaskChartDto> fetchCharts();
     }
 }

@@ -1,11 +1,29 @@
 ﻿@model List<HrmsCoreMvc.Models.Leave.MasterLeaveType>
 
+    @if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
 
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button"
+        id="addLeaveBtn"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
     Add Leave Type
 </button>
-
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -16,17 +34,34 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" asp-action="Leave">
-            <div class="modal-body">
-            
-                    <label class="form-label">Leave Type</label>
-                    <input type="text" name="LeaveType" class="form-control" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-           </form>
+            <form method="post" id="leaveForm">
+    <input type="hidden" id="LeaveTypeId" name="LeaveTypeId" />
+
+    <div class="modal-body">
+
+        <label class="form-label">Leave Type</label>
+
+        <input type="text"
+               id="LeaveType"
+               name="LeaveType"
+               class="form-control" />
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Close
+        </button>
+
+        <button type="submit"
+                id="submitBtn"
+                class="btn btn-primary">
+            Submit
+        </button>
+    </div>
+</form>
         </div>
     </div>
 </div>
@@ -55,7 +90,14 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@leaveType.LeaveTypeId" class="btn btn-primary">Edit</a>
+                    <button type="button"
+        class="btn btn-primary editBtn"
+        data-id="@leaveType.LeaveTypeId"
+        data-name="@leaveType.LeaveType"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+    Edit
+</button>
                     <a asp-action="DeleteLeaveType" asp-route-leaveTypeId="@leaveType.LeaveTypeId" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
@@ -68,24 +110,48 @@
 
 
 
-@section Scripts {
-    <script>
-        $(document).ready(function() {
+@section Scripts
+{
+<script>
+    $(document).ready(function () {
 
+        // DataTable
         $('#leaveTable').DataTable({
-        pageLength: 10,
-
-        lengthMenu: [5, 10, 25, 50],
-
-        ordering: true,
-
-        searching: true,
-
-        paging: true,
-
-        info: true
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50],
+            ordering: true,
+            searching: true,
+            paging: true,
+            info: true
         });
 
+        // Edit Leave Type
+        $(".editBtn").click(function () {
+
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+
+            $("#LeaveTypeId").val(id);
+            $("#LeaveType").val(name);
+
+            $("#exampleModalLabel").text("Edit Leave Type");
+            $("#submitBtn").text("Update");
+
+            $("#leaveForm").attr("action", "/Leave/Edit");
         });
-    </script>
+
+        // Add Leave Type
+        $("#addLeaveBtn").click(function () {
+
+            $("#LeaveTypeId").val("");
+            $("#LeaveType").val("");
+
+            $("#exampleModalLabel").text("Add Leave Type");
+            $("#submitBtn").text("Submit");
+
+            $("#leaveForm").attr("action", "/Leave/Leave");
+        });
+
+    });
+</script>
 }

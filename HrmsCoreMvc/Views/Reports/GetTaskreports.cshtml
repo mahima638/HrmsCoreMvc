@@ -1,0 +1,341 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<HrmsCoreMvc.Models.Reports.TaskReportViewModel>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .bg-orange-subtle { background-color: #fff3eb; border: 1px solid #ffe1cc; }
+    .text-orange { color: #fd7e14; }
+    
+    .bg-green-subtle { background-color: #e6f9f0; border: 1px solid #c3f2d9; }
+    .text-green { color: #20c997; }
+
+    .bg-blue-subtle { background-color: #e7f1ff; border: 1px solid #cfe2ff; }
+    .text-blue { color: #0d6efd; }
+
+    .bg-red-subtle { background-color: #f8d7da; border: 1px solid #f5c2c7; }
+    .text-red { color: #dc3545; }
+ </style>
+
+ 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="fw-bold mb-1">Task Report</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">HR</a></li>
+                <li class="breadcrumb-item active">Task Report</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-box-arrow-up"></i> Export
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="exportDropdown">
+            <li>
+                <a class="dropdown-item" href="#" id="exportCsvBtn">
+                    <i class="bi bi-file-earmark-excel text-success me-2"></i>Export to Excel
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="exportPdfBtn">
+                    <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Export to PDF
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        <!-- Main Row Containing Grid (Left 50%) and Chart (Right 50%) -->
+<div class="row g-3 mb-4">
+
+    <!-- LEFT HALF: 2x2 Metric Cards -->
+    <div class="col-lg-6">
+        <div class="row g-3 h-100">
+            <div class="col-md-6 d-flex flex-column">
+                <div class="card border-0 shadow-sm h-100 p-2 flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-orange-subtle text-orange rounded-3 p-3">
+                                <i class="bi bi-people-fill fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Total Tasks</div>
+                                <h3 class="fw-bold m-0">@ViewBag.totalTasks</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6  d-flex flex-column ">
+                <div class="card border-0 shadow-sm h-100 p-2 flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-green-subtle text-green rounded-3 p-3">
+                                <i class="bi bi-diagram-3-fill fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Completed Tasks</div>
+                                <h3 class="fw-bold m-0">@ViewBag.completedTasks</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6  d-flex flex-column ">
+                <div class="card border-0 shadow-sm h-100 p-2 flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-blue-subtle text-blue rounded-3 p-3">
+                                <i class="bi bi-person-check-fill fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Overdue Tasks</div>
+                                <h3 class="fw-bold m-0">@ViewBag.overdueTasks</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6  d-flex flex-column ">
+                <div class="card border-0 shadow-sm h-100 p-2 flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box bg-red-subtle text-red rounded-3 p-3">
+                                <i class="bi bi-shield-lock-fill fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Onhold Tasks</div>
+                                <h3 class="fw-bold m-0">@ViewBag.onHoldTasks</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT HALF: Chart Container Card -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-bar-chart-line text-danger"></i>
+                        <h6 class="fw-bold mb-0">Tasks</h6>
+                    </div>
+                    <select class="form-select form-select-sm w-auto">
+                        <option>This Year</option>
+                        <option>Last Year</option>
+                    </select>
+                </div>
+                <div class="flex-grow-1 position-relative" style="min-height: 280px;">
+                    <canvas id="alltakssChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="get" asp-controller="TaskReport" asp-action="GetTaskreports" id="filterForm">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold m-0">All Tasks List</h5>
+                <div class="d-flex gap-2">
+                    <select name="priority" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Priority</option>
+                        <option value="Low" selected="@(ViewBag.SelectedPriorityType == "Low")">Low</option>
+                        <option value="Medium" selected="@(ViewBag.SelectedPriorityType == "Medium")">Medium</option>
+                        <option value="High" selected="@(ViewBag.SelectedPriorityType == "High")">High</option>
+                    </select>
+
+                    <!-- Sorting Filter Dropdown -->
+                    <select name="status" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Status</option>
+                        <option value="Completed" selected="@(ViewBag.SelecetedStatusType == "Completed")">Completed</option>
+                        <option value="Pending" selected="@(ViewBag.SelecetedStatusType == "Pending")">Pending</option>
+                        <option value="Inprogress" selected="@(ViewBag.SelecetedStatusType == "Inprogress")">Inprogress</option>
+                        <option value="Onhold" selected="@(ViewBag.SelecetedStatusType == "Onhold")">Onhold</option>
+                    </select>
+
+                    <select name="sortType" class="form-select form-select-sm w-auto" onchange="document.getElementById('filterForm').submit();">
+                        <option value="">Select Priority</option>
+                        <option value="Recently Added" selected="@(ViewBag.SelectedPriorityType == "Recently Added")">Recently Added</option>
+                        <option value="Ascending" selected="@(ViewBag.SelectedPriorityType == "Ascending")">Ascending</option>
+                        <option value="Descending" selected="@(ViewBag.SelectedPriorityType == "Descending")">Descending</option>
+                        <option value="Last Month" selected="@(ViewBag.SelectedPriorityType == "Last Month")">Last Month</option>
+                        <option value="Last 7 Days" selected="@(ViewBag.SelectedPriorityType == "Last 7 Days")">Last 7 Days</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table id="AllTasksTable" class="table align-middle table-hover w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>Task Id</th>
+                        <th>Task Name</th>
+                        <th>Project Name</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tsk in Model)
+                    {
+                        <tr>
+                            <td>@tsk.TaskId</td>
+                            <td>@tsk.TaskName</td>
+                            <td>@tsk.ProjectName</td>
+                            <td>
+                                @tsk.DueDate
+                            </td>
+                            <td>
+                                @if (tsk.Priority == "High")
+                                {
+                                    <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-3"> <span class="me-1">•</span>High</span>
+                                }
+                                else if (tsk.Priority == "Medium")
+                                {
+                                    <span class="badge bg-warning-subtle text-warning px-3 py-1 rounded-3"> <span class="me-1">•</span> Medium</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success-subtle text-success px-3 py-1 rounded-3">
+                                        <span class="me-1">•</span> Low
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                @if (tsk.Status == "Active")
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+    new Chart(document.getElementById('alltakssChart'),{
+        type:'doughnut',
+        data:{
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Chartlabels)),
+            datasets: [{
+                label: 'Projects & Tasks Summary',
+                data: [
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartCompleted)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartPending)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartInprogress)?.FirstOrDefault() ?? 0)),
+                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((IEnumerable<double>)ViewBag.ChartOnhold)?.FirstOrDefault() ?? 0))
+                ],
+                backgroundColor: [
+                    '#00bcd4', // Active Projects (Cyan)
+                    '#9c27b0', // Inactive Projects (Purple)
+                    '#ffc107', // In Progress Tasks (Yellow)
+                    '#4caf50'  // Completed Tasks (Green)
+                ],
+                borderWidth: 2
+
+            }]
+        },
+        options:{
+            maintainAspectRatio: false,
+            plugins:{
+                legend:{
+                    position : 'right',
+                    labels:{
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#AllTasksTable').DataTable({
+                "dom": 'frtip'
+            });
+            $('.dropdown-toggle').dropdown();
+        });
+
+    </script>
+}
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+ <script>
+     document.getElementById('exportPdfBtn').onclick = (e) => {
+         e.preventDefault();
+         const doc = new jspdf.jsPDF('l');
+         doc.autoTable({ 
+            html: '#AllTasksTable',
+            didParseCell: (d) => { if (d.column.index === 1) d.cell.text = [d.cell.raw.innerText.trim()]; }
+        });
+        doc.save('Tasks_Report.pdf');
+    };
+</script>
+
+<script>
+    document.getElementById('exportCsvBtn').onclick = function(e) {
+    e.preventDefault();
+    const rows = document.querySelectorAll('#AllTasksTable tr'); 
+    const cvrows = Array.from(rows).map(row => {
+        const cells = row.querySelectorAll('th,td');
+        const cellTexts = Array.from(cells).map(cell => `"${cell.innerText.trim()}"`);
+        return cellTexts.join(',');
+    });
+
+    const csvContent = cvrows.join('\n');
+    const link = document.createElement('a');
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+    link.download = 'Tasks_Report.csv';
+    link.click();
+    };
+
+</script>
+     

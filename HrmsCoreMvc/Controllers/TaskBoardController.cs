@@ -9,17 +9,28 @@ namespace HrmsCoreMvc.Controllers
     public class TaskBoardController : Controller
     {
         private readonly ITaskBoardService cs;
-        public TaskBoardController(ITaskBoardService tbs)
+        private readonly ApplicationDbContext db;
+        public TaskBoardController(ITaskBoardService tbs, ApplicationDbContext db)
         {
             cs = tbs;
+            this.db = db;
         }
 
         public async Task<IActionResult> GetAllTaskBoards()
         {
             var taskBoards = await cs.GetAllTaskBoards();
-            return View("~/Views/Project/GetAllTaskBoards.cshtml", taskBoards);
+            return View("GetAllTaskBoards", taskBoards);
         }
 
+        [HttpGet]
+        public IActionResult AddTaskBoard()
+        {
+            ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.Tasks = db.tasks.ToList();
+            return View("AddTaskBoard");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
@@ -28,9 +39,19 @@ namespace HrmsCoreMvc.Controllers
                 TempData["SuccessMessage"] = "Task Board Added Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
-            return View(taskBoard);
+            ViewBag.Projects = db.AllProjects.ToList();
+            ViewBag.Tasks = db.tasks.ToList();
+            return View("AddTaskBoard", taskBoard);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateTaskBoard(int taskBoardId)
+        {
+            var board = (await cs.GetAllTaskBoards()).FirstOrDefault(x => x.TaskBoardId == taskBoardId);
+            return View("UpdateTaskBoard", board);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateTaskBoard(TaskBoard taskBoard)
         {
             if (ModelState.IsValid)
@@ -39,7 +60,7 @@ namespace HrmsCoreMvc.Controllers
                 TempData["SuccessMessage"] = "Task Board Updated Successfully!";
                 return RedirectToAction("GetAllTaskBoards");
             }
-            return View(taskBoard);
+            return View("UpdateTaskBoard", taskBoard);
         }
 
         public async Task<IActionResult> DeleteTaskBoard(int taskBoardId)
