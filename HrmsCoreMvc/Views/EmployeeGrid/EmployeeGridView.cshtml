@@ -1,0 +1,82 @@
+﻿@model HrmsCoreMvc.Models.EmployeeGridViewModel
+
+<h2>Employee</h2>
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-people"></i>
+            </div>
+            <p class="text-muted mb-1">Total Employee</p>
+            <h4>@Model.TotalEmployees</h4>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-person-check"></i>
+            </div>
+            <p class="text-muted mb-1">Active</p>
+            <h4>@Model.ActiveEmployees</h4>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-person-dash"></i>
+            </div>
+            <p class="text-muted mb-1">InActive</p>
+            <h4>@Model.InactiveEmployees</h4>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 p-3">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width:2.5rem;height:2.5rem;">
+                <i class="bi bi-person-plus"></i>
+            </div>
+            <p class="text-muted mb-1">New Joiners</p>
+            <h4>@Model.NewJoiners</h4>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 p-3 mt-3">
+    <h5>Employee List</h5>
+</div>
+
+<div class="row g-3 mt-1">
+    @foreach (var e in Model.EmployeeGridList)
+    {
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-3 text-center">
+                <img src="@e.ProfilePicture" width="70" height="70" class="rounded-circle mx-auto mb-2" />
+                <h6 class="mb-0">@e.FullName</h6>
+                <p class="text-muted small">@e.DesignationName</p>
+
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <p class="text-muted small mb-0">Projects</p>
+                        <b>@e.ProjectsCount</b>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Done</p>
+                        <b>@e.DoneCount</b>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Progress</p>
+                        <b>@e.ProgressCount</b>
+                    </div>
+                </div>
+
+                <p class="text-muted small mt-2 mb-1">Productivity: @e.ProductivityPercent.ToString("0")%</p>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" style="width:@e.ProductivityPercent.ToString("0")%"></div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

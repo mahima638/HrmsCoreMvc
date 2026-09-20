@@ -1,0 +1,172 @@
+﻿@model HrmsCoreMvc.Models.EmployeeDashboardViewModel
+
+<h2>Employee Dashboard</h2>
+
+<div class="row g-3">
+
+    <!-- Left card: Profile -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white d-flex align-items-center gap-2">
+                <img src="@Model.Employee.ProfilePicture" width="40" height="40" class="rounded-circle" />
+                <div>
+                    <div>@Model.Employee.FirstName @Model.Employee.LastName</div>
+                    <small>@Model.Employee.designation?.Name</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-0 small">Phone Number</p>
+                <p>@Model.Employee.PhoneNumber</p>
+
+                <p class="text-muted mb-0 small">Email Address</p>
+                <p>@Model.Employee.Email</p>
+
+                <p class="text-muted mb-0 small">Department</p>
+                <p>@Model.Employee.departments?.Name</p>
+
+                <p class="text-muted mb-0 small">Joined On</p>
+                <p>@Model.Employee.DateOfJoining?.ToShortDateString()</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle card: Attendance -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header">Leave Details</div>
+            <div class="card-body">
+                <p><i class="bi bi-circle-fill text-dark small"></i> <b>@Model.OnTime</b> on time</p>
+                <p><i class="bi bi-circle-fill text-success small"></i> <b>@Model.LateAttendance</b> Late Attendance</p>
+                <p><i class="bi bi-circle-fill text-danger small"></i> <b>@Model.Absent</b> Absent</p>
+                <p><i class="bi bi-circle-fill text-warning small"></i> <b>@Model.SickLeave</b> Sick Leave</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right card: Leave Details -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header">Leave Details</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Total Leaves</p>
+                        <p><b>@Model.TotalLeaves</b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Taken</p>
+                        <p><b>@Model.Taken</b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Absent</p>
+                        <p><b>@Model.Absent</b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Sick Leave</p>
+                        <p><b>@Model.SickLeave</b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Worked Days</p>
+                        <p><b>@Model.WorkedDays</b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted small mb-0">Loss of Pay</p>
+                        <p><b>@Model.LossOfPay</b></p>
+                    </div>
+                </div>
+                <button class="btn btn-dark w-100 mt-2">Apply New Leave</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-3 mt-1">
+
+    <!-- Greeting + Punch-in card -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3">
+            <p class="text-muted mb-1">Good Morning, @Model.Employee.FirstName</p>
+            <h5>@DateTime.Now.ToString("hh:mm tt")</h5>
+
+            <img src="@Model.Employee.ProfilePicture" width="80" height="80" class="rounded-circle my-2" />
+
+            <div class="bg-warning text-white text-center rounded p-2 mb-2">
+                Production: @Model.TodayProductionHours h 0m
+            </div>
+
+            @if (Model.IsCheckedIn)
+            {
+                <p>Punch In at @Model.TodayCheckInTime?.ToString("hh:mm tt")</p>
+            }
+            else
+            {
+                <p>Punch In at Not Checked In</p>
+            }
+
+            <button class="btn btn-warning w-100">Attendance Marked</button>
+        </div>
+    </div>
+
+    <!-- 4 Stat cards -->
+    <div class="col-md-8">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 p-3">
+                    <div class="bg-warning bg-opacity-75 text-white rounded d-inline-flex align-items-center justify-content-center p-2 mb-2" style="width:2.5rem;height:2.5rem;">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <h4 class="mb-0">@Model.HoursToday / 9</h4>
+                    <p class="text-muted mb-2">Total Hours Today</p>
+                    <hr class="my-1" />
+                    <span class="badge bg-success bg-opacity-25 text-success">
+                        <i class="bi bi-arrow-up"></i> 5% This Week
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 p-3">
+                    <div class="bg-dark text-white rounded d-inline-flex align-items-center justify-content-center p-2 mb-2" style="width:2.5rem;height:2.5rem;">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <h4 class="mb-0">@Model.HoursThisWeek / 40</h4>
+                    <p class="text-muted mb-2">Total Hours Week</p>
+                    <hr class="my-1" />
+                    <span class="badge bg-success bg-opacity-25 text-success">
+                        <i class="bi bi-arrow-up"></i> 7% Last Week
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 p-3">
+                    <div class="bg-primary text-white rounded d-inline-flex align-items-center justify-content-center p-2 mb-2" style="width:2.5rem;height:2.5rem;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h4 class="mb-0">@Model.HoursThisMonth / 98</h4>
+                    <p class="text-muted mb-2">Total Hours Month</p>
+                    <hr class="my-1" />
+                    <span class="badge bg-danger bg-opacity-25 text-danger">
+                        <i class="bi bi-arrow-down"></i> 8% Last Month
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 p-3">
+                    <div class="bg-danger text-white rounded d-inline-flex align-items-center justify-content-center p-2 mb-2" style="width:2.5rem;height:2.5rem;">
+                        <i class="bi bi-calendar-week"></i>
+                    </div>
+                    <h4 class="mb-0">@Model.OvertimeThisMonth / 28</h4>
+                    <p class="text-muted mb-2">Overtime this Month</p>
+                    <hr class="my-1" />
+                    <span class="badge bg-danger bg-opacity-25 text-danger">
+                        <i class="bi bi-arrow-down"></i> 6% Last Month
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,17 +1,15 @@
-﻿
-using HrmsCoreMvc.Data;
+﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HrmsCoreMvc.Controllers
 {
-    public class ManagerController : Controller
+    public class EmployeeDashboardController : Controller
     {
         private readonly ApplicationDbContext db;
 
-        public ManagerController(ApplicationDbContext db)
+        public EmployeeDashboardController(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -36,60 +34,68 @@ namespace HrmsCoreMvc.Controllers
 
             var allBalances = await db.LeaveBalances.ToListAsync();
 
-            var userBalances = allBalances.Where(leave => leave.UserId == userId.Value);
+            var userBalances = allBalances.Where(leave =>
+                leave.UserId == userId.Value);
 
             int totalLeaves = userBalances.Sum(leave => leave.TotalLeaves);
             int taken = userBalances.Sum(leave => leave.UsedLeaves);
 
             var allAttendance = await db.Attendance.ToListAsync();
 
-            var userAttendance = allAttendance.Where(at => at.UserId == userId.Value);
+            var userAttendance = allAttendance.Where(at =>
+                at.UserId == userId.Value);
 
             int onTime = userAttendance.Count(at =>
-                at.Status == "Present" && at.Late == 0
-            );
+                at.Status == "Present" && at.Late == 0);
 
             int lateAttendance = userAttendance.Count(at =>
-                at.Status == "Present" && at.Late > 0
-            );
+                at.Status == "Present" && at.Late > 0);
 
             int absent = userAttendance.Count(at =>
-                at.Status == "Absent"
-            );
+                at.Status == "Absent");
 
             int workDays = userAttendance.Count(at =>
-                at.CheckIn != null
-            );
+                at.CheckIn != null);
 
             DateTime today = DateTime.Today;
-            DateTime StartOfWeek = today.AddDays(-(int)today.DayOfWeek);
-            DateTime StartOfMonth = new DateTime(today.Year, today.Month, 1);
+
+            DateTime startOfWeek =
+                today.AddDays(-(int)today.DayOfWeek);
+
+            DateTime startOfMonth =
+                new DateTime(today.Year, today.Month, 1);
 
             var monthAttendance = userAttendance.Where(at =>
-                at.Date >= StartOfMonth &&
-                at.Date <= today
-            );
+                at.Date >= startOfMonth &&
+                at.Date <= today);
 
             var weekAttendance = userAttendance.Where(at =>
-                at.Date >= StartOfWeek &&
-                at.Date <= today
-            );
+                at.Date >= startOfWeek &&
+                at.Date <= today);
 
             var todayAttendance = userAttendance.Where(at =>
-                at.Date.Date == today
-            );
+                at.Date.Date == today);
 
-            decimal hoursThisMonth = monthAttendance.Sum(at => at.WorkingHours);
-            decimal overTimeThisMonth = monthAttendance.Sum(at => at.OvertimeHours);
-            decimal hoursThisWeek = weekAttendance.Sum(at => at.WorkingHours);
-            decimal hoursToday = todayAttendance.Sum(at => at.WorkingHours);
-            decimal todayProductionHours = todayAttendance.Sum(at => at.ProductionHours);
+            decimal hoursThisMonth =
+                monthAttendance.Sum(at => at.WorkingHours);
+
+            decimal overtimeThisMonth =
+                monthAttendance.Sum(at => at.OvertimeHours);
+
+            decimal hoursThisWeek =
+                weekAttendance.Sum(at => at.WorkingHours);
+
+            decimal hoursToday =
+                todayAttendance.Sum(at => at.WorkingHours);
+
+            decimal todayProductionHours =
+                todayAttendance.Sum(at => at.ProductionHours);
 
             var todayCheckIn = todayAttendance.FirstOrDefault(at =>
-                at.CheckIn != null
-            );
+                at.CheckIn != null);
 
-            bool IsCheckedIn = todayCheckIn != null;
+            bool isCheckedIn = todayCheckIn != null;
+
             DateTime? todayCheckInTime = null;
 
             if (todayCheckIn != null)
@@ -111,8 +117,8 @@ namespace HrmsCoreMvc.Controllers
             obj.HoursToday = hoursToday;
             obj.HoursThisWeek = hoursThisWeek;
             obj.HoursThisMonth = hoursThisMonth;
-            obj.OvertimeThisMonth = overTimeThisMonth;
-            obj.IsCheckedIn = IsCheckedIn;
+            obj.OvertimeThisMonth = overtimeThisMonth;
+            obj.IsCheckedIn = isCheckedIn;
             obj.TodayCheckInTime = todayCheckInTime;
             obj.TodayProductionHours = todayProductionHours;
 

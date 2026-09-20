@@ -1,8 +1,8 @@
 ﻿@model List<HrmsCoreMvc.Models.User>
 <html>
-    <head>
-<link rel="stylesheet"
-      href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+<head>
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
     <link rel="stylesheet"
           href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
 
@@ -44,7 +44,7 @@
             </select>
         </div>
     </div>
-   
+
 
     <table id="userTable" class="table table-bordered">
         <thead>
@@ -56,14 +56,7 @@
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Date Of Joining</th>
-                <th>Date Of Birth</th>
-                <th>Gender</th>
-                <th>Address</th>
-                <th>About Employee</th>
                 <th>Reporting Manager</th>
-                <th>Role Id</th>
-                <th>Department</th>
-                <th>Designation</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -90,22 +83,8 @@
 
                     <td>@user.DateOfJoining?.ToShortDateString()</td>
 
-                    <td>@user.DateOfBirth?.ToShortDateString()</td>
-
-                    <td>@user.Gender</td>
-
-                    <td>@user.Address</td>
-
-                    <td>@user.AboutEmployee</td>
-
                     <td>@user.ReportingManager</td>
 
-                    <td>@user.RoleId</td>
-
-                    <td>@user.departments.Name</td>
-
-                    
-                    <td>@user.designation.Name</td>
                     <td>@user.Status</td>
 
                     <td>
@@ -177,11 +156,13 @@
                         </div>
 
                         <!-- Email -->
+                       
                         <div class="mb-3">
                             <label>Email</label>
                             <input type="email"
                                    name="Email"
-                                   class="form-control" />
+                                   class="form-control"
+                                   autocomplete="new-email" />
                         </div>
 
                         <!-- Password -->
@@ -189,7 +170,8 @@
                             <label>Password</label>
                             <input type="password"
                                    name="PasswordHash"
-                                   class="form-control" />
+                                   class="form-control"
+                                   autocomplete="new-password" />
                         </div>
 
                         <!-- Phone Number -->
@@ -250,23 +232,26 @@
                         <div class="mb-3">
                             <label>Reporting Manager</label>
 
-                            <input type="text"
-                                   name="ReportingManager"
-                                   class="form-control" />
+                            <select name="ReportingManager" id="ReportingManager"  class="form-control">
+                                <option value="">Select Manager</option>
+                                @foreach (var mgr in ViewBag.Managers)
+                                {
+                                    <option value="@mgr.FirstName @mgr.LastName">@mgr.FirstName @mgr.LastName</option>
+                                }
+                            </select>
                         </div>
 
                         <!-- Role -->
                         <div class="mb-3">
                             <label>Role</label>
 
-                            <select name="RoleId"
-                                    class="form-control">
+                            <select name="RoleId" id="RoleId" class="form-control">
 
                                 <option value="">Select Role</option>
 
                                 @foreach (var role in ViewBag.Role)
                                 {
-                                    <option value="@role.RoleId">
+                                    <option value="@role.RoleId" data-name="@role.RoleName">
                                         @role.RoleName
                                     </option>
                                 }
@@ -278,8 +263,7 @@
                         <div class="mb-3">
                             <label>Department</label>
 
-                            <select name="DepartmentId"
-                                    class="form-control">
+                            <select name="DepartmentId" id="DepartmentId" class="form-control">
 
                                 <option value="">Select Department</option>
 
@@ -297,14 +281,13 @@
                         <div class="mb-3">
                             <label>Designation</label>
 
-                            <select name="DesignationId"
-                                    class="form-control">
+                            <select name="DesignationId" id="DesignationId" class="form-control">
 
                                 <option value="">Select Designation</option>
 
                                 @foreach (var des in ViewBag.Designation)
                                 {
-                                    <option value="@des.DesignationId">
+                                    <option value="@des.DesignationId" data-dept="@des.DepartmentId" data-name="@des.Name">
                                         @des.Name
                                     </option>
                                 }
@@ -369,6 +352,61 @@
                     if (!val) { table.order([]).draw(); return; }
                     var parts = val.split('-');
                     table.order([parseInt(parts[0]), parts[1]]).draw();
+                });
+
+                $('#DepartmentId').on('change', function() {
+                    var selectedDept = $(this).val();
+
+                    $('#DesignationId option').each(function() {
+                        if ($(this).val() === "") {
+                            $(this).show();
+                            return;
+                        }
+                        var optionDept = $(this).data('dept');
+                        if (selectedDept === "" || optionDept == selectedDept) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    $('#DesignationId').val('');
+                });
+
+                $('#RoleId').on('change', function() {
+                    var selectedRoleName = $(this).find('option:selected').data('name');
+
+                   
+                    if (selectedRoleName === 'Admin' || selectedRoleName === 'Manager') {
+                        $('#ReportingManager').val('').prop('disabled', true);
+                    } else {
+                        $('#ReportingManager').prop('disabled', false);
+                    }
+
+                    if (selectedRoleName === 'Manager') {
+                        $('#DesignationId option').each(function() {
+                            if ($(this).val() === "") {
+                                $(this).show();
+                                return;
+                            }
+                            var optionName = $(this).data('name');
+                            if (optionName === 'Manager') {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+
+                        var managerOption = $('#DesignationId option').filter(function() {
+                            return $(this).data('name') === 'Manager';
+                        });
+
+                        if (managerOption.length > 0) {
+                            $('#DesignationId').val(managerOption.val());
+                        }
+                    } else {
+                        $('#DepartmentId').trigger('change');
+                    }
                 });
             });
     </script>

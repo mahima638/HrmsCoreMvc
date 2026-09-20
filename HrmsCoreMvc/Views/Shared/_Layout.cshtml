@@ -5,18 +5,15 @@
 }
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    ```
     <title>@ViewData["Title"] - HrmsCoreMvc</title>
 
-    <link rel="stylesheet"
-          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <link rel="stylesheet"
           href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
@@ -28,27 +25,21 @@
     <link rel="stylesheet"
           href="~/HrmsCoreMvc.styles.css"
           asp-append-version="true" />
-    ```
-
 </head>
 
 <body>
 
-    ```
     <div class="d-flex">
 
-        <!-- SIDEBAR -->
         <div class="bg-dark text-white"
              style="width:260px; height:100vh; position:fixed; left:0; top:0; overflow-y:auto; z-index:1000;">
 
-            <!-- LOGO -->
             <div class="p-4 text-center border-bottom border-secondary">
                 <h3 class="fw-bold mb-0">Pulse360</h3>
             </div>
 
             <div class="p-3">
 
-                <!-- ================= ADMIN ================= -->
                 @if (role == "Admin")
                 {
                     <ul class="nav nav-pills flex-column">
@@ -99,8 +90,8 @@
                                     </a>
 
                                     <a class="nav-link text-white-50 py-2"
-                                       asp-controller="User"
-                                       asp-action="EmployeeGrid">
+                                       asp-controller="EmployeeGrid"
+                                       asp-action="Index">
                                         Employee Grid
                                     </a>
 
@@ -291,231 +282,289 @@
 
                     </ul>
                 }
-
-                <!-- ================= MANAGER ================= -->
                 else if (role == "Manager")
                 {
-                <ul class="nav nav-pills flex-column">
+                    <ul class="nav nav-pills flex-column">
 
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2"
-                           asp-controller="Manager"
-                           asp-action="Dashboard">
-                            Dashboard
-                        </a>
-                    </li>
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2"
+                               asp-controller="Manager"
+                               asp-action="Dashboard">
+                                Dashboard
+                            </a>
+                        </li>
 
-                    <!-- Projects -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#managerProjectsMenu"
-                           role="button">
-                            <span>Projects</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Projects -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#managerProjectsMenu"
+                               role="button">
+                                <span>Projects</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="managerProjectsMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Project</a>
-                                <a class="nav-link text-white-50 py-2">Task</a>
-                                <a class="nav-link text-white-50 py-2">Taskboard</a>
+                            <div class="collapse" id="managerProjectsMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Project
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Task
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Taskboard
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Leaves -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#managerLeaveMenu"
-                           role="button">
-                            <span>Leaves</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Leaves -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#managerLeaveMenu"
+                               role="button">
+                                <span>Leaves</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="managerLeaveMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Leave Approval</a>
-                                <a class="nav-link text-white-50 py-2">Timesheet Approval</a>
-                                <a class="nav-link text-white-50 py-2">Leave Allocation</a>
+                            <div class="collapse" id="managerLeaveMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Leave Approval
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Timesheet Approval
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Leave Allocation
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Tickets -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#managerTicketsMenu"
-                           role="button">
-                            <span>Tickets</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Tickets -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#managerTicketsMenu"
+                               role="button">
+                                <span>Tickets</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="managerTicketsMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Ticket</a>
-                                <a class="nav-link text-white-50 py-2">Ticket Details</a>
+                            <div class="collapse" id="managerTicketsMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Ticket
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Ticket Details
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Logout -->
-                    <li class="nav-item mt-2">
-                        <a class="nav-link text-danger px-3 py-2"
-                           asp-controller="Account"
-                           asp-action="Logout">
-                            Logout
-                        </a>
-                    </li>
+                        <!-- Logout -->
+                        <li class="nav-item mt-2">
+                            <a class="nav-link text-danger px-3 py-2"
+                               asp-controller="Account"
+                               asp-action="Logout">
+                                Logout
+                            </a>
+                        </li>
 
-                </ul>
+                    </ul>
                 }
-
-                <!-- ================= EMPLOYEE ================= -->
-                else
+                else if (role == "Employee")
                 {
-                <ul class="nav nav-pills flex-column">
+                    <ul class="nav nav-pills flex-column">
 
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2"
-                           asp-controller="User"
-                           asp-action="Dashboard">
-                            Dashboard
-                        </a>
-                    </li>
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2"
+                               asp-controller="EmployeeDashboard"
+                               asp-action="Dashboard">
+                                Dashboard
+                            </a>
+                        </li>
 
-                    <!-- Profile -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeeProfileMenu"
-                           role="button">
-                            <span>Employees</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Profile -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeeProfileMenu"
+                               role="button">
+                                <span>Employees</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeeProfileMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2"
-                                   asp-controller="Employee"
-                                   asp-action="Details">
-                                    UserProfile
-                                </a>
+                            <div class="collapse" id="employeeProfileMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2"
+                                       asp-controller="Employee"
+                                       asp-action="Details">
+                                        UserProfile
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Attendance -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeeAttendanceMenu"
-                           role="button">
-                            <span>Attendance</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Attendance -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeeAttendanceMenu"
+                               role="button">
+                                <span>Attendance</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeeAttendanceMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Leave</a>
-                                <a class="nav-link text-white-50 py-2">Timesheet</a>
-                                <a class="nav-link text-white-50 py-2">Attendance (Employees)</a>
+                            <div class="collapse" id="employeeAttendanceMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Leave
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Timesheet
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Attendance (Employees)
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Payroll -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeePayrollMenu"
-                           role="button">
-                            <span>Payroll</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Payroll -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeePayrollMenu"
+                               role="button">
+                                <span>Payroll</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeePayrollMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Payslip</a>
+                            <div class="collapse" id="employeePayrollMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Payslip
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Calendar -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeeCalendarMenu"
-                           role="button">
-                            <span>Calendar</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Calendar -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeeCalendarMenu"
+                               role="button">
+                                <span>Calendar</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeeCalendarMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Events</a>
+                            <div class="collapse" id="employeeCalendarMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Events
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Documents -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeeDocumentsMenu"
-                           role="button">
-                            <span>Documents</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Documents -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeeDocumentsMenu"
+                               role="button">
+                                <span>Documents</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeeDocumentsMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Company Letters</a>
-                                <a class="nav-link text-white-50 py-2">My Documents</a>
-                                <a class="nav-link text-white-50 py-2">Upload Documents</a>
+                            <div class="collapse" id="employeeDocumentsMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Company Letters
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        My Documents
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Upload Documents
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Tickets -->
-                    <li class="nav-item mb-1">
-                        <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
-                           data-bs-toggle="collapse"
-                           href="#employeeTicketsMenu"
-                           role="button">
-                            <span>Tickets</span>
-                            <span>⌄</span>
-                        </a>
+                        <!-- Tickets -->
+                        <li class="nav-item mb-1">
+                            <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center"
+                               data-bs-toggle="collapse"
+                               href="#employeeTicketsMenu"
+                               role="button">
+                                <span>Tickets</span>
+                                <span>⌄</span>
+                            </a>
 
-                        <div class="collapse" id="employeeTicketsMenu">
-                            <div class="ps-3 pt-1">
-                                <a class="nav-link text-white-50 py-2">Ticket</a>
-                                <a class="nav-link text-white-50 py-2">Ticket Details</a>
+                            <div class="collapse" id="employeeTicketsMenu">
+                                <div class="ps-3 pt-1">
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Ticket
+                                    </a>
+
+                                    <a class="nav-link text-white-50 py-2">
+                                        Ticket Details
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <!-- Logout -->
-                    <li class="nav-item mt-2">
-                        <a class="nav-link text-danger px-3 py-2"
-                           asp-controller="Account"
-                           asp-action="Logout">
-                            Logout
-                        </a>
-                    </li>
+                        <!-- Logout -->
+                        <li class="nav-item mt-2">
+                            <a class="nav-link text-danger px-3 py-2"
+                               asp-controller="Account"
+                               asp-action="Logout">
+                                Logout
+                            </a>
+                        </li>
 
-                </ul>
+                    </ul>
                 }
 
             </div>
         </div>
 
-        <!-- ================= MAIN AREA ================= -->
         <div style="margin-left:260px; width:100%;">
 
-            <!-- TOP NAVBAR -->
             <nav class="navbar navbar-light bg-white border-bottom shadow-sm">
 
                 <div class="container-fluid">
@@ -540,7 +589,6 @@
 
             </nav>
 
-            <!-- PAGE CONTENT -->
             <main class="p-4">
                 @RenderBody()
             </main>
@@ -548,8 +596,6 @@
         </div>
 
     </div>
-
-    <!-- SCRIPTS -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -562,7 +608,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-    ```
 
 </body>
 

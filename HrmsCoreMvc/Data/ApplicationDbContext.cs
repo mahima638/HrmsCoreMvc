@@ -37,8 +37,9 @@ namespace HrmsCoreMvc.Data
 
         public DbSet<Promotion> promotion { get; set; }
         public DbSet<Termination> terminations { get; set; }
-        public DbSet<Resignation> resignations { get; set; }        
-        
+        public DbSet<Resignation> resignations { get; set; }
+        public DbSet<ProjectsUser> projectsUsers { get; set; }
+
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
         public DbSet<Earning> Earning { get; set; }
