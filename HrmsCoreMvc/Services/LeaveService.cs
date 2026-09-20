@@ -1,6 +1,7 @@
 ﻿using HrmsCoreMvc.Data;
 using HrmsCoreMvc.Models.Leave;
 using HrmsCoreMvc.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 namespace HrmsCoreMvc.Services
@@ -93,7 +94,7 @@ namespace HrmsCoreMvc.Services
 
         public async Task<List<MasterLeaveType>> FetchLeaveTypeList()
         {
-            return await db.MasterLeaveTypes.ToListAsync();
+            return await db.MasterLeaveTypes.ToListAsync();     
         }
 
   
@@ -107,5 +108,93 @@ namespace HrmsCoreMvc.Services
                 await db.SaveChangesAsync();
             }
         }
+
+        public async Task ApplyLeave(LeaveRequest req)
+        {
+            //req.UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+            req.UserId = 2;
+
+            req.NumberOfDays = (req.EndDate.Date - req.StartDate.Date).Days + 1;
+            req.Status = "Pending";
+
+            db.LeaveRequests.Add(req);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<List<LeaveRequest>> FetchLeaveRequests(int id)
+        {
+            return await db.LeaveRequests
+                .Include(x => x.MasterLeaveType)
+                .Where(x => x.UserId == id)
+                .ToListAsync();
+        }
+
+
+
+        public async Task<List<LeaveRequest>> FetchManagerLeaveRequests()
+        {
+            return await db.LeaveRequests
+                .Include(x => x.User)
+                .Include(x => x.MasterLeaveType)
+                .OrderByDescending(x => x.LeaveRequestId)
+                .ToListAsync();
+        }
+
+        public async Task ApproveLeave(int leaveRequestId, string managerName)
+        {
+            var leave = await db.LeaveRequests.FindAsync(leaveRequestId);
+
+            if (leave == null)
+                return;
+
+            leave.Status = "Approved";
+            leave.ApprovedBy = managerName;
+            leave.StatusHistory = $"Approved on {DateTime.Now:g}";
+
+            await db.SaveChangesAsync();
+        }
+
+        public async Task RejectLeave(int leaveRequestId, string managerName)
+        {
+            var leave = await db.LeaveRequests.FindAsync(leaveRequestId);
+
+            if (leave == null)
+                return;
+
+            leave.Status = "Rejected";
+            leave.ApprovedBy = managerName;
+            leave.StatusHistory = $"Rejected on {DateTime.Now:g}";
+
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<MasterLeaveType> GetLeaveTypeById(int id)
+        {
+            return await db.MasterLeaveTypes.FirstOrDefaultAsync(x => x.LeaveTypeId == id);
+        }
+
+        public async Task UpdateLeaveType(MasterLeaveType model)
+        {
+            var leave = await db.MasterLeaveTypes
+                .FirstOrDefaultAsync(x => x.LeaveTypeId == model.LeaveTypeId);
+
+            if (leave != null)
+            {
+                leave.LeaveType = model.LeaveType;
+
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteDepartmentLeave(int id)
+        {
+            var deptLeave = await db.DepartmentLeaves.FindAsync(id);
+            if (deptLeave != null)
+            {
+                db.DepartmentLeaves.Remove(deptLeave);
+                await db.SaveChangesAsync();
+            }
+        }
+
     }
 }

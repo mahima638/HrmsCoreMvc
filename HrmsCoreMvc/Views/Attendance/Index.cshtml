@@ -1,0 +1,445 @@
+﻿@model HrmsCoreMvc.Models.ViewModel.AttendanceViewModel
+
+
+@{
+    ViewData["Title"] = "Employee Attendance";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+<style>
+    body{
+        background:#f5f7fb;
+    }
+
+    .profile-card{
+        background:#fff;
+        border-radius:15px;
+        padding:20px;
+        box-shadow:0 2px 10px rgba(0,0,0,.08);
+    }
+
+    .summary-card{
+        background:#fff;
+        border-radius:15px;
+        padding:20px;
+        box-shadow:0 2px 10px rgba(0,0,0,.08);
+        height:100%;
+    }
+
+    .attendance-box{
+        background:#fff;
+        border-radius:15px;
+        padding:20px;
+        box-shadow:0 2px 10px rgba(0,0,0,.08);
+    }
+
+    .avatar{
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        object-fit:cover;
+        border:4px solid #e5e5e5;
+    }
+
+    .orange-btn{
+        background:#ff6b1a;
+        color:#fff;
+        border:none;
+        width:180px;
+        border-radius:10px;
+        padding:10px;
+        font-weight:600;
+    }
+
+    .orange-btn:hover{
+        background:#ef5b00;
+        color:#fff;
+    }
+
+    .stat-icon{
+        width:45px;
+        height:45px;
+        border-radius:10px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#fff;
+    }
+
+    .progress{
+        height:18px;
+        border-radius:10px;
+    }
+
+    .badge-present{
+        background:#00c853;
+    }
+
+    .badge-absent{
+        background:#dc3545;
+    }
+
+    .table thead{
+        background:#e9edf5;
+    }
+</style>
+
+<div class="container-fluid mt-3">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="d-flex justify-content-between mb-3">
+        <h2 class="fw-bold text-primary">Employee Attendance</h2>
+
+        <div>
+            <button class="btn btn-outline-dark me-2">
+                <i class="fa-solid fa-file-export"></i> Export
+            </button>
+
+            <button class="btn btn-warning text-white">
+                <i class="fa-solid fa-file-pdf"></i> Report
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- Left Profile Card -->
+
+        <div class="col-lg-3 mb-4">
+
+            <div class="profile-card text-center">
+
+                <p class="text-muted mb-1">Good Morning,</p>
+
+                <h5>@Model.EmployeeName</h5>
+
+                <h4 id="liveDateTime" class="fw-bold text-primary"></h4>
+
+                <img src="~/images/avatar.jpg" class="avatar my-3" />
+
+                <button class="orange-btn mb-3">
+                    Production :
+                    @Model.ProductionHours 
+                </button>
+
+                <hr />
+
+                @if (Model.TodayAttendance == null)
+                {
+                    <form asp-action="CheckIn" method="post">
+                        <button class="orange-btn">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Check In
+                        </button>
+                    </form>
+                }
+                else if (Model.TodayAttendance.LunchIn == null)
+                {
+                    <p class="fw-semibold text-success">
+                        Punch In at @Model.TodayAttendance.CheckIn.Value.ToString("hh:mm tt")
+                    </p>
+
+                    <form asp-action="LunchIn" method="post">
+                        <button class="orange-btn">Lunch In</button>
+                    </form>
+                }
+                else if (Model.TodayAttendance.LunchOut == null)
+                {
+                    <p class="fw-semibold text-success">
+                        Lunch Started @Model.TodayAttendance.LunchIn.Value.ToString("hh:mm tt")
+                    </p>
+
+                    <form asp-action="LunchOut" method="post">
+                        <button class="orange-btn">Lunch Out</button>
+                    </form>
+                }
+                else if (Model.TodayAttendance.CheckOut == null)
+                {
+                    <p class="fw-semibold text-success">
+                        Lunch Finished @Model.TodayAttendance.LunchOut.Value.ToString("hh:mm tt")
+                    </p>
+
+                    <form asp-action="CheckOut" method="post">
+                        <button class="orange-btn">Check Out</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="alert alert-success">
+                        Attendance Completed ✔
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- Right Dashboard -->
+
+        <div class="col-lg-9">
+
+            <!-- Summary Cards -->
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-3">
+
+                    <div class="summary-card">
+
+                        <div class="stat-icon bg-warning">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+
+                        <h3 class="mt-3">@Model.TotalHoursToday</h3>
+
+                        <p class="text-muted">Total Hours Today</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="summary-card">
+
+                        <div class="stat-icon bg-dark">
+                            <i class="fa-solid fa-calendar-week"></i>
+                        </div>
+
+                        <h3 class="mt-3">@Model.TotalHoursWeek</h3>
+
+                        <p class="text-muted">Total Hours Week</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="summary-card">
+
+                        <div class="stat-icon bg-primary">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+
+                        <h3 class="mt-3">@Model.TotalHoursMonth</h3>
+
+                        <p class="text-muted">Total Hours Month</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="summary-card">
+
+                        <div class="stat-icon bg-danger">
+                            <i class="fa-solid fa-business-time"></i>
+                        </div>
+
+                        <h3 class="mt-3">@Model.OvertimeHours</h3>
+
+                        <p class="text-muted">Overtime This Month</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Working Hours Box -->
+
+            <div class="attendance-box mb-4">
+
+                <div class="row text-center">
+
+                    <div class="col-md-3">
+                        <p class="text-secondary mb-1">Working Hours</p>
+                        <h3>@Model.TodayAttendance?.WorkingHours h</h3>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p class="text-success mb-1">Productive Hours</p>
+                        <h3>@Model.ProductionHours h</h3>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p class="text-warning mb-1">Break Hours</p>
+                        <h3>@Model.BreakHours h</h3>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p class="text-primary mb-1">Overtime</p>
+                        <h3>@Model.OvertimeHours h</h3>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="progress mb-2">
+
+                    <div class="progress-bar bg-success"
+                         style="width:@(Model.ProductionHours * 10)%">
+                    </div>
+
+                    <div class="progress-bar bg-warning"
+                         style="width:@(Model.BreakHours * 10)%">
+                    </div>
+
+                    <div class="progress-bar bg-primary"
+                         style="width:@(Model.OvertimeHours * 10)%">
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-between small text-muted">
+                    <span>06:00</span>
+                    <span>09:00</span>
+                    <span>12:00</span>
+                    <span>03:00</span>
+                    <span>06:00</span>
+                    <span>09:00</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Attendance History -->
+
+    <div class="attendance-box">
+
+        <div class="row mb-3 align-items-center">
+
+            <div class="col-md-3">
+                <h4 class="fw-bold">Employee Attendance</h4>
+            </div>
+
+            <div class="col-md-9 text-end">
+
+                <input type="date" class="form-control d-inline w-auto me-2" />
+
+                <input type="date" class="form-control d-inline w-auto me-2" />
+
+                <select class="form-select d-inline w-auto me-2">
+                    <option>Select Status</option>
+                    <option>Present</option>
+                    <option>Absent</option>
+                    <option>Half Day</option>
+                    <option>Leave</option>
+                </select>
+
+            </div>
+
+        </div>
+
+        <table id="attendanceTable" class="table table-bordered table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Check In</th>
+                    <th>Status</th>
+                    <th>Check Out</th>
+                    <th>Break</th>
+                    <th>Late</th>
+                    <th>Overtime</th>
+                    <th>Production Hours</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.AttendanceHistory)
+                {
+                    <tr>
+
+                        <td>@item.Date.ToString("dd-MM-yyyy")</td>
+
+                        <td>@item.CheckIn?.ToString("hh:mm tt")</td>
+
+                        <td>
+
+                            @if (item.Status == "Present")
+                            {
+                                <span class="badge badge-present">
+                                    Present
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-absent">
+                                    @item.Status
+                                </span>
+                            }
+
+                        </td>
+
+                        <td>@item.CheckOut?.ToString("hh:mm tt")</td>
+
+                        <td>@item.BreakHours hrs</td>
+
+                        <td>@item.Late min</td>
+
+                        <td>@item.OvertimeHours hrs</td>
+
+                        <td>
+                            <span class="badge bg-danger">
+                                @item.ProductionHours
+                            </span>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.js"></script>
+
+<script>
+    new DataTable('#attendanceTable');
+
+    function updateClock(){
+
+        const now = new Date();
+
+        document.getElementById("liveDateTime").innerHTML =
+            now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) +
+            " , " +
+            now.toLocaleDateString('en-GB',{
+                day:'2-digit',
+                month:'short',
+                year:'numeric'
+            });
+
+    }
+
+    updateClock();
+
+    setInterval(updateClock,1000);
+
+</script>

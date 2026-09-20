@@ -39,15 +39,9 @@ namespace HrmsCoreMvc.Controllers
                 return RedirectToAction("Dashboard", "Admin");
             
             }
-
-            var user = db.user.FirstOrDefault(u => u.Email == lg.Email && u.PasswordHash == lg.Password);
-
-            if (user == null)
-            {
-
-                ModelState.AddModelError("", "Invalid email or password");
-                return View(lg);
-            }
+            //if (lg.RoleName == "Manager") {
+            //    return RedirectToAction("Dashboard", "Manager");
+            //}
 
             HttpContext.Session.SetInt32("UserId", user.UserId);
 

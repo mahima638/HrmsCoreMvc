@@ -65,12 +65,14 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IDesignationService, DesignationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+
 builder.Services.AddScoped<IDepartmentService, Departmentservice>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
@@ -100,7 +102,10 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}")
-    .WithStaticAssets();
+
+    pattern: "{controller=Attendance}/{action=Index}/{id?}");
+
+    //pattern: "{controller=Account}/{action=Login}/{id?}")
+    //.WithStaticAssets();
 
 app.Run();
