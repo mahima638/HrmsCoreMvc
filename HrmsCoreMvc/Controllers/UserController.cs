@@ -52,24 +52,37 @@ namespace HrmsCoreMvc.Controllers
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        profilePicture.CopyTo(stream);
+                        await profilePicture.CopyToAsync(stream);
                     }
 
                     us.ProfilePicture = "/uploads/" + fileName;
                 }
+
                 await userService.AddEmployee(us);
+
                 return RedirectToAction("GetEmployee");
             }
+
             var roles = await roleService.GetAllRole();
             var depts = await deptService.GetDepartments();
             var des = await desService.GetAllDesignations();
+
             ViewBag.Designation = des;
             ViewBag.Departments = depts;
-            ViewBag.Roles = roles;
+            ViewBag.Role = roles;
+
             var allEmployeesForManager = await userService.getEmployees();
+
             var managerRole = roles.FirstOrDefault(r => r.RoleName == "Manager");
-            int managerRoleId = managerRole != null ? managerRole.RoleId : 0;
-            ViewBag.Managers = allEmployeesForManager.Where(u => u.RoleId == managerRoleId).ToList();
+
+            int managerRoleId = managerRole != null
+                ? managerRole.RoleId
+                : 0;
+
+            ViewBag.Managers = allEmployeesForManager
+                .Where(u => u.RoleId == managerRoleId)
+                .ToList();
+
             return View(us);
         }
 

@@ -94,35 +94,25 @@ var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionsFile>();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseDeveloperExceptionPage();
-//}
-
-app.UseSession();
 app.UseHttpsRedirection();
-app.UseRouting();
-//app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseStaticFiles();
 
-app.MapStaticAssets();
+app.UseRouting();
+
+app.UseSession();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-
-    pattern: "{controller=Attendance}/{action=Index}/{id?}");
-
-    //pattern: "{controller=Account}/{action=Login}/{id?}")
-    //.WithStaticAssets();
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

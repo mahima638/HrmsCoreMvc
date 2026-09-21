@@ -9,7 +9,7 @@ namespace HrmsCoreMvc.Models.Attendance
         [Key]
         public int AttendanceId { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("UserId")]
         public int UserId { get; set; }
         public User User { get; set; }
 

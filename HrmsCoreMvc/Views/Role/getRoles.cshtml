@@ -1,65 +1,85 @@
-﻿@model List<HrmsCoreMvc.Models.Role>
+﻿```cshtml
+@model List<HrmsCoreMvc.Models.Role>
 
 <link rel="stylesheet"
       href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
 
 <link rel="stylesheet"
       href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
-<h2>All Roles</h2>
 
-<button type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#addRoleModal">
-    + Add Role
-</button>
-<table id="roleTable" class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Role Id</th>
-            <th>Role Name</th>
-            <th>Status</th>
-            <th>Created By</th>
-            <th>Action</th>
+<div class="container-fluid">
 
-        </tr>
-    </thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>All Roles</h2>
 
-    <tbody>
-        @foreach (var role in Model)
-        {
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addRoleModal">
+            + Add Role
+        </button>
+    </div>
+
+    <table id="roleTable" class="table table-bordered table-striped">
+        <thead>
             <tr>
-                <td>@role.RoleId</td>
-                <td>@role.RoleName</td>
-                <td>@role.Status</td>
-               
-                <td>@role.CreatedBy</td>
-
-
-
-                <td>
-<a asp-action="EditRole" asp-route-id="@role.RoleId" class="btn btn-warning">Edit</a>
-<a asp-action="DeleteRole" asp-route-id="@role.RoleId" class="btn btn-danger">Delete</a>
-
-
-               </td>
-
+                <th>Role Id</th>
+                <th>Role Name</th>
+                <th>Status</th>
+                <th>Created By</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.RoleId</td>
+                    <td>@role.RoleName</td>
+                    <td>@role.Status</td>
+                    <td>@role.CreatedBy</td>
+
+                    <td>
+                        <a asp-action="EditRole"
+                           asp-route-id="@role.RoleId"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="DeleteRole"
+                           asp-route-id="@role.RoleId"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+<!-- Add Role Modal -->
+
 <div class="modal fade" id="addRoleModal" tabindex="-1">
+
     <div class="modal-dialog">
 
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Add Role</h5>
+
+                <h5 class="modal-title">
+                    Add Role
+                </h5>
 
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
+
             </div>
 
             <div class="modal-body">
@@ -69,26 +89,38 @@
                       method="post">
 
                     <div class="mb-3">
-                        <label>Role Name</label>
+
+                        <label class="form-label">
+                            Role Name
+                        </label>
 
                         <input type="text"
                                name="RoleName"
-                               class="form-control" />
-                    </div>
+                               class="form-control"
+                               required />
 
+                    </div>
 
                     <div class="mb-3">
-                        <label>Status</label>
+
+                        <label class="form-label">
+                            Status
+                        </label>
 
                         <select name="Status"
-                                class="form-control">
+                                class="form-select">
 
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
 
                         </select>
-                    </div>
 
+                    </div>
 
                     <button type="submit"
                             class="btn btn-primary">
@@ -105,7 +137,6 @@
 
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
 
@@ -114,25 +145,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
 
-<script>$(document).ready(function() { $('#roleTable').DataTable(); });</script>
 
 <script>
 
     $(document).ready(function() {
 
-        $('#departmentTable').DataTable({
+        $('#roleTable').DataTable({
 
             dom: 'Bfrtip',
 
             buttons: [
                 'excel',
-                'pdf'
+                'pdf',
+                'print'
             ]
 
         });
@@ -140,3 +172,4 @@
     });
 
 </script>
+```

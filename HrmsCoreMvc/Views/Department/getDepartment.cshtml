@@ -1,65 +1,108 @@
-﻿@model List<HrmsCoreMvc.Models.Departments>
+﻿```cshtml
+@model List<HrmsCoreMvc.Models.Departments>
 
 <link rel="stylesheet"
       href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+
 <link rel="stylesheet"
       href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
 
 
-<h2>All Departments</h2>
-<button type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#addDepartmentModal">
-    + Add Department
-</button>
-<table id="departmentTable" class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Department Id</th>
-            <th>Department Name</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Created By</th>
+<div class="container-fluid">
 
-            <th>Action</th>
-        </tr>
-    </thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-    <tbody>
-        @foreach (var dept in Model)
-        {
+        <h2>All Departments</h2>
+
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addDepartmentModal">
+            + Add Department
+        </button>
+
+    </div>
+
+
+    <table id="departmentTable" class="table table-bordered table-striped">
+
+        <thead>
             <tr>
-                <td>@dept.DepartmentId</td>
-                <td>@dept.Name</td>
-                <td>@dept.Status</td>
-                <td>@dept.CreatedAt</td>
-                <td>@dept.CreatedBy</td>
-
-
-                <td>
-                    <a asp-action="EditDepartment" asp-route-id="@dept.DepartmentId" class="btn btn-warning">Edit</a>
-                    <a asp-action="DeleteDepartment" asp-route-id="@dept.DepartmentId" class="btn btn-danger">Delete</a>
-
-
-                </td>
+                <th>Department Id</th>
+                <th>Department Name</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Created By</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
-<div class="modal fade" id="addDepartmentModal" tabindex="-1">
+        </thead>
+
+
+        <tbody>
+
+            @foreach (var dept in Model)
+            {
+                <tr>
+
+                    <td>@dept.DepartmentId</td>
+
+                    <td>@dept.Name</td>
+
+                    <td>@dept.Status</td>
+
+                    <td>@dept.CreatedAt</td>
+
+                    <td>@dept.CreatedBy</td>
+
+                    <td>
+
+                        <a asp-action="EditDepartment"
+                           asp-route-id="@dept.DepartmentId"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="DeleteDepartment"
+                           asp-route-id="@dept.DepartmentId"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- Add Department Modal -->
+
+<div class="modal fade"
+     id="addDepartmentModal"
+     tabindex="-1">
+
     <div class="modal-dialog">
 
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Add Department</h5>
+
+                <h5 class="modal-title">
+                    Add Department
+                </h5>
 
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
+
             </div>
+
 
             <div class="modal-body">
 
@@ -68,24 +111,38 @@
                       method="post">
 
                     <div class="mb-3">
-                        <label>Department Name</label>
+
+                        <label class="form-label">
+                            Department Name
+                        </label>
 
                         <input type="text"
                                name="Name"
-                               class="form-control" />
+                               class="form-control"
+                               required />
+
                     </div>
 
 
                     <div class="mb-3">
-                        <label>Status</label>
+
+                        <label class="form-label">
+                            Status
+                        </label>
 
                         <select name="Status"
-                                class="form-control">
+                                class="form-select">
 
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
 
                         </select>
+
                     </div>
 
 
@@ -103,7 +160,7 @@
     </div>
 
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
 
@@ -112,6 +169,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
@@ -129,7 +187,8 @@
 
             buttons: [
                 'excel',
-                'pdf'
+                'pdf',
+                'print'
             ]
 
         });
@@ -137,3 +196,4 @@
     });
 
 </script>
+```

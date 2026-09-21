@@ -1,110 +1,178 @@
-﻿@model List<HrmsCoreMvc.Models.Designation>
+﻿```cshtml
+@model List<HrmsCoreMvc.Models.Designation>
 
 <link rel="stylesheet"
       href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
 
-
 <link rel="stylesheet"
       href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.min.css">
 
-<h2>All Designation</h2>
-<button type="button"
-class="btn btn-primary"
-data-bs-toggle="modal"
-data-bs-target="#addDesignationModal">
-+ Add Designation
-</button>
 
-<table id="designationTable"class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Designation Id</th>
-            <th>Designation Name</th>
-            <th>Status</th>
-            
-            <th>Created By</th>
+<div class="container-fluid">
 
-            <th>Action</th>
-        </tr>
-    </thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-    <tbody>
-        @foreach (var des in Model)
-        {
+        <h2>All Designation</h2>
+
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addDesignationModal">
+            + Add Designation
+        </button>
+
+    </div>
+
+
+    <table id="designationTable"
+           class="table table-bordered table-striped">
+
+        <thead>
             <tr>
-                <td>@des.DesignationId</td>
-                <td>@des.Name</td>
-                <td>@des.status</td>
-                
-                <td>@des.CreatedBy</td>
-
-
-                <td>
-                    <a asp-action="EditDesignation" asp-route-id="@des.DesignationId" class="btn btn-warning">Edit</a>
-                    <a asp-action="DeleteDesignation" asp-route-id="@des.DesignationId" class="btn btn-danger">Delete</a>
-
-
-                </td>
+                <th>Designation Id</th>
+                <th>Designation Name</th>
+                <th>Status</th>
+                <th>Created By</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
-    <div class="modal fade" id="addDesignationModal" tabindex="-1">
-        <div class="modal-dialog">
+        </thead>
 
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Designation</h5>
+        <tbody>
 
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal">
+            @foreach (var des in Model)
+            {
+                <tr>
+
+                    <td>@des.DesignationId</td>
+
+                    <td>@des.Name</td>
+
+                    <td>@des.status</td>
+
+                    <td>@des.CreatedBy</td>
+
+                    <td>
+
+                        <a asp-action="EditDesignation"
+                           asp-route-id="@des.DesignationId"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="DeleteDesignation"
+                           asp-route-id="@des.DesignationId"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- Add Designation Modal -->
+
+<div class="modal fade"
+     id="addDesignationModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Add Designation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <form asp-controller="Designation"
+                      asp-action="AddDesignation"
+                      method="post">
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Designation Name
+                        </label>
+
+                        <input type="text"
+                               name="Name"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Department
+                        </label>
+
+                        <select name="DepartmentId"
+                                class="form-select"
+                                required>
+
+                            @foreach (var dept in ViewBag.Departments)
+                            {
+                                <option value="@dept.DepartmentId">
+                                    @dept.Name
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select name="Status"
+                                class="form-select">
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Add Designation
                     </button>
-                </div>
 
-                <div class="modal-body">
-
-                    <form asp-controller="Designation"
-                          asp-action="AddDesignation"
-                          method="post">
-
-                        <div class="mb-3">
-                            <label>Designation Name</label>
-
-                            <input type="text"
-                                   name="Name"
-                                   class="form-control" />
-                        </div>
-
-                        <div class="mb-3"> 
-                        <label>Department</label> 
-                            <select name="DepartmentId" class="form-control">
-                        @foreach (var dept in ViewBag.Departments) {
-                       <option value="@dept.DepartmentId"> @dept.Name </option>
-                        }
-                    </select> </div>
-                        <div class="mb-3">
-                            <label>Status</label>
-
-                            <select name="Status"
-                                    class="form-control">
-
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-
-                            </select>
-                        </div>
-
-
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Add Designation
-                        </button>
-
-                    </form>
-
-                </div>
+                </form>
 
             </div>
 
@@ -112,7 +180,8 @@ data-bs-target="#addDesignationModal">
 
     </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</div>
+
 
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
 
@@ -121,25 +190,26 @@ data-bs-target="#addDesignationModal">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
 
-<script>$(document).ready(function() { $('#roleTable').DataTable(); });</script>
 
 <script>
 
     $(document).ready(function() {
 
-        $('#departmentTable').DataTable({
+        $('#designationTable').DataTable({
 
             dom: 'Bfrtip',
 
             buttons: [
                 'excel',
-                'pdf'
+                'pdf',
+                'print'
             ]
 
         });
@@ -147,3 +217,4 @@ data-bs-target="#addDesignationModal">
     });
 
 </script>
+```

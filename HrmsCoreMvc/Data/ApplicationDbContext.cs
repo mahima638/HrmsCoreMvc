@@ -42,6 +42,8 @@ namespace HrmsCoreMvc.Data
         public DbSet<Designation> designation { get; set; }
         public DbSet<User> user { get; set; }
 
+        public DbSet<ProjectsUser> projectsUsers { get; set; }
+
         public DbSet<EventType> eventtypes { get; set; }
         public DbSet<Event> events { get; set; }
         public DbSet<AllProjects> AllProjects { get; set; }
